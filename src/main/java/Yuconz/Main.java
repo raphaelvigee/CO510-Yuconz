@@ -1,9 +1,10 @@
-package Controller;
+package Yuconz;
 
 import Framework.Container;
 import Framework.Kernel;
 import Framework.Routing;
 import Framework.YServer;
+import Yuconz.Controller.AppController;
 
 public class Main
 {

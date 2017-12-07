@@ -1,7 +1,5 @@
 package Framework;
 
-import Controller.AppController;
-
 public class Kernel
 {
     private Container container;
