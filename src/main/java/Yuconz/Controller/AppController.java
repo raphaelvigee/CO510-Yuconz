@@ -4,7 +4,7 @@ import Framework.*;
 
 public class AppController extends BaseController
 {
-    public static Response helloWorldAction(Container container, HTTPSession session, Route route)
+    public static Response helloPositionAction(Container container, HTTPSession session, Route route)
     {
         RouteParameters parameters = route.getParameters(session);
         String name = parameters.get("name");
