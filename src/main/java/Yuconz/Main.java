@@ -3,7 +3,6 @@ package Yuconz;
 import Framework.Container;
 import Framework.Kernel;
 import Framework.Routing;
-import Framework.YServer;
 import Yuconz.Controller.AppController;
 
 public class Main
@@ -13,9 +12,8 @@ public class Main
         Kernel app = Kernel.newInstance();
 
         Container c = app.getContainer();
+        Routing routing = c.get(Routing.class);
 
-        c.add(AppController.class);
-
-        c.get(Routing.class).get("/hello/{name}/{job}", c.get(AppController.class).helloWorldAction);
+        routing.get("/hello/{name}/{job}", AppController::helloWorldAction);
     }
 }
