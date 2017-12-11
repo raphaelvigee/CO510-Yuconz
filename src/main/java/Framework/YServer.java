@@ -1,5 +1,8 @@
 package Framework;
 
+import Framework.Container.Container;
+import Framework.Container.ContainerAwareInterface;
+import Framework.Routing.*;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.text.DateFormat;
@@ -18,7 +21,7 @@ public class YServer extends NanoHTTPD implements ContainerAwareInterface
     @Override
     public Response serve(IHTTPSession s)
     {
-        Framework.HTTPSession session = Framework.HTTPSession.create(s);
+        Framework.Routing.HTTPSession session = Framework.Routing.HTTPSession.create(s);
 
         Routing routing = container.get(Routing.class);
 
@@ -33,7 +36,7 @@ public class YServer extends NanoHTTPD implements ContainerAwareInterface
 
         System.out.println("["+dateFormat.format(date)+"] "+session.getMethod()+" "+session.getUri());
 
-        Framework.Response response;
+        Framework.Routing.Response response;
 
         try {
             response = match.getHandler().apply(container, session, match);

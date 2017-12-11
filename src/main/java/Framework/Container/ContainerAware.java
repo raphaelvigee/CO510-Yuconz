@@ -1,4 +1,4 @@
-package Framework;
+package Framework.Container;
 
 abstract public class ContainerAware implements ContainerAwareInterface
 {

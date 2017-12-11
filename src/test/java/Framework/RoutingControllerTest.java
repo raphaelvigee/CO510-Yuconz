@@ -1,6 +1,8 @@
 package Framework;
 
 import Framework.Annotation.Route;
+import Framework.Routing.Response;
+import Framework.Routing.Routing;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -67,7 +69,7 @@ public class RoutingControllerTest
 
         routing.addController(Controller3.class);
 
-        ArrayList<Framework.Route> routes = routing.getRoutes();
+        ArrayList<Framework.Routing.Route> routes = routing.getRoutes();
 
         assertEquals(1, routes.size());
 

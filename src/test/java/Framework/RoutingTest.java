@@ -1,6 +1,7 @@
 package Framework;
 
 import Framework.Exception.RouteDuplicateException;
+import Framework.Routing.*;
 import fi.iki.elonen.NanoHTTPD;
 import org.junit.Test;
 

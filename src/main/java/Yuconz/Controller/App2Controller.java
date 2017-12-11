@@ -2,6 +2,7 @@ package Yuconz.Controller;
 
 import Framework.*;
 import Framework.Annotation.Route;
+import Framework.Routing.Response;
 
 public class App2Controller extends BaseController
 {

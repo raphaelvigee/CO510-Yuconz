@@ -1,6 +1,6 @@
 package Framework.Annotation;
 
-import Framework.Method;
+import Framework.Routing.Method;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
