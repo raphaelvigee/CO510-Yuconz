@@ -4,7 +4,6 @@ import Framework.Container.Container;
 import Framework.Exception.FrameworkException;
 import Framework.Kernel;
 import Framework.Routing.Routing;
-import Yuconz.Controller.App2Controller;
 import Yuconz.Controller.AppController;
 
 public class Main
@@ -16,9 +15,7 @@ public class Main
         Container c = app.getContainer();
         Routing routing = c.get(Routing.class);
 
-        routing.get("/hello/{name}/{job}", AppController::helloPositionAction);
-
-        routing.addController(App2Controller.class);
+        routing.addController(AppController.class);
 
         app.start();
     }
