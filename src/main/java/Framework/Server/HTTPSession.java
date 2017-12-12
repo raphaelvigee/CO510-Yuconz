@@ -1,4 +1,4 @@
-package Framework.Routing;
+package Framework.Server;
 
 import fi.iki.elonen.NanoHTTPD;
 

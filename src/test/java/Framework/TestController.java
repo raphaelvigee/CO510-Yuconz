@@ -1,7 +1,7 @@
 package Framework;
 
 import Framework.Annotation.Route;
-import Framework.Routing.Response;
+import Framework.Router.Response;
 
 @Route(path = "/prefixed")
 public class TestController extends BaseController

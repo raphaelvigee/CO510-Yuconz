@@ -3,7 +3,7 @@ package Yuconz;
 import Framework.Container.Container;
 import Framework.Exception.FrameworkException;
 import Framework.Kernel;
-import Framework.Routing.Routing;
+import Framework.Router.Router;
 import Yuconz.Controller.AppController;
 import Yuconz.Controller.PrefixedController;
 
@@ -14,10 +14,10 @@ public class Main
         Kernel app = Kernel.newInstance();
 
         Container c = app.getContainer();
-        Routing routing = c.get(Routing.class);
+        Router router = c.get(Router.class);
 
-        routing.addController(AppController.class);
-        routing.addController(PrefixedController.class);
+        router.addController(AppController.class);
+        router.addController(PrefixedController.class);
 
         app.start();
     }

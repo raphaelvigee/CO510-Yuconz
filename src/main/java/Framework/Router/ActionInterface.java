@@ -1,7 +1,8 @@
-package Framework.Routing;
+package Framework.Router;
 
 import Framework.Container.Container;
 import Framework.Exception.UnhandledParameterException;
+import Framework.Server.HTTPSession;
 
 public interface ActionInterface
 {

@@ -2,10 +2,7 @@ package Yuconz.Controller;
 
 import Framework.Annotation.Route;
 import Framework.BaseController;
-import Framework.Container.Container;
-import Framework.Routing.HTTPSession;
-import Framework.Routing.Response;
-import Framework.Routing.RouteParameters;
+import Framework.Router.Response;
 
 @Route(path = "/prefix")
 public class PrefixedController extends BaseController

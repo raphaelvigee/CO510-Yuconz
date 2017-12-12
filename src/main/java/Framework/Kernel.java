@@ -1,8 +1,9 @@
 package Framework;
 
 import Framework.Container.Container;
-import Framework.Routing.Route;
-import Framework.Routing.Routing;
+import Framework.Router.Route;
+import Framework.Router.Router;
+import Framework.Server.Server;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
@@ -21,8 +22,8 @@ public class Kernel
     {
         Container container = new Container();
 
-        container.add(YServer.class);
-        container.add(Routing.class);
+        container.add(Server.class);
+        container.add(Router.class);
 
         return new Kernel(container);
     }
@@ -34,15 +35,15 @@ public class Kernel
 
     public void start()
     {
-        YServer server = container.get(YServer.class);
-        Routing routing = container.get(Routing.class);
+        Server server = container.get(Server.class);
+        Router router = container.get(Router.class);
         try {
             server.start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        ArrayList<Route> routes = routing.getRoutes();
+        ArrayList<Route> routes = router.getRoutes();
 
         System.out.println(routes.size()+" routes registered:");
         for (Route route : routes) {

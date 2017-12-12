@@ -1,4 +1,4 @@
-package Framework.Routing;
+package Framework.Router;
 
 import Framework.BaseController;
 import Framework.Container.Container;
@@ -6,13 +6,15 @@ import Framework.Container.ContainerAware;
 import Framework.Exception.FrameworkException;
 import Framework.Exception.RouteDuplicateException;
 import Framework.Exception.UnhandledParameterException;
+import Framework.Server.HTTPSession;
+import Framework.Server.Method;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Routing extends ContainerAware
+public class Router extends ContainerAware
 {
     private ArrayList<Route> routes = new ArrayList<>();
 
