@@ -16,9 +16,8 @@ public class AppController extends BaseController
     }
 
     @Route(path = "/hello/{name}/{job}")
-    public static Response helloPositionAction(Container container, HTTPSession session, Framework.Router.Route route)
+    public static Response helloPositionAction(RouteParameters parameters)
     {
-        RouteParameters parameters = route.getParameters(session);
         String name = parameters.get("name");
         String job = parameters.get("job");
 
