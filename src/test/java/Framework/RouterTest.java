@@ -1,5 +1,6 @@
 package Framework;
 
+import Framework.Container.Container;
 import Framework.Exception.RouteDuplicateException;
 import Framework.Router.Response;
 import Framework.Router.Route;
@@ -102,7 +103,10 @@ public class RouterTest
     @Test
     public void addControllerTest() throws Exception
     {
+        Kernel app = Kernel.newInstance();
+
         Router router = new Router();
+        router.setContainer(app.getContainer());
 
         router.addController(TestController.class);
 
