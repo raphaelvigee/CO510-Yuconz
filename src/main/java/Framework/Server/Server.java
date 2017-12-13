@@ -3,12 +3,14 @@ package Framework.Server;
 import Framework.Container.Container;
 import Framework.Container.ContainerAwareInterface;
 import Framework.EventDispatcher.EventDispatcher;
-import Framework.Router.*;
+import Framework.Router.Route;
+import Framework.Router.Router;
 import Framework.Server.Event.HTTPSessionEvent;
 import Framework.Server.Event.ResponseEvent;
 import Framework.Server.Event.RouteMatchEvent;
 import fi.iki.elonen.NanoHTTPD;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +22,21 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
     public Server()
     {
         super(4367);
+    }
+
+    @Override
+    public void start(int timeout, boolean daemon) throws IOException
+    {
+        container.get(EventDispatcher.class).register(Events.PRE_SEND_RESPONSE, responseEvent -> {
+            Framework.Server.HTTPSession session = responseEvent.session;
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+
+            System.out.println("[" + dateFormat.format(date) + "] " + session.getMethod() + " \"" + session.getUri() + "\"");
+        });
+
+        super.start(timeout, daemon);
     }
 
     @Override
@@ -41,11 +58,6 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
             if (match == null) {
                 return newFixedLengthResponse(Status.NOT_FOUND, "text/plain", "Not found");
             }
-
-            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Date date = new Date();
-
-            System.out.println("["+dateFormat.format(date)+"] "+session.getMethod()+" \""+session.getUri()+"\"");
 
             Framework.Router.Response response;
 
