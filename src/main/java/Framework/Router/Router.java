@@ -3,9 +3,11 @@ package Framework.Router;
 import Framework.BaseController;
 import Framework.Container.Container;
 import Framework.Container.ContainerAware;
+import Framework.EventDispatcher.EventDispatcher;
 import Framework.Exception.FrameworkException;
 import Framework.Exception.RouteDuplicateException;
 import Framework.Exception.UnhandledParameterException;
+import Framework.Router.Event.PreInvokeActionEvent;
 import Framework.Server.HTTPSession;
 import Framework.Server.Method;
 
@@ -22,6 +24,8 @@ public class Router extends ContainerAware
 
     public void addController(Class<? extends BaseController> controllerClass) throws FrameworkException
     {
+        EventDispatcher eventDispatcher = getContainer().get(EventDispatcher.class);
+
         Framework.Annotation.Route controllerAnnotation = controllerClass.getAnnotation(Framework.Annotation.Route.class);
 
         String pathPrefix = controllerAnnotation == null ? "" : controllerAnnotation.path();
@@ -39,19 +43,29 @@ public class Router extends ContainerAware
 
                 final Class<?>[] parameterTypes = method.getParameterTypes();
 
-                addAction(routeAnnotation.method(), pathPrefix + routeAnnotation.path(), (container, session, route) -> {
-                    try {
-                        return (Response) method.invoke(null, getActionParameters(parameterTypes, container, session, route));
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
+                addAction(routeAnnotation.method(), pathPrefix + routeAnnotation.path(), (session) -> {
+                    Object[] parameters = getActionParameters(parameterTypes, session);
+
+                    ActionInvokerInterface actionInvoker = () -> {
+                        try {
+                            return (Response) method.invoke(null, parameters);
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    };
+
+                    PreInvokeActionEvent preInvokeActionEvent = new PreInvokeActionEvent(session, parameters, actionInvoker);
+
+                    eventDispatcher.dispatch(Events.PRE_INVOKE_ACTION, preInvokeActionEvent);
+
+                    return preInvokeActionEvent.getActionInvoker().invoke();
                 });
             }
         }
     }
 
-    public Object[] getActionParameters(Class<?>[] parameterTypes, Container container, HTTPSession session, Route route) throws UnhandledParameterException
+    public Object[] getActionParameters(Class<?>[] parameterTypes, HTTPSession session) throws UnhandledParameterException
     {
         Object[] parameters = new Object[parameterTypes.length];
         int i = 0;
@@ -59,13 +73,11 @@ public class Router extends ContainerAware
             Object p;
 
             if (parameterType == Container.class) {
-                p = container;
+                p = getContainer();
             } else if (parameterType == HTTPSession.class) {
                 p = session;
-            } else if (parameterType == Route.class) {
-                p = route;
             } else if (parameterType == RouteParameters.class) {
-                p = getRouteParameters(route, session);
+                p = getRouteParameters(session.getRoute(), session);
             } else {
                 throw new UnhandledParameterException(parameterType);
             }
@@ -86,7 +98,7 @@ public class Router extends ContainerAware
         routeSignatures.add(route.toString());
     }
 
-    public void addAction(Method method, String path, ActionInterface handler) throws RouteDuplicateException
+    public void addAction(Method method, String path, ActionWrapperInterface handler) throws RouteDuplicateException
     {
         addRoute(new Route(method, path, handler));
     }
