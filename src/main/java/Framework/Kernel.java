@@ -1,6 +1,7 @@
 package Framework;
 
 import Framework.Container.Container;
+import Framework.EventDispatcher.EventDispatcher;
 import Framework.Router.Route;
 import Framework.Router.Router;
 import Framework.Server.Server;
@@ -24,6 +25,7 @@ public class Kernel
 
         container.add(Server.class);
         container.add(Router.class);
+        container.add(EventDispatcher.class);
 
         return new Kernel(container);
     }

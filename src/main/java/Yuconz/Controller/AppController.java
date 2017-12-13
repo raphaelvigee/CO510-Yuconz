@@ -3,14 +3,14 @@ package Yuconz.Controller;
 import Framework.Annotation.Route;
 import Framework.BaseController;
 import Framework.Container.Container;
-import Framework.Server.HTTPSession;
 import Framework.Router.Response;
 import Framework.Router.RouteParameters;
+import Framework.Server.HTTPSession;
 
 public class AppController extends BaseController
 {
     @Route(path = "/hello")
-    public static Response helloWorldAction()
+    public static Response helloWorldAction(Container container)
     {
         return new Response("Hello, world");
     }
