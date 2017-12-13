@@ -1,8 +1,9 @@
 package Framework;
 
 import Framework.Annotation.Route;
-import Framework.Routing.Response;
+import Framework.Router.Response;
 
+@Route(path = "/prefixed")
 public class TestController extends BaseController
 {
     public static Response hello1()
@@ -15,13 +16,13 @@ public class TestController extends BaseController
         return new Response("hello");
     }
 
-    @Route(path = "hello")
+    @Route(path = "/hello")
     public Response hello3()
     {
         return new Response("hello");
     }
 
-    @Route(path = "hello")
+    @Route(path = "/hello")
     public static Response hello4()
     {
         return new Response("hello");

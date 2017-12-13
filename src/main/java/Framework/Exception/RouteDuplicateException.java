@@ -1,6 +1,6 @@
 package Framework.Exception;
 
-import Framework.Routing.Route;
+import Framework.Router.Route;
 
 public class RouteDuplicateException extends FrameworkException
 {

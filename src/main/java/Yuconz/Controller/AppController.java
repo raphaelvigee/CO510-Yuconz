@@ -1,15 +1,22 @@
 package Yuconz.Controller;
 
-import Framework.*;
+import Framework.Annotation.Route;
+import Framework.BaseController;
 import Framework.Container.Container;
-import Framework.Routing.HTTPSession;
-import Framework.Routing.Response;
-import Framework.Routing.Route;
-import Framework.Routing.RouteParameters;
+import Framework.Server.HTTPSession;
+import Framework.Router.Response;
+import Framework.Router.RouteParameters;
 
 public class AppController extends BaseController
 {
-    public static Response helloPositionAction(Container container, HTTPSession session, Route route)
+    @Route(path = "/hello")
+    public static Response helloWorldAction()
+    {
+        return new Response("Hello, world");
+    }
+
+    @Route(path = "/hello/{name}/{job}")
+    public static Response helloPositionAction(Container container, HTTPSession session, Framework.Router.Route route)
     {
         RouteParameters parameters = route.getParameters(session);
         String name = parameters.get("name");
