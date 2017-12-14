@@ -18,8 +18,8 @@ public class AppController extends BaseController
     @Route(path = "/hello/{name}/{job}")
     public static Response helloPositionAction(RouteParameters parameters)
     {
-        String name = parameters.get("name");
-        String job = parameters.get("job");
+        String name = (String) parameters.get("name");
+        String job = (String) parameters.get("job");
 
         return new Response("Hello, " + name + " you have the position of: " + job);
     }

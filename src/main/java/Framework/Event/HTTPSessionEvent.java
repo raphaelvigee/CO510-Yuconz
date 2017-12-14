@@ -1,4 +1,4 @@
-package Framework.Server.Event;
+package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
 import Framework.Server.HTTPSession;
