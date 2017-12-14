@@ -3,15 +3,7 @@ package Framework.Container;
 
 public interface ContainerAwareInterface
 {
-    Container container = null;
+    Container getContainer();
 
-    default Container getContainer()
-    {
-        return container;
-    }
-
-    default void setContainer(Container c)
-    {
-        System.err.println("Unimplemented setContainer");
-    }
+    void setContainer(Container c);
 }
