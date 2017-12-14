@@ -3,11 +3,12 @@ package Framework.Server;
 import Framework.Container.Container;
 import Framework.Container.ContainerAwareInterface;
 import Framework.EventDispatcher.EventDispatcher;
+import Framework.KernelEvents;
 import Framework.Router.Route;
 import Framework.Router.Router;
-import Framework.Server.Event.HTTPSessionEvent;
-import Framework.Server.Event.ResponseEvent;
-import Framework.Server.Event.RouteMatchEvent;
+import Framework.Event.HTTPSessionEvent;
+import Framework.Event.ResponseEvent;
+import Framework.Event.RouteMatchEvent;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
     @Override
     public void start(int timeout, boolean daemon) throws IOException
     {
-        container.get(EventDispatcher.class).register(Events.PRE_SEND_RESPONSE, responseEvent -> {
+        container.get(EventDispatcher.class).register(KernelEvents.PRE_SEND_RESPONSE, responseEvent -> {
             Framework.Server.HTTPSession session = responseEvent.session;
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -49,12 +50,12 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
 
             Router router = container.get(Router.class);
 
-            eventDispatcher.dispatch(Events.PRE_MATCH, new HTTPSessionEvent(session));
+            eventDispatcher.dispatch(KernelEvents.PRE_MATCH_ROUTE, new HTTPSessionEvent(session));
 
             Route route = router.match(session);
             session.setRoute(route);
 
-            eventDispatcher.dispatch(Events.POST_MATCH, new RouteMatchEvent(session));
+            eventDispatcher.dispatch(KernelEvents.POST_MATCH_ROUTE, new RouteMatchEvent(session));
 
             if (route == null) {
                 return newFixedLengthResponse(Status.NOT_FOUND, "text/plain", "Not found");
@@ -62,7 +63,7 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
 
             Framework.Router.Response response = route.getHandler().apply(session);
 
-            eventDispatcher.dispatch(Events.PRE_SEND_RESPONSE, new ResponseEvent(session, response));
+            eventDispatcher.dispatch(KernelEvents.PRE_SEND_RESPONSE, new ResponseEvent(session, response));
 
             return newFixedLengthResponse(response.getStatus(), response.getMimeType(), response.getContent());
         } catch (Exception e) {

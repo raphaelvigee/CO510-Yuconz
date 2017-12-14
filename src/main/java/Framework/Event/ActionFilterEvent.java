@@ -1,4 +1,4 @@
-package Framework.Router.Event;
+package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
 import Framework.Router.ActionInvokerInterface;

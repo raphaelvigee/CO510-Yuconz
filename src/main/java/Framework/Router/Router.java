@@ -7,7 +7,8 @@ import Framework.EventDispatcher.EventDispatcher;
 import Framework.Exception.FrameworkException;
 import Framework.Exception.RouteDuplicateException;
 import Framework.Exception.UnhandledParameterException;
-import Framework.Router.Event.ActionFilterEvent;
+import Framework.Event.ActionFilterEvent;
+import Framework.KernelEvents;
 import Framework.Server.HTTPSession;
 import Framework.Server.Method;
 
@@ -57,7 +58,7 @@ public class Router extends ContainerAware
 
                     ActionFilterEvent actionFilterEvent = new ActionFilterEvent(session, parameters, actionInvoker);
 
-                    eventDispatcher.dispatch(Events.ACTION_FILTER, actionFilterEvent);
+                    eventDispatcher.dispatch(KernelEvents.ACTION_FILTER, actionFilterEvent);
 
                     return actionFilterEvent.getActionInvoker().invoke(actionFilterEvent.getParameters());
                 });
