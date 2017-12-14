@@ -2,13 +2,13 @@ package Framework.Server;
 
 import Framework.Container.Container;
 import Framework.Container.ContainerAwareInterface;
+import Framework.Event.HTTPSessionEvent;
+import Framework.Event.ResponseEvent;
+import Framework.Event.RouteMatchEvent;
 import Framework.EventDispatcher.EventDispatcher;
 import Framework.KernelEvents;
 import Framework.Router.Route;
 import Framework.Router.Router;
-import Framework.Event.HTTPSessionEvent;
-import Framework.Event.ResponseEvent;
-import Framework.Event.RouteMatchEvent;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
@@ -43,10 +43,21 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
     @Override
     public Response serve(IHTTPSession s)
     {
+        Framework.Server.HTTPSession session = Framework.Server.HTTPSession.create(s);
+
+        Framework.Router.Response response = serve(session);
+
+        if (null == response) {
+            return newFixedLengthResponse(Response.Status.OK, "text/plain", null);
+        }
+
+        return newFixedLengthResponse(response.getStatus(), response.getMimeType(), response.getContent());
+    }
+
+    public Framework.Router.Response serve(Framework.Server.HTTPSession session)
+    {
         try {
             EventDispatcher eventDispatcher = container.get(EventDispatcher.class);
-
-            Framework.Server.HTTPSession session = Framework.Server.HTTPSession.create(s);
 
             Router router = container.get(Router.class);
 
@@ -58,17 +69,17 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
             eventDispatcher.dispatch(KernelEvents.POST_MATCH_ROUTE, new RouteMatchEvent(session));
 
             if (route == null) {
-                return newFixedLengthResponse(Status.NOT_FOUND, "text/plain", "Not found");
+                return new Framework.Router.Response("Not found", Status.NOT_FOUND, "text/plain");
             }
 
             Framework.Router.Response response = route.getHandler().apply(session);
 
             eventDispatcher.dispatch(KernelEvents.PRE_SEND_RESPONSE, new ResponseEvent(session, response));
 
-            return newFixedLengthResponse(response.getStatus(), response.getMimeType(), response.getContent());
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
-            return newFixedLengthResponse(Status.INTERNAL_ERROR, "text/plain", "Internal Error");
+            return new Framework.Router.Response("Internal Error", Status.INTERNAL_ERROR, "text/plain");
         }
     }
 

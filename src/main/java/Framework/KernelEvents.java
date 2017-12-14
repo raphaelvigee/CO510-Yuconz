@@ -1,9 +1,6 @@
 package Framework;
 
-import Framework.Event.ActionFilterEvent;
-import Framework.Event.HTTPSessionEvent;
-import Framework.Event.ResponseEvent;
-import Framework.Event.RouteMatchEvent;
+import Framework.Event.*;
 import Framework.EventDispatcher.EventType;
 
 public class KernelEvents
@@ -15,4 +12,6 @@ public class KernelEvents
     public static final EventType<ResponseEvent> PRE_SEND_RESPONSE = new EventType<>("kernel.pre_send_response");
 
     public static final EventType<ActionFilterEvent> ACTION_FILTER = new EventType<>("kernel.pre_invoke_action");
+
+    public static final EventType<RouteParametersEvent> ROUTE_PARAMETERS = new EventType<>("kernel.route_parameters");
 }

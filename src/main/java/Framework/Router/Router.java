@@ -3,11 +3,12 @@ package Framework.Router;
 import Framework.BaseController;
 import Framework.Container.Container;
 import Framework.Container.ContainerAware;
+import Framework.Event.ActionFilterEvent;
+import Framework.Event.RouteParametersEvent;
 import Framework.EventDispatcher.EventDispatcher;
 import Framework.Exception.FrameworkException;
 import Framework.Exception.RouteDuplicateException;
 import Framework.Exception.UnhandledParameterException;
-import Framework.Event.ActionFilterEvent;
 import Framework.KernelEvents;
 import Framework.Server.HTTPSession;
 import Framework.Server.Method;
@@ -20,6 +21,8 @@ import java.util.regex.Pattern;
 public class Router extends ContainerAware
 {
     private ArrayList<Route> routes = new ArrayList<>();
+
+    private ArrayList<RouteParameterResolverInterface> routeParameterResolvers = new ArrayList<>();
 
     private ArrayList<String> routeSignatures = new ArrayList<>();
 
@@ -136,10 +139,34 @@ public class Router extends ContainerAware
 
         if (m.matches()) {
             route.getPath().parameters.forEach((index, name) -> {
-                parameterValues.put(name, m.group(index));
+                parameterValues.put(name, resolveRouteParameter(m, index, name, session));
             });
         }
 
+        EventDispatcher eventDispatcher = getContainer().get(EventDispatcher.class);
+
+        eventDispatcher.dispatch(KernelEvents.ROUTE_PARAMETERS, new RouteParametersEvent(session, parameterValues));
+
         return parameterValues;
+    }
+
+    public Object resolveRouteParameter(Matcher m, Integer index, String name, HTTPSession session)
+    {
+        String value = m.group(index);
+        Object resolvedValue = value;
+
+        for (RouteParameterResolverInterface resolver : routeParameterResolvers) {
+            if (resolver.supports(name, value, session)) {
+                resolvedValue = resolver.resolve(name, value, session);
+                break;
+            }
+        }
+
+        return resolvedValue;
+    }
+
+    public void addRouteParameterResolver(RouteParameterResolverInterface resolver)
+    {
+        routeParameterResolvers.add(resolver);
     }
 }
