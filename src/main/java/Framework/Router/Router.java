@@ -7,7 +7,7 @@ import Framework.EventDispatcher.EventDispatcher;
 import Framework.Exception.FrameworkException;
 import Framework.Exception.RouteDuplicateException;
 import Framework.Exception.UnhandledParameterException;
-import Framework.Router.Event.PreInvokeActionEvent;
+import Framework.Router.Event.ActionFilterEvent;
 import Framework.Server.HTTPSession;
 import Framework.Server.Method;
 
@@ -43,23 +43,23 @@ public class Router extends ContainerAware
 
                 final Class<?>[] parameterTypes = method.getParameterTypes();
 
+                final ActionInvokerInterface actionInvoker = (parameters) -> {
+                    try {
+                        return (Response) method.invoke(null, parameters);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                };
+
                 addAction(routeAnnotation.method(), pathPrefix + routeAnnotation.path(), (session) -> {
                     Object[] parameters = getActionParameters(parameterTypes, session);
 
-                    ActionInvokerInterface actionInvoker = () -> {
-                        try {
-                            return (Response) method.invoke(null, parameters);
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    };
+                    ActionFilterEvent actionFilterEvent = new ActionFilterEvent(session, parameters, actionInvoker);
 
-                    PreInvokeActionEvent preInvokeActionEvent = new PreInvokeActionEvent(session, parameters, actionInvoker);
+                    eventDispatcher.dispatch(Events.ACTION_FILTER, actionFilterEvent);
 
-                    eventDispatcher.dispatch(Events.PRE_INVOKE_ACTION, preInvokeActionEvent);
-
-                    return preInvokeActionEvent.getActionInvoker().invoke();
+                    return actionFilterEvent.getActionInvoker().invoke(actionFilterEvent.getParameters());
                 });
             }
         }

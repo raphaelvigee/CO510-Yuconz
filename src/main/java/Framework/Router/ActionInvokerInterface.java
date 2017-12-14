@@ -3,5 +3,5 @@ package Framework.Router;
 @FunctionalInterface
 public interface ActionInvokerInterface
 {
-    Response invoke();
+    Response invoke(Object[] parameters);
 }
