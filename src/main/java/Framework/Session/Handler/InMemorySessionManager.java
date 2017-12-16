@@ -1,5 +1,6 @@
 package Framework.Session.Handler;
 
+import Framework.Container.Container;
 import Framework.Container.ContainerAware;
 import Framework.Server.Cookie;
 import Framework.Server.Request;
@@ -12,6 +13,11 @@ import java.util.HashMap;
 public class InMemorySessionManager extends ContainerAware implements SessionManagerInterface<InMemorySession>
 {
     private HashMap<String, InMemorySession> sessions = new HashMap<>();
+
+    public InMemorySessionManager(Container container)
+    {
+        super(container);
+    }
 
     public String getIdCookieName()
     {

@@ -1,5 +1,6 @@
 package Framework.EventDispatcher;
 
+import Framework.Container.Container;
 import Framework.Container.ContainerAware;
 
 import java.util.ArrayList;
@@ -12,6 +13,11 @@ public class EventDispatcher extends ContainerAware
     public HashMap<EventType, ArrayList<EventHandlerInterface>> getEvents()
     {
         return events;
+    }
+
+    public EventDispatcher(Container container)
+    {
+        super(container);
     }
 
     public <E extends EventInterface> void register(EventType<E> eventType, EventHandlerInterface<E> eventHandler)

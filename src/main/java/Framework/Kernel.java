@@ -2,6 +2,7 @@ package Framework;
 
 import Framework.Container.Container;
 import Framework.EventDispatcher.EventDispatcher;
+import Framework.Exception.FrameworkException;
 import Framework.Router.Route;
 import Framework.Router.Router;
 import Framework.Server.Server;
@@ -20,11 +21,11 @@ public class Kernel
         this.container = container;
     }
 
-    public static Kernel newInstance()
+    public static Kernel newInstance() throws FrameworkException
     {
         Container container = new Container();
 
-        container.add(Server.class);
+        container.add(Server.class, false);
         container.add(Router.class);
         container.add(EventDispatcher.class);
         container.add(InMemorySessionManager.class);
