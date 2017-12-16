@@ -5,7 +5,6 @@ import Framework.BaseController;
 import Framework.Container.Container;
 import Framework.Router.Response;
 import Framework.Router.RouteParameters;
-import Framework.Server.HTTPSession;
 
 public class AppController extends BaseController
 {

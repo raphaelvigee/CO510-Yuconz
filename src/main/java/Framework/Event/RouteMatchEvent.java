@@ -1,14 +1,14 @@
 package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
-import Framework.Server.HTTPSession;
+import Framework.Server.Request;
 
 public class RouteMatchEvent implements EventInterface
 {
-    public HTTPSession session;
+    public Request request;
 
-    public RouteMatchEvent(HTTPSession session)
+    public RouteMatchEvent(Request request)
     {
-        this.session = session;
+        this.request = request;
     }
 }

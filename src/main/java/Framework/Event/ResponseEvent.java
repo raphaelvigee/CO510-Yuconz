@@ -2,17 +2,17 @@ package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
 import Framework.Router.Response;
-import Framework.Server.HTTPSession;
+import Framework.Server.Request;
 
 public class ResponseEvent implements EventInterface
 {
-    public HTTPSession session;
+    public Request request;
 
     public Response response;
 
-    public ResponseEvent(HTTPSession session, Response response)
+    public ResponseEvent(Request request, Response response)
     {
-        this.session = session;
+        this.request = request;
         this.response = response;
     }
 }
