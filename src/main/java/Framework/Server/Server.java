@@ -47,11 +47,17 @@ public class Server extends NanoHTTPD implements ContainerAwareInterface
 
         Framework.Router.Response response = serve(request);
 
+        Response nativeResponse;
+
         if (null == response) {
-            return newFixedLengthResponse(Response.Status.OK, "text/plain", null);
+            nativeResponse = newFixedLengthResponse(Response.Status.OK, "text/plain", null);
+        } else {
+            nativeResponse = newFixedLengthResponse(response.getStatus(), response.getMimeType(), response.getContent());
         }
 
-        return newFixedLengthResponse(response.getStatus(), response.getMimeType(), response.getContent());
+        request.getCookies().unloadQueue(nativeResponse);
+
+        return nativeResponse;
     }
 
     public Framework.Router.Response serve(Request request)

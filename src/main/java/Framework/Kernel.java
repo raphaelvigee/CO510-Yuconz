@@ -5,6 +5,7 @@ import Framework.EventDispatcher.EventDispatcher;
 import Framework.Router.Route;
 import Framework.Router.Router;
 import Framework.Server.Server;
+import Framework.Session.Handler.InMemorySessionManager;
 import fi.iki.elonen.NanoHTTPD;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class Kernel
         container.add(Server.class);
         container.add(Router.class);
         container.add(EventDispatcher.class);
+        container.add(InMemorySessionManager.class);
 
         return new Kernel(container);
     }
