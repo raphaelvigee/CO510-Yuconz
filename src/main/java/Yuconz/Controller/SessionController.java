@@ -5,11 +5,10 @@ import Framework.BaseController;
 import Framework.Container.Container;
 import Framework.Router.Response;
 import Framework.Router.RouteParameters;
-import Framework.Server.Request;
-import Framework.Session.Handler.InMemorySessionManager;
-import Framework.Session.SessionInterface;
+import org.eclipse.jetty.server.Request;
 
-import java.util.Map;
+import javax.servlet.http.HttpSession;
+import java.util.Enumeration;
 
 @Route(path = "/session")
 public class SessionController extends BaseController
@@ -17,15 +16,17 @@ public class SessionController extends BaseController
     @Route(path = "/show")
     public static Response showAction(Container container, Request request)
     {
-        SessionInterface session = container.get(InMemorySessionManager.class).getSession(request);
+        HttpSession session = request.getSession(true);
 
-        Map elements = session.getAll();
+        Enumeration<String> elementNames = session.getAttributeNames();
 
         StringBuilder sb = new StringBuilder();
 
-        elements.forEach((o, o2) -> {
-            sb.append("<b>" + o + "</b>:" + o2.toString()+"<br>");
-        });
+        while (elementNames.hasMoreElements()) {
+            String name = elementNames.nextElement();
+
+            sb.append("<b>" + name + "</b>:" + session.getAttribute(name) + "<br>");
+        }
 
         return new Response(sb.toString());
     }
@@ -36,9 +37,9 @@ public class SessionController extends BaseController
         String key = (String) parameters.get("key");
         String value = (String) parameters.get("value");
 
-        SessionInterface session = container.get(InMemorySessionManager.class).getSession(request);
+        HttpSession session = request.getSession(true);
 
-        session.set(key, value);
+        session.setAttribute(key, value);
 
         return new Response("OK !");
     }

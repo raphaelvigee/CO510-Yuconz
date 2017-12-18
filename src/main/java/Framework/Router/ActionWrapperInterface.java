@@ -1,10 +1,10 @@
 package Framework.Router;
 
 import Framework.Exception.UnhandledParameterException;
-import Framework.Server.Request;
+import org.eclipse.jetty.server.Request;
 
 @FunctionalInterface
 public interface ActionWrapperInterface
 {
-    Response apply(Request r) throws UnhandledParameterException;
+    Response apply(Request request, Route route) throws UnhandledParameterException;
 }

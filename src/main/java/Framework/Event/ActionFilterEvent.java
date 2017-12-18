@@ -2,20 +2,24 @@ package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
 import Framework.Router.ActionInvokerInterface;
-import Framework.Server.Request;
+import Framework.Router.Route;
+import org.eclipse.jetty.server.Request;
 
 public class ActionFilterEvent implements EventInterface
 {
     private Request request;
 
+    private Route route;
+
     private Object[] parameters;
 
     private ActionInvokerInterface actionInvoker;
 
-    public ActionFilterEvent(Request request, Object[] parameters, ActionInvokerInterface actionInvoker)
+    public ActionFilterEvent(Request request, Route route, Object[] parameters, ActionInvokerInterface actionInvoker)
     {
 
         this.request = request;
+        this.route = route;
         this.parameters = parameters;
         this.actionInvoker = actionInvoker;
     }

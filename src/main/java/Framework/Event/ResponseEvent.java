@@ -2,13 +2,13 @@ package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
 import Framework.Router.Response;
-import Framework.Server.Request;
+import org.eclipse.jetty.server.Request;
 
 public class ResponseEvent implements EventInterface
 {
-    public Request request;
+    private Request request;
 
-    public Response response;
+    private Response response;
 
     public ResponseEvent(Request request, Response response)
     {
