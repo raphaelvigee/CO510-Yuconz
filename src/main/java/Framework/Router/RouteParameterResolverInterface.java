@@ -1,10 +1,10 @@
 package Framework.Router;
 
-import org.eclipse.jetty.server.Request;
+import Framework.Server.RuntimeBag;
 
 public interface RouteParameterResolverInterface<R>
 {
-    boolean supports(String name, String value, Request request, Route route);
+    boolean supports(String name, String value, RuntimeBag runtimeBag);
 
-    R resolve(String name, String value, Request request, Route route);
+    R resolve(String name, String value, RuntimeBag runtimeBag);
 }

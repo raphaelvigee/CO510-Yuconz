@@ -1,22 +1,18 @@
 package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
-import Framework.Router.Route;
 import Framework.Router.RouteParameters;
-import org.eclipse.jetty.server.Request;
+import Framework.Server.RuntimeBag;
 
 public class RouteParametersEvent implements EventInterface
 {
-    private Request request;
-
-    private Route route;
-
     private RouteParameters parameterValues;
 
-    public RouteParametersEvent(Request request, Route route, RouteParameters parameterValues)
+    private RuntimeBag runtimeBag;
+
+    public RouteParametersEvent(RuntimeBag runtimeBag, RouteParameters parameterValues)
     {
-        this.request = request;
-        this.route = route;
+        this.runtimeBag = runtimeBag;
         this.parameterValues = parameterValues;
     }
 }

@@ -56,7 +56,7 @@ public class FrameworkHandler extends AbstractHandler implements ContainerAwareI
                 return new Framework.Router.Response("Not Found", Status.NOT_FOUND, "text/plain");
             }
 
-            Framework.Router.Response response = route.getHandler().apply(request, route);
+            Framework.Router.Response response = route.getHandler().apply(new RuntimeBag(request, route));
 
             eventDispatcher.dispatch(KernelEvents.PRE_SEND_RESPONSE, new ResponseEvent(request, response));
 
