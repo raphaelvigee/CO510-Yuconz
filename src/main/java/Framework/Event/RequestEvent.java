@@ -1,14 +1,14 @@
 package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
-import Framework.Server.Request;
+import org.eclipse.jetty.server.Request;
 
 public class RequestEvent implements EventInterface
 {
-    public Request session;
+    public Request request;
 
-    public RequestEvent(Request session) {
-
-        this.session = session;
+    public RequestEvent(Request request)
+    {
+        this.request = request;
     }
 }

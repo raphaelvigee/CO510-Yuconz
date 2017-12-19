@@ -1,10 +1,10 @@
 package Framework.Router;
 
-import Framework.Server.Request;
+import Framework.Server.RuntimeBag;
 
 public interface RouteParameterResolverInterface<R>
 {
-    boolean supports(String name, String value, Request request);
+    boolean supports(String name, String value, RuntimeBag runtimeBag);
 
-    R resolve(String name, String value, Request request);
+    R resolve(String name, String value, RuntimeBag runtimeBag);
 }
