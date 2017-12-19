@@ -6,7 +6,6 @@ import Framework.Exception.FrameworkException;
 import Framework.Router.Route;
 import Framework.Router.Router;
 import Framework.Server.FrameworkServer;
-import org.eclipse.jetty.server.ServerConnector;
 
 import java.util.ArrayList;
 
@@ -54,9 +53,7 @@ public class Kernel
         }
         System.out.println();
 
-        ServerConnector connector = (ServerConnector) server.getConnectors()[0];
-
-        System.out.println("Listening on http://" + connector.getName() + ":" + connector.getLocalPort());
+        System.out.println("Listening on " + server.getRootURL());
         System.out.println();
     }
 
