@@ -5,9 +5,11 @@ import Framework.EventDispatcher.EventDispatcher;
 import Framework.Exception.FrameworkException;
 import Framework.Router.Route;
 import Framework.Router.Router;
+import Framework.Router.URLGenerator;
 import Framework.Server.FrameworkServer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Kernel
 {
@@ -24,6 +26,7 @@ public class Kernel
 
         container.add(FrameworkServer.class);
         container.add(Router.class);
+        container.add(URLGenerator.class);
         container.add(EventDispatcher.class);
 
         return new Kernel(container);
@@ -45,10 +48,10 @@ public class Kernel
             e.printStackTrace();
         }
 
-        ArrayList<Route> routes = router.getRoutes();
+        HashMap<String, Route> routes = router.getRoutes();
 
         System.out.println(routes.size() + " routes registered:");
-        for (Route route : routes) {
+        for (Route route : routes.values()) {
             System.out.println(route.toString());
         }
         System.out.println();
