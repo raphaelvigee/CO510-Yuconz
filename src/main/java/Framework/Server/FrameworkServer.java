@@ -4,7 +4,6 @@ import Framework.Container.Container;
 import Framework.Container.ContainerAwareInterface;
 import Framework.EventDispatcher.EventDispatcher;
 import Framework.KernelEvents;
-import Framework.Router.Router;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.SessionIdManager;
@@ -57,6 +56,13 @@ public class FrameworkServer extends Server implements ContainerAwareInterface
     public Container getContainer()
     {
         return container;
+    }
+
+    public String getRootURL()
+    {
+        // @TODO: Unfake
+
+        return "http://localhost:4367";
     }
 }
 

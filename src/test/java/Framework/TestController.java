@@ -2,6 +2,7 @@ package Framework;
 
 import Framework.Annotation.Route;
 import Framework.Router.Response;
+import Framework.Router.RouteParameters;
 
 @Route(path = "/prefixed")
 public class TestController extends BaseController
@@ -26,5 +27,11 @@ public class TestController extends BaseController
     public static Response hello4()
     {
         return new Response("hello");
+    }
+
+    @Route(path = "/hello/{name}")
+    public static Response hello4(RouteParameters parameters)
+    {
+        return new Response("hello, "+parameters.get("name"));
     }
 }
