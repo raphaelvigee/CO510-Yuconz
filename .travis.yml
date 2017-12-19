@@ -1,7 +1,11 @@
 language: java
+sudo: false # faster builds
 
 jdk:
   - oraclejdk8
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t b862de0d-da04-49e6-a8ec-acb726cc9f33
 
 notifications:
   email: false
