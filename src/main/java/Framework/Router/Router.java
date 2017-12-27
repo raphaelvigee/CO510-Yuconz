@@ -45,8 +45,6 @@ public class Router extends ContainerAware
 
     public void addController(Class<? extends BaseController> controllerClass) throws FrameworkException
     {
-        EventDispatcher eventDispatcher = getContainer().get(EventDispatcher.class);
-
         Framework.Annotation.Route controllerAnnotation = controllerClass.getAnnotation(Framework.Annotation.Route.class);
 
         String pathPrefix = controllerAnnotation == null ? "" : controllerAnnotation.path();
