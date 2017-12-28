@@ -2,6 +2,7 @@ package Framework;
 
 import Framework.Annotation.Route;
 import Framework.Controller.BaseController;
+import Framework.Exception.UnableToGenerateURLException;
 import Framework.Router.Response;
 import Framework.Router.RouteParameters;
 
@@ -17,6 +18,12 @@ public class TestController extends BaseController
     public Response hello4()
     {
         return new Response("hello");
+    }
+
+    @Route(path = "/redirect", name = "redirect")
+    public Response redirect() throws UnableToGenerateURLException
+    {
+        return redirectToRoute("test_hello_named");
     }
 
     @Route(path = "/hello/{name}")
