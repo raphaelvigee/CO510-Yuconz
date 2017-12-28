@@ -1,18 +1,24 @@
 package Framework.Event;
 
 import Framework.EventDispatcher.EventInterface;
-import Framework.Router.Route;
-import org.eclipse.jetty.server.Request;
+import Framework.Server.RuntimeBag;
 
 public class RouteMatchEvent implements EventInterface
 {
-    public Request request;
+    private RuntimeBag request;
 
-    private Route route;
-
-    public RouteMatchEvent(Request request, Route route)
+    public RouteMatchEvent(RuntimeBag request)
     {
         this.request = request;
-        this.route = route;
+    }
+
+    public RuntimeBag getRequest()
+    {
+        return request;
+    }
+
+    public void setRequest(RuntimeBag request)
+    {
+        this.request = request;
     }
 }
