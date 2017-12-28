@@ -5,6 +5,7 @@ import Framework.Container.ContainerAwareInterface;
 import Framework.Event.RequestEvent;
 import Framework.Event.ResponseEvent;
 import Framework.Event.RouteMatchEvent;
+import Framework.Event.TransformResponseEvent;
 import Framework.EventDispatcher.EventDispatcher;
 import Framework.KernelEvents;
 import Framework.Router.Route;
@@ -56,11 +57,17 @@ public class FrameworkHandler extends AbstractHandler implements ContainerAwareI
 
             route = (Route) route.clone();
 
-            eventDispatcher.dispatch(KernelEvents.POST_MATCH_ROUTE, new RouteMatchEvent(request, route));
+            RuntimeBag runtimeBag = new RuntimeBag(request, route);
 
-            Framework.Router.Response response = route.getHandler().apply(new RuntimeBag(request, route));
+            eventDispatcher.dispatch(KernelEvents.POST_MATCH_ROUTE, new RouteMatchEvent(runtimeBag));
 
-            eventDispatcher.dispatch(KernelEvents.PRE_SEND_RESPONSE, new ResponseEvent(request, response));
+            Object handlerResponse = route.getHandler().apply(runtimeBag);
+
+            eventDispatcher.dispatch(KernelEvents.PRE_TRANSFORM_RESPONSE, new TransformResponseEvent(runtimeBag, handlerResponse));
+
+            Framework.Router.Response response = router.transformResponse(runtimeBag, handlerResponse);
+
+            eventDispatcher.dispatch(KernelEvents.PRE_SEND_RESPONSE, new ResponseEvent(runtimeBag, response));
 
             return response;
         } catch (Exception e) {
