@@ -1,15 +1,14 @@
 package Yuconz.Controller;
 
 import Framework.Annotation.Route;
-import Framework.BaseController;
-import Framework.Router.Response;
+import Framework.Controller.BaseController;
 
 @Route(path = "/prefix")
 public class PrefixedController extends BaseController
 {
     @Route(path = "/hello")
-    public static Response helloWorldAction()
+    public String helloWorldAction()
     {
-        return new Response("Hello, world ! I'm prefixed");
+        return "Hello, world ! I'm prefixed";
     }
 }

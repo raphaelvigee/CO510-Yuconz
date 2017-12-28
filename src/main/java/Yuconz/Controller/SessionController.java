@@ -1,9 +1,7 @@
 package Yuconz.Controller;
 
 import Framework.Annotation.Route;
-import Framework.BaseController;
-import Framework.Container.Container;
-import Framework.Router.Response;
+import Framework.Controller.BaseController;
 import Framework.Router.RouteParameters;
 import org.eclipse.jetty.server.Request;
 
@@ -14,7 +12,7 @@ import java.util.Enumeration;
 public class SessionController extends BaseController
 {
     @Route(path = "/show")
-    public static Response showAction(Container container, Request request)
+    public static String showAction(Request request)
     {
         HttpSession session = request.getSession(true);
 
@@ -28,11 +26,11 @@ public class SessionController extends BaseController
             sb.append("<b>" + name + "</b>:" + session.getAttribute(name) + "<br>");
         }
 
-        return new Response(sb.toString());
+        return sb.toString();
     }
 
     @Route(path = "/set/{key}/{value}")
-    public static Response setAction(Container container, RouteParameters parameters, Request request)
+    public static String setAction(RouteParameters parameters, Request request)
     {
         String key = (String) parameters.get("key");
         String value = (String) parameters.get("value");
@@ -41,6 +39,6 @@ public class SessionController extends BaseController
 
         session.setAttribute(key, value);
 
-        return new Response("OK !");
+        return "OK !";
     }
 }

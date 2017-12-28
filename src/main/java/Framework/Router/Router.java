@@ -1,8 +1,8 @@
 package Framework.Router;
 
-import Framework.BaseController;
 import Framework.Container.Container;
 import Framework.Container.ContainerAware;
+import Framework.Controller.ControllerInterface;
 import Framework.Event.RouteParametersEvent;
 import Framework.EventDispatcher.EventDispatcher;
 import Framework.Exception.FrameworkException;
@@ -10,7 +10,6 @@ import Framework.Exception.InvalidResponseTypeException;
 import Framework.Exception.RouteDuplicateException;
 import Framework.Exception.UnhandledParameterException;
 import Framework.KernelEvents;
-import Framework.Router.ActionParameterResolver.ContainerResolver;
 import Framework.Router.ActionParameterResolver.RequestResolver;
 import Framework.Router.ActionParameterResolver.RouteParameterResolver;
 import Framework.Router.ActionParameterResolver.ServiceResolver;
@@ -41,7 +40,6 @@ public class Router extends ContainerAware
     {
         super(container);
 
-        addActionParameterResolver(new ContainerResolver(container));
         addActionParameterResolver(new RequestResolver());
         addActionParameterResolver(new RouteParameterResolver(container));
         addActionParameterResolver(new ServiceResolver(container));
@@ -49,8 +47,10 @@ public class Router extends ContainerAware
         addResponseTransformer(new PrimitiveTransformer());
     }
 
-    public void addController(Class<? extends BaseController> controllerClass) throws FrameworkException
+    public void addController(Class<? extends ControllerInterface> controllerClass) throws FrameworkException
     {
+        ControllerInterface controller = getContainer().add(controllerClass);
+
         Framework.Annotation.Route controllerAnnotation = controllerClass.getAnnotation(Framework.Annotation.Route.class);
 
         String pathPrefix = controllerAnnotation == null ? "" : controllerAnnotation.path();
@@ -64,11 +64,6 @@ public class Router extends ContainerAware
 
         for (java.lang.reflect.Method method : methods) {
             if (method.isAnnotationPresent(Framework.Annotation.Route.class)) {
-                if (!java.lang.reflect.Modifier.isStatic(method.getModifiers())) {
-                    System.err.println("Method `" + method.getName() + "` is not static, ignoring");
-                    continue;
-                }
-
                 Framework.Annotation.Route routeAnnotation = method.getAnnotation(Framework.Annotation.Route.class);
 
                 final Class<?>[] parameterTypes = method.getParameterTypes();
@@ -84,7 +79,7 @@ public class Router extends ContainerAware
                     Object[] parameters = resolveActionParameters(parameterTypes, runtimeBag);
 
                     try {
-                        return method.invoke(null, parameters);
+                        return method.invoke(controller, parameters);
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                         return null;
