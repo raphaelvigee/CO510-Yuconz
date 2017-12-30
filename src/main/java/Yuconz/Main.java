@@ -3,6 +3,7 @@ package Yuconz;
 import Framework.Container.Container;
 import Framework.Exception.FrameworkException;
 import Framework.Kernel;
+import Framework.Router.RouteParameters;
 import Framework.Router.Router;
 import Yuconz.Controller.AppController;
 import Yuconz.Controller.PrefixedController;
