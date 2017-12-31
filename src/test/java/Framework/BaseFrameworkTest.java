@@ -1,5 +1,7 @@
 package Framework;
 
+import Framework.Controller.ControllerInterface;
+import Framework.Exception.FrameworkException;
 import Framework.Router.Router;
 import Framework.Server.FrameworkServer;
 import org.junit.After;
@@ -10,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-abstract class BaseFrameworkTest
+public abstract class BaseFrameworkTest
 {
     protected Kernel app;
 
@@ -93,11 +95,18 @@ abstract class BaseFrameworkTest
     @Before
     public void setUp() throws Exception
     {
+        setUp(null);
+    }
+
+    public void setUp(Class<? extends ControllerInterface> controllerClass) throws FrameworkException
+    {
         app = Kernel.newInstance();
 
         Router router = app.getContainer().get(Router.class);
 
-        router.addController(TestController.class);
+        if (null != controllerClass) {
+            router.addController(controllerClass);
+        }
 
         app.start();
     }
