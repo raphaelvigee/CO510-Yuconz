@@ -4,6 +4,7 @@ import Framework.Container.Container;
 import Framework.EventDispatcher.EventDispatcher;
 import Framework.Exception.FrameworkException;
 import Framework.Exception.RouteDuplicateException;
+import Framework.Exception.UnhandledParameterException;
 import Framework.Router.*;
 import Framework.Server.Method;
 import Framework.Server.RuntimeBag;
@@ -13,6 +14,7 @@ import org.eclipse.jetty.http.MetaData;
 import org.eclipse.jetty.server.Request;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -201,5 +203,19 @@ public class RouterTest
         }
 
         assertArrayEquals(classes, actualClasses);
+    }
+
+    @Test(expected = UnhandledParameterException.class)
+    public void invalidActionParameterTest() throws Exception
+    {
+        Kernel app = Kernel.newInstance();
+
+        Router router = app.getContainer().get(Router.class);
+
+        Class[] classes = {
+                ArrayList.class
+        };
+
+        router.resolveActionParameters(classes, null);
     }
 }
