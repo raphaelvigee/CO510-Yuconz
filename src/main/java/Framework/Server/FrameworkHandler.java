@@ -8,14 +8,19 @@ import Framework.Event.RouteMatchEvent;
 import Framework.Event.TransformResponseEvent;
 import Framework.EventDispatcher.EventDispatcher;
 import Framework.KernelEvents;
+import Framework.Router.RedirectResponse;
+import Framework.Router.Response;
 import Framework.Router.Route;
 import Framework.Router.Router;
-import Framework.Util.Jetty;
+import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class FrameworkHandler extends AbstractHandler implements ContainerAwareInterface
 {
@@ -34,7 +39,7 @@ public class FrameworkHandler extends AbstractHandler implements ContainerAwareI
 
         org.eclipse.jetty.server.Response servletResponse = (org.eclipse.jetty.server.Response) r;
 
-        Jetty.applyResponse(servletResponse, handle(servletRequest, servletResponse));
+        applyResponse(servletResponse, handle(servletRequest, servletResponse));
 
         baseRequest.setHandled(true);
     }
@@ -76,6 +81,44 @@ public class FrameworkHandler extends AbstractHandler implements ContainerAwareI
             e.printStackTrace();
 
             return new Framework.Router.Response("Internal Error", Status.INTERNAL_ERROR, "text/plain");
+        }
+    }
+
+    public void applyResponse(org.eclipse.jetty.server.Response servletResponse, Response response)
+    {
+        if (response instanceof RedirectResponse) {
+            RedirectResponse redirectResponse = (RedirectResponse) response;
+
+            try {
+                servletResponse.sendRedirect(redirectResponse.getStatus().getRequestStatus(), redirectResponse.getTargetUrl());
+            } catch (IOException e) {
+                e.printStackTrace();
+                Response error = new Response("Internal Error", Status.INTERNAL_ERROR, "text/plain");
+
+                applyResponse(servletResponse, error);
+                return;
+            }
+        }
+
+        for (Map.Entry<String, ArrayList<String>> entry : response.getHeaders().entrySet()) {
+            String name = entry.getKey();
+            ArrayList<String> headers = entry.getValue();
+            for (String values : headers) {
+                servletResponse.addHeader(name, values);
+            }
+        }
+
+        for (HttpCookie cookie : response.getCookies()) {
+            servletResponse.addCookie(cookie);
+        }
+
+        servletResponse.setContentType(response.getMimeType());
+        servletResponse.setStatus(response.getStatus().getRequestStatus());
+
+        try {
+            servletResponse.getWriter().print(response.getContent());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
