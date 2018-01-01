@@ -1,5 +1,8 @@
 package Yuconz;
 
+import Framework.Authentication.AuthenticationManager;
+import Framework.Authentication.DataSource.InMemoryDataSource;
+import Framework.Authentication.User;
 import Framework.Container.Container;
 import Framework.Exception.FrameworkException;
 import Framework.Kernel;
@@ -17,6 +20,14 @@ public class Main
 
         Container c = app.getContainer();
         Router router = c.get(Router.class);
+
+        AuthenticationManager authenticationManager = app.getContainer().add(AuthenticationManager.class);
+
+        InMemoryDataSource<User> memoryDS = new InMemoryDataSource<>();
+        memoryDS.addUser(new User("admin", "password"));
+        memoryDS.addUser(new User("user1", "password"));
+        memoryDS.addUser(new User("user2", "password"));
+        authenticationManager.addDataSource(memoryDS);
 
         router.registerController(AppController.class);
         router.registerController(PrefixedController.class);
