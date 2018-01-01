@@ -1,7 +1,6 @@
 package Framework;
 
 import Framework.Controller.ControllerInterface;
-import Framework.Exception.FrameworkException;
 import Framework.Router.Router;
 import Framework.Server.FrameworkServer;
 import org.junit.After;
@@ -122,7 +121,7 @@ public abstract class BaseFrameworkTest
 
         initAfterRoute();
 
-        app.start();
+        app.boot();
     }
 
     @After

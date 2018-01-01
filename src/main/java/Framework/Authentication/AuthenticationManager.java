@@ -1,18 +1,28 @@
 package Framework.Authentication;
 
+import Framework.Authentication.Annotation.Security;
 import Framework.Container.Container;
 import Framework.Container.ContainerAware;
+import Framework.EventDispatcher.EventDispatcher;
+import Framework.KernelEvents;
 import Framework.Router.ActionParameterResolver.UserInterfaceResolver;
+import Framework.Router.Response;
+import Framework.Router.Route;
 import Framework.Router.Router;
 import Framework.Server.RuntimeBag;
+import Framework.Server.Status;
 import org.eclipse.jetty.server.Request;
 
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AuthenticationManager extends ContainerAware
 {
     ArrayList<UserDataSourceInterface> dataSources = new ArrayList<>();
+
+    HashMap<Route, ArrayList<SecurityValidator>> securedRoutes = new HashMap<>();
 
     public AuthenticationManager(Container container)
     {
@@ -22,6 +32,57 @@ public class AuthenticationManager extends ContainerAware
     public void initialize()
     {
         getContainer().get(Router.class).addActionParameterResolver(new UserInterfaceResolver(getContainer()));
+
+        EventDispatcher eventDispatcher = getContainer().get(EventDispatcher.class);
+        AuthenticationManager authenticationManager = getContainer().get(AuthenticationManager.class);
+
+        eventDispatcher.register(KernelEvents.ROUTE_REGISTER, (et, routeRegisterEvent) -> {
+            Method method = routeRegisterEvent.getMethod();
+
+            Security annotation = method.getAnnotation(Security.class);
+
+            if (null == annotation) {
+                return;
+            }
+
+            Class<? extends SecurityValidator>[] validatorClasses = annotation.value();
+
+            ArrayList<SecurityValidator> validatorInstances = new ArrayList<>();
+
+            for (Class<? extends SecurityValidator> validatorClass : validatorClasses) {
+                SecurityValidator validator;
+                try {
+                    validator = validatorClass.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                    continue;
+                }
+
+                validatorInstances.add(validator);
+            }
+
+            securedRoutes.put(routeRegisterEvent.getRoute(), validatorInstances);
+        });
+
+        eventDispatcher.register(KernelEvents.POST_MATCH_ROUTE, (et1, routeMatchEvent) -> {
+            Route route = routeMatchEvent.getRuntimeBag().getRoute();
+
+            if (securedRoutes.containsKey(route)) {
+                ArrayList<SecurityValidator> validators = securedRoutes.get(route);
+
+                for (SecurityValidator validator : validators) {
+                    RuntimeBag runtimeBag = routeMatchEvent.getRuntimeBag();
+                    UserInterface user = authenticationManager.getUser(runtimeBag);
+
+                    if (!validator.test(getContainer(), user, runtimeBag)) {
+                        route.setHandler(rb -> {
+                            return new Response("Forbidden", Status.FORBIDDEN, "text/html");
+                        });
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     public UserInterface authenticate(Request request, String username, String password) throws AuthenticationException

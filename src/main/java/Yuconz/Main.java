@@ -37,6 +37,6 @@ public class Main
 
         router.addRouteParameterResolver(new CapitalizerResolver());
 
-        app.start();
+        app.boot();
     }
 }
