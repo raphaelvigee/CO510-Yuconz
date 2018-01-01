@@ -8,6 +8,7 @@ import Framework.Exception.FrameworkException;
 import Framework.Kernel;
 import Framework.Router.Router;
 import Yuconz.Controller.AppController;
+import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.PrefixedController;
 import Yuconz.Controller.SessionController;
 import Yuconz.RouteParameterResolver.CapitalizerResolver;
@@ -32,6 +33,7 @@ public class Main
         router.registerController(AppController.class);
         router.registerController(PrefixedController.class);
         router.registerController(SessionController.class);
+        router.registerController(AuthenticationController.class);
 
         router.addRouteParameterResolver(new CapitalizerResolver());
 
