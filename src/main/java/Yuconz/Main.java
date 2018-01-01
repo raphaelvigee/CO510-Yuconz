@@ -3,7 +3,6 @@ package Yuconz;
 import Framework.Container.Container;
 import Framework.Exception.FrameworkException;
 import Framework.Kernel;
-import Framework.Router.RouteParameters;
 import Framework.Router.Router;
 import Yuconz.Controller.AppController;
 import Yuconz.Controller.PrefixedController;
@@ -19,9 +18,9 @@ public class Main
         Container c = app.getContainer();
         Router router = c.get(Router.class);
 
-        router.addController(AppController.class);
-        router.addController(PrefixedController.class);
-        router.addController(SessionController.class);
+        router.registerController(AppController.class);
+        router.registerController(PrefixedController.class);
+        router.registerController(SessionController.class);
 
         router.addRouteParameterResolver(new CapitalizerResolver());
 
