@@ -4,7 +4,7 @@ import Framework.Router.Response;
 import Framework.Router.ResponseTransformerInterface;
 import Framework.Server.RuntimeBag;
 
-public class PrimitiveTransformer implements ResponseTransformerInterface
+public class PrimitiveTransformer implements ResponseTransformerInterface<Object, Response>
 {
     @Override
     public boolean supports(RuntimeBag runtimeBag, Object response)
