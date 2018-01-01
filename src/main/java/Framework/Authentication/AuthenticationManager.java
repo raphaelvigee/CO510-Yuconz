@@ -5,9 +5,9 @@ import Framework.Authentication.Voter.VoterInterface;
 import Framework.Container.Container;
 import Framework.Container.ContainerAware;
 import Framework.EventDispatcher.EventDispatcher;
+import Framework.Exception.HttpException;
 import Framework.KernelEvents;
 import Framework.Router.ActionParameterResolver.UserInterfaceResolver;
-import Framework.Router.Response;
 import Framework.Router.Route;
 import Framework.Router.Router;
 import Framework.Server.RuntimeBag;
@@ -68,7 +68,7 @@ public class AuthenticationManager extends ContainerAware
             Route route = routeMatchEvent.getRuntimeBag().getRoute();
             if (!vote(route, routeMatchEvent.getRuntimeBag())) {
                 route.setHandler(rb -> {
-                    return new Response("Forbidden", Status.FORBIDDEN, "text/html");
+                    throw new HttpException(Status.FORBIDDEN);
                 });
             }
         });
