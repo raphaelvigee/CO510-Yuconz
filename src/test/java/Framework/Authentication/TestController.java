@@ -3,7 +3,7 @@ package Framework.Authentication;
 import Framework.Annotation.Route;
 import Framework.Authentication.Annotation.Security;
 import Framework.Authentication.DataSource.InMemoryDataSource;
-import Framework.Authentication.Validator.LoggedInValidator;
+import Framework.Authentication.Voter.LoggedIn;
 import Framework.Controller.BaseController;
 import org.eclipse.jetty.server.Request;
 
@@ -25,7 +25,7 @@ public class TestController extends BaseController
     }
 
     @Route(path = "/secured")
-    @Security({LoggedInValidator.class})
+    @Security({LoggedIn.class})
     public String secured()
     {
         return "Secured";

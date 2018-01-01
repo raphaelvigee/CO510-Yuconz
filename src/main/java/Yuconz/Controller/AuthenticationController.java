@@ -5,7 +5,7 @@ import Framework.Authentication.Annotation.Security;
 import Framework.Authentication.AuthenticationException;
 import Framework.Authentication.AuthenticationManager;
 import Framework.Authentication.User;
-import Framework.Authentication.Validator.LoggedInValidator;
+import Framework.Authentication.Voter.LoggedIn;
 import Framework.Controller.BaseController;
 import org.eclipse.jetty.server.Request;
 
@@ -23,11 +23,11 @@ public class AuthenticationController extends BaseController
     @Route(path = "/user")
     public String user(User user)
     {
-        return user.getUsername();
+        return user != null ? user.getUsername() : "Anonymous";
     }
 
     @Route(path = "/secured")
-    @Security({LoggedInValidator.class})
+    @Security({LoggedIn.class})
     public String secured()
     {
         return "Secured";
