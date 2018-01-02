@@ -1,7 +1,7 @@
 package Yuconz.Controller;
 
-import Framework.Annotation.Route;
-import Framework.Controller.BaseController;
+import com.sallyf.sallyf.Annotation.Route;
+import com.sallyf.sallyf.Controller.BaseController;
 
 @Route(path = "/prefix")
 public class PrefixedController extends BaseController
