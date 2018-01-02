@@ -1,9 +1,9 @@
 package Yuconz.Controller;
 
-import Framework.Annotation.Route;
-import Framework.Controller.BaseController;
-import Framework.Router.Response;
-import Framework.Router.RouteParameters;
+import com.sallyf.sallyf.Annotation.Route;
+import com.sallyf.sallyf.Controller.BaseController;
+import com.sallyf.sallyf.Router.Response;
+import com.sallyf.sallyf.Router.RouteParameters;
 
 public class AppController extends BaseController
 {

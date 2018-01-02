@@ -1,7 +1,7 @@
 package Yuconz.RouteParameterResolver;
 
-import Framework.Router.RouteParameterResolverInterface;
-import Framework.Server.RuntimeBag;
+import com.sallyf.sallyf.Router.RouteParameterResolverInterface;
+import com.sallyf.sallyf.Server.RuntimeBag;
 
 import java.util.Objects;
 

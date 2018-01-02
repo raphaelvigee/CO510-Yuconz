@@ -1,17 +1,17 @@
 package Yuconz;
 
-import Framework.Authentication.AuthenticationManager;
-import Framework.Authentication.DataSource.InMemoryDataSource;
-import Framework.Authentication.User;
-import Framework.Container.Container;
-import Framework.Exception.FrameworkException;
-import Framework.Kernel;
-import Framework.Router.Router;
 import Yuconz.Controller.AppController;
 import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.PrefixedController;
 import Yuconz.Controller.SessionController;
 import Yuconz.RouteParameterResolver.CapitalizerResolver;
+import com.sallyf.sallyf.Authentication.AuthenticationManager;
+import com.sallyf.sallyf.Authentication.DataSource.InMemoryDataSource;
+import com.sallyf.sallyf.Authentication.User;
+import com.sallyf.sallyf.Container.Container;
+import com.sallyf.sallyf.Exception.FrameworkException;
+import com.sallyf.sallyf.Kernel;
+import com.sallyf.sallyf.Router.Router;
 
 public class Main
 {
