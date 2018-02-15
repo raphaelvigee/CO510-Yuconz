@@ -2,10 +2,8 @@ package Yuconz.Controller;
 
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Authentication.Annotation.Security;
-import com.sallyf.sallyf.Authentication.AuthenticationException;
 import com.sallyf.sallyf.Authentication.AuthenticationManager;
 import com.sallyf.sallyf.Authentication.User;
-import com.sallyf.sallyf.Authentication.Voter.LoggedIn;
 import com.sallyf.sallyf.Controller.BaseController;
 import org.eclipse.jetty.server.Request;
 
@@ -13,7 +11,7 @@ import org.eclipse.jetty.server.Request;
 public class AuthenticationController extends BaseController
 {
     @Route(path = "/authenticate")
-    public String authenticate(Request request, AuthenticationManager authenticationManager) throws AuthenticationException
+    public String authenticate(Request request, AuthenticationManager authenticationManager)
     {
         authenticationManager.authenticate(request, "admin", "password");
 
@@ -27,7 +25,7 @@ public class AuthenticationController extends BaseController
     }
 
     @Route(path = "/secured")
-    @Security({LoggedIn.class})
+    @Security("is_granted($, 'authenticated')")
     public String secured()
     {
         return "Secured";
