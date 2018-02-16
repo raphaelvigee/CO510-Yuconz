@@ -1,33 +1,24 @@
 package Yuconz.Controller;
 
 import com.sallyf.sallyf.Annotation.Route;
-import com.sallyf.sallyf.Authentication.Annotation.Security;
-import com.sallyf.sallyf.Authentication.AuthenticationManager;
-import com.sallyf.sallyf.Authentication.User;
 import com.sallyf.sallyf.Controller.BaseController;
-import org.eclipse.jetty.server.Request;
+import com.sallyf.sallyf.FreeMarker.FreeMarkerResponse;
+import com.sallyf.sallyf.Server.Method;
+
+import java.util.HashMap;
 
 @Route(path = "/auth")
 public class AuthenticationController extends BaseController
 {
-    @Route(path = "/authenticate")
-    public String authenticate(Request request, AuthenticationManager authenticationManager)
+    @Route(path = "/login", method = Method.POST)
+    public FreeMarkerResponse loginPost()
     {
-        authenticationManager.authenticate(request, "admin", "password");
-
-        return "OK";
+        return login();
     }
 
-    @Route(path = "/user")
-    public String user(User user)
+    @Route(path = "/login")
+    public FreeMarkerResponse login()
     {
-        return user != null ? user.getUsername() : "Anonymous";
-    }
-
-    @Route(path = "/secured")
-    @Security("is_granted($, 'authenticated')")
-    public String secured()
-    {
-        return "Secured";
+        return new FreeMarkerResponse("login.ftl", new HashMap<>());
     }
 }

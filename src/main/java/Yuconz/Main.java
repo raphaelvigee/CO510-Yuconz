@@ -2,9 +2,7 @@ package Yuconz;
 
 import Yuconz.Controller.AppController;
 import Yuconz.Controller.AuthenticationController;
-import Yuconz.Controller.PrefixedController;
-import Yuconz.Controller.SessionController;
-import Yuconz.RouteParameterResolver.CapitalizerResolver;
+import Yuconz.Controller.StaticController;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import com.sallyf.sallyf.AccessDecisionManager.AccessDecisionManager;
 import com.sallyf.sallyf.Container.Container;
@@ -32,11 +30,8 @@ public class Main
         Router router = container.get(Router.class);
 
         router.registerController(AppController.class);
-        router.registerController(PrefixedController.class);
-        router.registerController(SessionController.class);
+        router.registerController(StaticController.class);
         router.registerController(AuthenticationController.class);
-
-        router.addRouteParameterResolver(new CapitalizerResolver());
 
         app.start();
     }
