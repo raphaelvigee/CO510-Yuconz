@@ -13,16 +13,16 @@
     <form method="post">
         <div class="inputSection padded">
             <h3>Email Address</h3>
-            <input type="text" placeholder="example@yuconz.co.uk">
+            <input type="text" placeholder="example@yuconz.co.uk" name="email">
         </div>
         <div class="inputSection padded">
             <h3>Password</h3>
-            <input type="password" placeholder="Password">
+            <input type="password" placeholder="Password" name="password">
         </div>
         <div class="inputSection padded">
             <h3>Role</h3>
             <div class="selectWrapper">
-                <select>
+                <select name="role">
                     <option>Employee</option>
                     <option>Manager</option>
                     <option>Director</option>
