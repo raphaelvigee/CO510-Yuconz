@@ -1,0 +1,32 @@
+package Yuconz.Manager;
+
+import Yuconz.Voter.YuconzAuthenticationVoter;
+import com.sallyf.sallyf.Authentication.AuthenticationManager;
+import com.sallyf.sallyf.Authentication.Configuration;
+import com.sallyf.sallyf.Authentication.Voter.AuthenticationVoter;
+import com.sallyf.sallyf.Container.Container;
+import com.sallyf.sallyf.Container.ServiceDefinition;
+import com.sallyf.sallyf.EventDispatcher.EventDispatcher;
+import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
+import com.sallyf.sallyf.Router.Router;
+
+public class YuconzAuthenticationManager extends AuthenticationManager
+{
+    public YuconzAuthenticationManager(Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage)
+    {
+        super(new Configuration(), router, eventDispatcher, expressionLanguage);
+    }
+
+    @Override
+    public void initialize(Container container)
+    {
+        super.initialize(container);
+
+        container.add(new ServiceDefinition(YuconzAuthenticationVoter.class)).addTag("authentication.voter");
+
+        boolean b = container.getServiceDefinitions()
+                .entrySet()
+                .removeIf(pair -> pair.getValue().getClass().equals(AuthenticationVoter.class));
+    }
+
+}

@@ -1,13 +1,12 @@
 package Yuconz;
 
-import Yuconz.Configuration.AuthenticationConfiguration;
 import Yuconz.Controller.AppController;
 import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.PrefixedController;
 import Yuconz.Controller.SessionController;
 import Yuconz.RouteParameterResolver.CapitalizerResolver;
+import Yuconz.Manager.YuconzAuthenticationManager;
 import com.sallyf.sallyf.AccessDecisionManager.AccessDecisionManager;
-import com.sallyf.sallyf.Authentication.AuthenticationManager;
 import com.sallyf.sallyf.Container.Container;
 import com.sallyf.sallyf.Container.ServiceDefinition;
 import com.sallyf.sallyf.Exception.FrameworkException;
@@ -23,7 +22,7 @@ public class Main
         Kernel app = Kernel.newInstance();
         Container container = app.getContainer();
 
-        container.add(new ServiceDefinition<>(AuthenticationManager.class, new AuthenticationConfiguration()));
+        container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(ExpressionLanguage.class));
         container.add(new ServiceDefinition<>(AccessDecisionManager.class));
         container.add(new ServiceDefinition<>(FreeMarker.class));
