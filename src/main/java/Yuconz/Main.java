@@ -2,6 +2,7 @@ package Yuconz;
 
 import Yuconz.Controller.AppController;
 import Yuconz.Controller.AuthenticationController;
+import Yuconz.Controller.DashboardController;
 import Yuconz.Controller.StaticController;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Resolver.RuntimeBagResolver;
@@ -33,6 +34,8 @@ public class Main
         router.registerController(AppController.class);
         router.registerController(StaticController.class);
         router.registerController(AuthenticationController.class);
+
+        router.registerController(DashboardController.class);
 
         router.addActionParameterResolver(new RuntimeBagResolver());
 

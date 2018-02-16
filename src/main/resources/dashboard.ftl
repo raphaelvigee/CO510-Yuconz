@@ -32,6 +32,9 @@
         <div class="option">
             <a href="#">Employment History</a>
         </div>
+        <div class="option">
+            <a href="/auth/logout">Logout</a>
+        </div>
 
 
         <div class="heading">

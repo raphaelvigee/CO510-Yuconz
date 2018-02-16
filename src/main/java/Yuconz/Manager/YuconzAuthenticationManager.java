@@ -35,6 +35,8 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     public UserInterface authenticate(Request request, String username, String password, String role)
     {
+        // if username && password && role in database
+
         User user = new User(username, password, Role.valueOf(role.toUpperCase()));
 
         request.getSession(true).setAttribute("user", user);
