@@ -12,15 +12,19 @@
 }
 
 #nav .account {
-	color:#fff;
+	position:relative;
 	float:right;
 	margin-right:20px;
+	color:#fff;
 }
 #nav .account .accountName {
 	line-height:50px;
 	float:left;
-	
-	
+}
+#nav .account .accountName:after {
+	content: "\25be";
+	opacity:.6;
+	margin-left:8px;
 }
 #nav .account .accountIcon {
 	width:30px;
@@ -29,7 +33,7 @@
 	margin-top:10px;
 	background:#fff;
 	border-radius:15px;
-	margin-left:15px;
+	margin-right:10px;
 }
 #nav .account .accountIcon:before {
 	position:relative;
@@ -37,20 +41,43 @@
 	font-family: 'Font Awesome 5 Free';
 	color:var(--tintColor);
 	font-weight:600;
-	font-size:18px;
-	left:6px;
-	top:5px;
+	font-size:16px;
+	left:7px;
+	top:4px;
+}
+#nav .account .dropdown {
+	width:100%;
+	background:#5F415C;
+	position:absolute;
+	top:50px;
+	display:none;
+}
+#nav .account:hover .dropdown {
+	display:block;
+}
+#nav .account .dropdown > div {
+	width:100%;
+	padding:5px 5px;
+}
+#nav .account .dropdown > div:hover {
+	background:rgba(255,255,255,0.1);
+}
+#nav .account .dropdown > div a {
+	display:block;
+	color:#fff;
+	width:100%;
+	height:100%;
 }
 
 #sidePanel {
-	
+
 	position:fixed;
 	width:200px;
 	height:100vh;
 	top:50px;
-	
+
 	background: #eee;
-	
+
 }
 
 #sidePanel .heading {
@@ -88,14 +115,14 @@
 
 
 #mainContent {
-	
-	
+
+
 	min-height:100vh;
 	margin-left:200px;
-	
-	
-	
-	
+
+
+
+
 }
 
 
@@ -106,13 +133,14 @@
 	margin-left:15px;
 }
 
- .branding h1 {
+.branding h1 {
 	font-size:26px;
 	font-weight:400;
-	
+
 }
- .branding h2 {
+.branding h2 {
 	margin-top:-8px;
 	font-size:14px;
 	font-weight:300;
 }
+
