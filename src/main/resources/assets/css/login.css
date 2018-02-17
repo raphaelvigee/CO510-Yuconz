@@ -47,6 +47,14 @@
     width:100%;
     margin-top:10px;
 }
+.loginErrors {
+    float:left;
+    width:100%;
+    margin-top:15px;
+}
+.loginErrors span {
+    color:#f36;
+}
 
 #loginView .inputSection {
     margin:0px 0px;
