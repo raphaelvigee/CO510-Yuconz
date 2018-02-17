@@ -30,7 +30,7 @@ public class AuthenticationController extends BaseController
     @Route(path = "/login")
     public JTwigResponse login()
     {
-        return new JTwigResponse("login.twig");
+        return new JTwigResponse("views/login.twig");
     }
 
     @Route(path = "/logout")
