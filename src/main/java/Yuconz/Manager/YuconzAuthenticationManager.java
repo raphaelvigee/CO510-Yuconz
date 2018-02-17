@@ -1,7 +1,8 @@
 package Yuconz.Manager;
 
+import Yuconz.Entity.User;
 import Yuconz.Model.Role;
-import Yuconz.Model.User;
+import Yuconz.Service.Hibernate;
 import Yuconz.Voter.YuconzAuthenticationVoter;
 import com.sallyf.sallyf.Authentication.AuthenticationManager;
 import com.sallyf.sallyf.Authentication.Configuration;
@@ -13,12 +14,22 @@ import com.sallyf.sallyf.EventDispatcher.EventDispatcher;
 import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
 import com.sallyf.sallyf.Router.Router;
 import org.eclipse.jetty.server.Request;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class YuconzAuthenticationManager extends AuthenticationManager
 {
-    public YuconzAuthenticationManager(Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage)
+    private final Hibernate hibernate;
+
+    public YuconzAuthenticationManager(Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate)
     {
         super(new Configuration(), router, eventDispatcher, expressionLanguage);
+        this.hibernate = hibernate;
     }
 
     @Override
@@ -33,11 +44,36 @@ public class YuconzAuthenticationManager extends AuthenticationManager
                 .removeIf(pair -> pair.getValue().getClass().equals(AuthenticationVoter.class));
     }
 
-    public UserInterface authenticate(Request request, String username, String password, String role)
+    public UserInterface authenticate(Request request, String username, String password, String roleStr)
     {
-        // if username && password && role in database
+        Role role = Role.valueOf(roleStr.toUpperCase());
 
-        User user = new User(username, password, Role.valueOf(role.toUpperCase()));
+        Session session = hibernate.getCurrentSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = builder.createQuery(User.class);
+
+        Root<User> root = query.from(User.class);
+        query.select(root)
+                .where(
+                        builder.equal(root.get("username"), username),
+                        builder.equal(root.get("password"), password)
+                );
+
+        Query<User> q = session.createQuery(query);
+
+        List<User> users = q.getResultList();
+
+        User user;
+        if (users.isEmpty()) {
+            user = null;
+        } else {
+            user = users.get(0);
+
+            if (!user.getRoles().contains(role)) {
+                user = null;
+            }
+        }
 
         request.getSession(true).setAttribute("user", user);
 

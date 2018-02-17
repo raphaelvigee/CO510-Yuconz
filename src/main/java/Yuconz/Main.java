@@ -5,6 +5,7 @@ import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.DashboardController;
 import Yuconz.Controller.StaticController;
 import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.Service.Hibernate;
 import com.sallyf.sallyf.Container.Container;
 import com.sallyf.sallyf.Container.PlainReference;
 import com.sallyf.sallyf.Container.ServiceDefinition;
@@ -21,6 +22,7 @@ public class Main
         Container container = app.getContainer();
 
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
+        container.add(new ServiceDefinition<>(Hibernate.class));
 
         app.boot();
 
