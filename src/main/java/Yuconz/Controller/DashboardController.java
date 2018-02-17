@@ -3,18 +3,15 @@ package Yuconz.Controller;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Authentication.Annotation.Security;
 import com.sallyf.sallyf.Controller.BaseController;
-import com.sallyf.sallyf.FreeMarker.FreeMarkerResponse;
-
-import java.util.HashMap;
+import com.sallyf.sallyf.JTwig.JTwigResponse;
 
 @Route(path = "/dashboard")
 public class DashboardController extends BaseController
 {
-
     @Route(path = "")
     @Security("is_granted($, 'authenticated')")
-    public FreeMarkerResponse index()
+    public JTwigResponse index()
     {
-        return new FreeMarkerResponse("dashboard.ftl", new HashMap<>());
+        return new JTwigResponse("dashboard.twig");
     }
 }

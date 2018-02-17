@@ -3,12 +3,10 @@ package Yuconz.Controller;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Controller.BaseController;
-import com.sallyf.sallyf.FreeMarker.FreeMarkerResponse;
+import com.sallyf.sallyf.JTwig.JTwigResponse;
 import com.sallyf.sallyf.Router.Response;
 import com.sallyf.sallyf.Server.Method;
 import org.eclipse.jetty.server.Request;
-
-import java.util.HashMap;
 
 @Route(path = "/auth")
 public class AuthenticationController extends BaseController
@@ -30,9 +28,9 @@ public class AuthenticationController extends BaseController
     }
 
     @Route(path = "/login")
-    public FreeMarkerResponse login()
+    public JTwigResponse login()
     {
-        return new FreeMarkerResponse("login.ftl", new HashMap<>());
+        return new JTwigResponse("login.twig");
     }
 
     @Route(path = "/logout")

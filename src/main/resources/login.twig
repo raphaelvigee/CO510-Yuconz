@@ -1,7 +1,6 @@
-<#include "base.ftl">
+{% include 'base.twig' %}
 
-<#macro page_body>
-
+{% block page_body %}
 <div id="loginView">
 
     <div id="loginHeader">
@@ -43,11 +42,8 @@
     </form>
 
 </div>
+{% endblock %}
 
-</#macro>
-
-<#macro page_head>
+{% block page_head %}
 <link rel="stylesheet" rel="text/css" href="/assets/css/login.css">
-</#macro>
-
-<@display_page/>
+{% endblock %}

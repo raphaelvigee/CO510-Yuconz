@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.github.sallyf</groupId>
             <artifactId>sallyf</artifactId>
-            <version>8693fda</version>
+            <version>6d92057</version>
         </dependency>
     </dependencies>
 

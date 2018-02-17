@@ -1,6 +1,6 @@
-<#include 'base.ftl'>
+{% include 'base.twig' %}
 
-<#macro page_body>
+{% block page_body %}
 <div id="dashboard">
 
     <div id="nav">
@@ -57,11 +57,9 @@
 
     </div>
 </div>
+{% endblock %}
 
-</#macro>
-
-<#macro page_head>
+{% block page_head %}
 <link rel="stylesheet" rel="text/css" href="/assets/css/dashboard.css">
-</#macro>
+{% endblock %}
 
-<@display_page/>
