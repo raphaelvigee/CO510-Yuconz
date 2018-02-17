@@ -7,10 +7,10 @@ import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.JTwig.JTwigResponse;
 
 @Route(path = "/dashboard")
+@Security(value = "is_granted($, 'authenticated')", handler = LoginRedirectHandler.class)
 public class DashboardController extends BaseController
 {
     @Route(path = "")
-    @Security(value = "is_granted($, 'authenticated')", handler = LoginRedirectHandler.class)
     public JTwigResponse index()
     {
         return new JTwigResponse("views/dashboard.twig");
