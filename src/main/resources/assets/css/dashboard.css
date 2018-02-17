@@ -1,0 +1,146 @@
+#nav {
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	height:50px;
+	background:var(--tintColor);
+}
+
+#nav > div {
+	float:left;
+}
+
+#nav .account {
+	position:relative;
+	float:right;
+	margin-right:20px;
+	color:#fff;
+}
+#nav .account .accountName {
+	line-height:50px;
+	float:left;
+}
+#nav .account .accountName:after {
+	content: "\25be";
+	opacity:.6;
+	margin-left:8px;
+}
+#nav .account .accountIcon {
+	width:30px;
+	height:30px;
+	float:left;
+	margin-top:10px;
+	background:#fff;
+	border-radius:15px;
+	margin-right:10px;
+}
+#nav .account .accountIcon:before {
+	position:relative;
+	content: "\f007";
+	font-family: 'Font Awesome 5 Free';
+	color:var(--tintColor);
+	font-weight:600;
+	font-size:16px;
+	left:7px;
+	top:4px;
+}
+#nav .account .dropdown {
+	width:100%;
+	background:#5F415C;
+	position:absolute;
+	top:50px;
+	display:none;
+}
+#nav .account:hover .dropdown {
+	display:block;
+}
+#nav .account .dropdown > div {
+	width:100%;
+	padding:5px 5px;
+}
+#nav .account .dropdown > div:hover {
+	background:rgba(255,255,255,0.1);
+}
+#nav .account .dropdown > div a {
+	display:block;
+	color:#fff;
+	width:100%;
+	height:100%;
+}
+
+#sidePanel {
+
+	position:fixed;
+	width:200px;
+	height:100vh;
+	top:50px;
+
+	background: #eee;
+
+}
+
+#sidePanel .heading {
+	font-weight:800;
+	font-size:12px;
+	text-transform: uppercase;
+	color:#999;
+	margin-top:20px;
+	padding-left:10px;
+	box-sizing: border-box;
+}
+#sidePanel .option {
+	font-weight:600;
+	font-size:14px;
+	width:100%;
+	text-transform: uppercase;
+	color:#999;
+	margin-top:5px;
+	padding: 5px 10px 5px 10px;
+	box-sizing: border-box;
+}
+#sidePanel .option a {
+	color:#222;
+}
+
+#sidePanel .option.selected {
+	background: #ddd;
+	border-right:solid 2px #aaa;
+}
+#sidePanel .option:hover {
+	background: #ddd;
+}
+
+
+
+
+#mainContent {
+
+
+	min-height:100vh;
+	margin-left:200px;
+
+
+
+
+}
+
+
+
+.branding {
+	color: #fff;
+	margin-top:0px;
+	margin-left:15px;
+}
+
+.branding h1 {
+	font-size:26px;
+	font-weight:400;
+
+}
+.branding h2 {
+	margin-top:-8px;
+	font-size:14px;
+	font-weight:300;
+}
+

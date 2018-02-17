@@ -1,0 +1,70 @@
+#loginView {
+    width:280px;
+    margin:auto;
+    top:100px;
+    position: relative;
+}
+#loginFooter {
+    width:280px;
+    margin:auto;
+    text-align:center;
+    color: var(--textWeakColor);
+    font-style: italic;
+    font-size:13px;
+    margin-top:20px;
+}
+
+#loginHeader {
+    clear:both;
+    overflow:auto;
+}
+
+#loginHeaderIcon {
+    float:left;
+    width:30px;
+    height:30px;
+    background: var(--tintColor);
+}
+#loginHeaderIcon:before {
+    position:relative;
+    content: "\f023";
+    font-family: 'Font Awesome 5 Free';
+    color:var(--backgroundColor);
+    font-weight:900;
+    font-size:18px;
+    left:7px;
+    top:5px;
+}
+#loginHeaderTitle {
+    float:left;
+    margin-left:10px;
+    color:var(--tintColor);
+    font-weight:600;
+    font-size:20px;
+}
+#loginHeaderSubtitle {
+    float:left;
+    width:100%;
+    margin-top:10px;
+}
+
+#loginView .inputSection {
+    margin:0px 0px;
+}
+#loginView .inputSection.padded {
+    margin:20px 0px;
+}
+#loginView .inputSection > h3 {
+    font-weight:600;
+    font-size:12px;
+    color: var(--textWeakColor);
+    margin:0px 0px 5px 0px;
+    text-transform: uppercase;
+}
+
+#loginView .detailSection {
+    text-align: center;
+    margin-top:10px;
+    font-size:14px;
+}
+

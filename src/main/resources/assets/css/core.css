@@ -1,0 +1,123 @@
+:root {
+    --backgroundColor: #fff;
+    --backgroundTintColor: #ccc;
+
+    --textColor: #333;
+    --textStrongColor: #111;
+    --textWeakColor: #555;
+
+    --tintColor: #c4ff00;
+    --tintColor: #c4c4ff;
+    --tintColor: #00ffc4;
+    --tintColor: #00c4ff;
+    --tintColor: #c4ff00;
+    --tintColor:#502F4C;
+}
+
+.dark:root {
+    --backgroundColor: #333;
+    --backgroundTintColor: #444;
+
+    --textColor: #ccc;
+    --textStrongColor: #fff;
+    --textWeakColor: #eee;
+}
+
+html, body {
+    height:100% !important;
+}
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight:300;
+    margin:0px;
+    background: var(--backgroundColor);
+    color: var(--textColor);
+}
+
+* {
+    margin:0px;
+    border:0px;
+}
+
+
+
+a {
+    text-decoration: none;
+    color: var(--tintColor);
+}
+a:hover {
+    opacity:0.95;
+}
+
+
+
+input[type=text], input[type=password] {
+    width:100%;
+    border:solid 1px var(--backgroundTintColor);
+    outline:none;
+    box-sizing:border-box;
+    font-size:15px;
+    margin:0px;
+    padding:5px 12px;
+    transition:0.1s;
+    background: var(--backgroundColor);
+    color: var(--textColour);
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 0px;
+    width:100%;
+    border:solid 1px var(--backgroundTintColor);
+    outline:none;
+    box-sizing:border-box;
+    font-size:15px;
+    margin:0px;
+    padding:5px 12px;
+    transition:0.1s;
+    background: transparent;
+    color: var(--textColour);
+    cursor:pointer;
+}
+.selectWrapper {
+    position:relative;
+}
+.selectWrapper:after {
+    position:absolute;
+    content: "\25be";
+    color:#999;
+    cursor: pointer;
+    font-weight:400;
+    font-size:18px;
+    box-sizing: border-box;
+    top:3px;
+    right:15px;
+    z-index:-1;
+}
+
+input[type=text]:focus, input[type=password]:focus  {
+    border:solid 1px var(--tintColor);
+}
+
+input[type=submit] {
+    appearance:none;
+    background: red;
+    border:none;
+    background: var(--tintColor);
+    color: var(--backgroundColor);
+    font-size:16px;
+    padding:5px 0px;
+    width:100%;
+    cursor: pointer;
+    margin:0px;
+}
+
+input[type=submit]:hover {
+    opacity:0.90;
+}
+
+input[type=submit]:active {
+    opacity: 1.0;
+}
+
