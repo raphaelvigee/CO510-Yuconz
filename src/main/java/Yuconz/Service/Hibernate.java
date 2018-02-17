@@ -77,11 +77,13 @@ public class Hibernate implements ServiceInterface
             director.setPassword("123");
             director.addRole(Role.DIRECTOR);
 
-            session.save(employee);
-            session.save(manager);
-            session.save(director);
+            Transaction transaction = session.beginTransaction();
 
-            session.flush();
+            session.persist(employee);
+            session.persist(manager);
+            session.persist(director);
+
+            transaction.commit();
         }
     }
 }
