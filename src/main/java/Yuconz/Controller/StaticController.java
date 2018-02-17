@@ -2,14 +2,17 @@ package Yuconz.Controller;
 
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Controller.BaseController;
+import com.sallyf.sallyf.Exception.FrameworkException;
 import com.sallyf.sallyf.Router.Response;
 import com.sallyf.sallyf.Router.RouteParameters;
 import com.sallyf.sallyf.Server.Status;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.util.Scanner;
+import java.nio.file.Paths;
 
 @Route(path = "/assets")
 public class StaticController extends BaseController
@@ -22,13 +25,13 @@ public class StaticController extends BaseController
         String path = "assets/" + folder + "/" + name;
 
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(path).getFile());
+        InputStream stream = classLoader.getResourceAsStream(path);
 
-        String content = getFile(file);
+        String content = getContent(stream);
 
         String mime;
         try {
-            mime = Files.probeContentType(file.toPath());
+            mime = Files.probeContentType(Paths.get(path));
         } catch (IOException e) {
             mime = "text/plain";
         }
@@ -36,21 +39,19 @@ public class StaticController extends BaseController
         return new Response(content, Status.OK, mime);
     }
 
-    private String getFile(File file)
+    private String getContent(InputStream stream)
     {
         StringBuilder result = new StringBuilder("");
 
-        try (Scanner scanner = new Scanner(file)) {
-
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while ((line = reader.readLine()) != null) {
                 result.append(line).append("\n");
             }
-
-            scanner.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            reader.close();
+        } catch (Exception e) {
+            throw new FrameworkException(e);
         }
 
         return result.toString();
