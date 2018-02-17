@@ -8,7 +8,7 @@ import com.sallyf.sallyf.Server.Status;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 @Route(path = "/assets")
@@ -19,22 +19,26 @@ public class StaticController extends BaseController
     {
         String folder = (String) routeParameters.get("folder");
         String name = (String) routeParameters.get("name");
+        String path = "assets/" + folder + "/" + name;
 
-        String file = getFile("assets/" + folder + "/" + name);
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(path).getFile());
 
-        String mime = URLConnection.guessContentTypeFromName(name);
+        String content = getFile(file);
 
-        return new Response(file, Status.OK, mime);
+        String mime;
+        try {
+            mime = Files.probeContentType(file.toPath());
+        } catch (IOException e) {
+            mime = "text/plain";
+        }
+
+        return new Response(content, Status.OK, mime);
     }
 
-    private String getFile(String fileName)
+    private String getFile(File file)
     {
-
         StringBuilder result = new StringBuilder("");
-
-        //Get file from resources folder
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
 
         try (Scanner scanner = new Scanner(file)) {
 
