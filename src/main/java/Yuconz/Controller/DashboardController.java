@@ -12,7 +12,6 @@ public class DashboardController extends BaseController
     @Security("is_granted($, 'authenticated')")
     public JTwigResponse index()
     {
-
         return new JTwigResponse("views/dashboard.twig");
     }
 }
