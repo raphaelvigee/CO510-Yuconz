@@ -26,9 +26,9 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 {
     private final Hibernate hibernate;
 
-    public YuconzAuthenticationManager(Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate)
+    public YuconzAuthenticationManager(Container container, Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate)
     {
-        super(new Configuration(), router, eventDispatcher, expressionLanguage);
+        super(container, new Configuration(), router, eventDispatcher, expressionLanguage);
         this.hibernate = hibernate;
     }
 
