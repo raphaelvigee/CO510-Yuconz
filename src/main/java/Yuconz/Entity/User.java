@@ -2,9 +2,14 @@ package Yuconz.Entity;
 
 import Yuconz.Model.Role;
 import com.sallyf.sallyf.Authentication.UserInterface;
+import com.sallyf.sallyf.Exception.FrameworkException;
 
 import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,6 +27,17 @@ public class User implements UserInterface<Integer>
     private String password;
 
     private List<Role> roles = new ArrayList();
+
+    public static String hash(String password)
+    {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            return new String(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new FrameworkException(e);
+        }
+    }
 
     @Override
     @Id
