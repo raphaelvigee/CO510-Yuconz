@@ -5,7 +5,6 @@ import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.DashboardController;
 import Yuconz.Controller.StaticController;
 import Yuconz.Manager.YuconzAuthenticationManager;
-import Yuconz.Resolver.RuntimeBagResolver;
 import com.sallyf.sallyf.AccessDecisionManager.AccessDecisionManager;
 import com.sallyf.sallyf.Container.Container;
 import com.sallyf.sallyf.Container.ServiceDefinition;
@@ -34,10 +33,7 @@ public class Main
         router.registerController(AppController.class);
         router.registerController(StaticController.class);
         router.registerController(AuthenticationController.class);
-
         router.registerController(DashboardController.class);
-
-        router.addActionParameterResolver(new RuntimeBagResolver());
 
         app.start();
     }
