@@ -4,13 +4,12 @@ import Yuconz.Controller.AppController;
 import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.DashboardController;
 import Yuconz.Controller.StaticController;
+import Yuconz.JTwigFunction.CurrentUserFunction;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Service.Hibernate;
 import com.sallyf.sallyf.Container.Container;
-import com.sallyf.sallyf.Container.PlainReference;
 import com.sallyf.sallyf.Container.ServiceDefinition;
 import com.sallyf.sallyf.Exception.FrameworkException;
-import com.sallyf.sallyf.JTwig.JTwig;
 import com.sallyf.sallyf.Kernel;
 import com.sallyf.sallyf.Router.Router;
 
@@ -23,6 +22,7 @@ public class Main
 
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
+        container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
 
         app.boot();
 

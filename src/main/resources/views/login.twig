@@ -7,12 +7,19 @@
         <div id="loginHeaderIcon"></div>
         <div id="loginHeaderTitle">HR Portal</div>
         <div id="loginHeaderSubtitle">Please login to continue.</div>
+        {%  if loginErrors is defined %}
+        <div class="loginErrors">
+            {%  for error in loginErrors %}
+            <span><i class="fas fa-times"></i> {{ error }}</span>
+            {%  endfor %}
+        </div>
+        {%  endif %}
     </div>
 
     <form method="post">
         <div class="inputSection padded">
             <h3>Email Address</h3>
-            <input type="text" placeholder="example@yuconz.co.uk" name="email">
+            <input type="text" placeholder="example@yuconz.co.uk" name="email"{% if emailAddress is defined %} value="{{ emailAddress }}" {% endif %}>
         </div>
         <div class="inputSection padded">
             <h3>Password</h3>

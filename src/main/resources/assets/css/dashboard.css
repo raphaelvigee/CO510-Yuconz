@@ -47,6 +47,8 @@
 }
 #nav .account .dropdown {
 	width:100%;
+	max-width:200px;
+	right:0px;
 	background:#5F415C;
 	position:absolute;
 	top:50px;

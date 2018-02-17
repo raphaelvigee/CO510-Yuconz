@@ -1,5 +1,6 @@
 package Yuconz.Controller;
 
+import Yuconz.Entity.User;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Controller.BaseController;
@@ -7,6 +8,10 @@ import com.sallyf.sallyf.JTwig.JTwigResponse;
 import com.sallyf.sallyf.Router.Response;
 import com.sallyf.sallyf.Server.Method;
 import org.eclipse.jetty.server.Request;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Route(path = "/auth")
 public class AuthenticationController extends BaseController
@@ -19,10 +24,31 @@ public class AuthenticationController extends BaseController
         String role = String.valueOf(request.getParameter("role"));
 
         if (email.isEmpty() || password.isEmpty() || role.isEmpty()) {
-            return this.redirectToRoute("AuthenticationController.login");
+            List<String> errors = new ArrayList<>();
+            if (email.isEmpty()) {
+                errors.add("You must enter your email address.");
+            }
+            if (password.isEmpty()) {
+                errors.add("You must enter your password.");
+            }
+            if (role.isEmpty()) {
+                errors.add("You must select your role.");
+            }
+
+            return new JTwigResponse("views/login.twig", new HashMap<String, Object>() {{
+                put("loginErrors", errors.toArray());
+                put("emailAddress", email);
+            }});
         }
 
-        authenticationManager.authenticate(request, email, password, role);
+        User user = (User) authenticationManager.authenticate(request, email, password, role);
+
+        if (user == null) {
+            return new JTwigResponse("views/login.twig", new HashMap<String, Object>() {{
+                put("loginErrors", new String[]{"Could not find user."});
+                put("emailAddress", email);
+            }});
+        }
 
         return this.redirectToRoute("AppController.index");
     }

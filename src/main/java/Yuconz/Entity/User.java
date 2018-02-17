@@ -15,13 +15,17 @@ public class User implements UserInterface<Integer>
 
     private String username;
 
+    private String firstName;
+
+    private String lastName;
+
     private String password;
 
     private List<Role> roles = new ArrayList();
 
     @Override
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId()
     {
         return id;
@@ -77,6 +81,32 @@ public class User implements UserInterface<Integer>
     public void removeRole(Role role)
     {
         roles.remove(role);
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    @Transient
+    public String getFullName()
+    {
+        return String.format("%s %s", getFirstName(), getLastName());
     }
 
     @Override
