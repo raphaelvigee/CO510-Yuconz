@@ -1,6 +1,7 @@
 package Yuconz.Manager;
 
 import Yuconz.Entity.User;
+import Yuconz.Model.LogType;
 import Yuconz.Model.Role;
 import Yuconz.Service.Hibernate;
 import Yuconz.Voter.YuconzAuthenticationVoter;
@@ -15,6 +16,7 @@ import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
 import com.sallyf.sallyf.Router.Router;
 import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,10 +28,13 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 {
     private final Hibernate hibernate;
 
-    public YuconzAuthenticationManager(Container container, Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate)
+    private final LogManager logManager;
+
+    public YuconzAuthenticationManager(Container container, Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate, LogManager logManager)
     {
         super(container, new Configuration(), router, eventDispatcher, expressionLanguage);
         this.hibernate = hibernate;
+        this.logManager = logManager;
     }
 
     @Override
@@ -49,6 +54,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         Role role = Role.valueOf(roleStr.toUpperCase());
 
         Session session = hibernate.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
 
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
@@ -65,17 +71,24 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         List<User> users = q.getResultList();
 
         User user;
+        String logDetails = null;
+
         if (users.isEmpty()) {
             user = null;
+            logDetails = "user not found";
         } else {
             user = users.get(0);
 
             if (!user.getRoles().contains(role)) {
                 user = null;
+                logDetails = "invalid role";
             }
         }
-
         request.getSession(true).setAttribute("user", user);
+
+        transaction.commit();
+
+        logManager.log(user, request.getRemoteAddr(), user == null ? LogType.AUTHENTICATION_LOGIN_FAIL : LogType.AUTHENTICATION_LOGIN_SUCCESS, logDetails);
 
         return user;
     }
