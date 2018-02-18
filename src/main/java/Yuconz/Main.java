@@ -20,6 +20,11 @@ public class Main
 {
     public static void main(String[] args) throws FrameworkException
     {
+        start(1234);
+    }
+
+    public static Kernel start(int port)
+    {
         Kernel app = Kernel.newInstance();
         Container container = app.getContainer();
 
@@ -32,7 +37,7 @@ public class Main
             @Override
             public int getPort()
             {
-                return 1234;
+                return port;
             }
         }));
 
@@ -46,5 +51,7 @@ public class Main
         router.registerController(DashboardController.class);
 
         app.start();
+
+        return app;
     }
 }
