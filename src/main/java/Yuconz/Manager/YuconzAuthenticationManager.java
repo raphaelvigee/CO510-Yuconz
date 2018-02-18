@@ -30,11 +30,14 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     private final LogManager logManager;
 
-    public YuconzAuthenticationManager(Container container, Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate, LogManager logManager)
+    private final AuthorisationManager authorisationManager;
+
+    public YuconzAuthenticationManager(Container container, Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate, LogManager logManager, AuthorisationManager authorisationManager)
     {
         super(container, new Configuration(), router, eventDispatcher, expressionLanguage);
         this.hibernate = hibernate;
         this.logManager = logManager;
+        this.authorisationManager = authorisationManager;
     }
 
     @Override
@@ -79,7 +82,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         } else {
             user = users.get(0);
 
-            if (!user.getRoles().contains(role)) {
+            if (!authorisationManager.hasRights(user, role)) {
                 user = null;
                 logDetails = "invalid role";
             }

@@ -16,6 +16,12 @@ public class LoginTest extends AbstractTest
     }
 
     @Test
+    public void testLoginHREmployee() throws Exception
+    {
+        testLogin(UserDefinition.HR_EMPLOYEE, "hr_employee");
+    }
+
+    @Test
     public void testLoginManager() throws Exception
     {
         testLogin(UserDefinition.MANAGER, "manager");
