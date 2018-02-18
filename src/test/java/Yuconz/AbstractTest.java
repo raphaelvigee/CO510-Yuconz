@@ -15,7 +15,9 @@ public abstract class AbstractTest
 {
     public enum UserDefinition
     {
-        EMPLOYEE("employee@yuconz", "123"), MANAGER("manager@yuconz", "123"), DIRECTOR("director@yuconz", "123");
+        EMPLOYEE("employee@yuconz", "123"),
+        MANAGER("manager@yuconz", "123"),
+        DIRECTOR("director@yuconz", "123");
 
         final String email;
 
@@ -66,6 +68,11 @@ public abstract class AbstractTest
 
     public HtmlPage login(UserDefinition userDefinition, String role) throws IOException
     {
+        return login(userDefinition.email, userDefinition.password, role);
+    }
+
+    public HtmlPage login(String email, String password, String role) throws IOException
+    {
         WebClient webClient = new WebClient();
 
         HtmlPage page1 = webClient.getPage(getUrl("/auth/login"));
@@ -73,10 +80,10 @@ public abstract class AbstractTest
         HtmlForm form = page1.getForms().get(0);
 
         HtmlTextInput emailField = form.getInputByName("email");
-        emailField.setValueAttribute(userDefinition.email);
+        emailField.setValueAttribute(email);
 
         HtmlPasswordInput passwordField = form.getInputByName("password");
-        passwordField.setValueAttribute(userDefinition.password);
+        passwordField.setValueAttribute(password);
 
         HtmlSelect select = page1.getElementByName("role");
         HtmlOption option = select.getOptionByValue(role);

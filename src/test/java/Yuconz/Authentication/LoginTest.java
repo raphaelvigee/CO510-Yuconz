@@ -37,6 +37,16 @@ public class LoginTest extends AbstractTest
         Assert.assertEquals("/auth/login", path);
     }
 
+    @Test
+    public void testLoginEmployeeFailure() throws Exception
+    {
+        HtmlPage page = login("non@existent.user", "invalidPassword", "employee");
+
+        String path = page.getUrl().getPath();
+
+        Assert.assertEquals("/auth/login", path);
+    }
+
     private void testLogin(AbstractTest.UserDefinition userDefinition, String role) throws IOException
     {
         HtmlPage page = login(userDefinition, role);
