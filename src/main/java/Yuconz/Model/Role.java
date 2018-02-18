@@ -2,5 +2,5 @@ package Yuconz.Model;
 
 public enum Role
 {
-    EMPLOYEE, MANAGER, DIRECTOR
+    EMPLOYEE, HR_EMPLOYEE, MANAGER, DIRECTOR
 }

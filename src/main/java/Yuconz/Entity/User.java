@@ -10,8 +10,6 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @Entity
@@ -28,7 +26,7 @@ public class User implements UserInterface<String>, Serializable
 
     private String password;
 
-    private List<Role> roles = new ArrayList();
+    private Role role;
 
     public static String hash(String password)
     {
@@ -81,26 +79,15 @@ public class User implements UserInterface<String>, Serializable
         this.password = password;
     }
 
-    @ElementCollection(targetClass = Role.class)
     @Enumerated(EnumType.STRING)
-    public List<Role> getRoles()
+    public Role getRole()
     {
-        return roles;
+        return role;
     }
 
-    public void setRoles(List<Role> roles)
+    public void setRole(Role roles)
     {
-        this.roles = roles;
-    }
-
-    public void addRole(Role role)
-    {
-        roles.add(role);
-    }
-
-    public void removeRole(Role role)
-    {
-        roles.remove(role);
+        this.role = roles;
     }
 
     public String getFirstName()
@@ -132,7 +119,7 @@ public class User implements UserInterface<String>, Serializable
     @Override
     public String toString()
     {
-        return String.format("%s %s", getUsername(), getRoles().toString());
+        return String.format("%s %s", getUsername(), getRole().toString());
     }
 
     private static String random(String chars, int l)

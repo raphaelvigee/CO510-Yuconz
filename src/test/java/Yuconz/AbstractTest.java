@@ -16,6 +16,7 @@ public abstract class AbstractTest
     public enum UserDefinition
     {
         EMPLOYEE("employee@yuconz", "123"),
+        HR_EMPLOYEE("hr_employee@yuconz", "123"),
         MANAGER("manager@yuconz", "123"),
         DIRECTOR("director@yuconz", "123");
 
