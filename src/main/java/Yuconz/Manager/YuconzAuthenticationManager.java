@@ -72,6 +72,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         Query<User> q = session.createQuery(query);
 
         List<User> users = q.getResultList();
+        transaction.commit();
 
         User user;
         String logDetails = null;
@@ -82,14 +83,13 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         } else {
             user = users.get(0);
 
-            if (!authorisationManager.hasRights(user, role)) {
+            if (!authorisationManager.hasRights(request, user, role)) {
                 user = null;
                 logDetails = "invalid role";
             }
         }
         request.getSession(true).setAttribute("user", user);
 
-        transaction.commit();
 
         logManager.log(user, request.getRemoteAddr(), user == null ? LogType.AUTHENTICATION_LOGIN_FAIL : LogType.AUTHENTICATION_LOGIN_SUCCESS, logDetails);
 
