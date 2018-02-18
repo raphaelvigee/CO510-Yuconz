@@ -12,12 +12,10 @@ import java.util.Date;
 
 public class LogManager implements ServiceInterface
 {
-
     private Hibernate hibernate;
 
     public LogManager(Hibernate hibernate)
     {
-
         this.hibernate = hibernate;
     }
 
@@ -51,5 +49,4 @@ public class LogManager implements ServiceInterface
     {
         log(null, ip, type, null);
     }
-
 }
