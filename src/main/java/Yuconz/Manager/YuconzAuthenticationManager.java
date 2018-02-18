@@ -22,6 +22,7 @@ import org.hibernate.query.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class YuconzAuthenticationManager extends AuthenticationManager
@@ -88,8 +89,10 @@ public class YuconzAuthenticationManager extends AuthenticationManager
                 logDetails = "invalid role";
             }
         }
-        request.getSession(true).setAttribute("user", user);
 
+        HttpSession httpSession = request.getSession(true);
+        httpSession.setAttribute("user", user);
+        httpSession.setAttribute("role", role);
 
         logManager.log(user, request.getRemoteAddr(), user == null ? LogType.AUTHENTICATION_LOGIN_FAIL : LogType.AUTHENTICATION_LOGIN_SUCCESS, logDetails);
 
