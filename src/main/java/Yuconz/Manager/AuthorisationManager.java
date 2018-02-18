@@ -27,7 +27,7 @@ public class AuthorisationManager implements ServiceInterface
             case MANAGER:
                 return expectedRole == Role.EMPLOYEE || expectedRole == Role.MANAGER;
             case DIRECTOR:
-                return expectedRole == Role.DIRECTOR;
+                return true;
         }
 
         return false;
