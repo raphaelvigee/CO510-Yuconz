@@ -27,7 +27,8 @@ public class Main
         container.add(new ServiceDefinition<>(Hibernate.class));
         container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
 
-        container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration() {
+        container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()
+        {
             @Override
             public int getPort()
             {
