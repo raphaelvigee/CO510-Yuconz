@@ -17,8 +17,6 @@ public class Hibernate implements ServiceInterface
 {
     private SessionFactory sessionFactory;
 
-    private Session session;
-
     public Hibernate()
     {
         try {
