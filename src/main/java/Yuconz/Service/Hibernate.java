@@ -17,6 +17,8 @@ public class Hibernate implements ServiceInterface
 {
     private SessionFactory sessionFactory;
 
+    private Session session;
+
     public Hibernate()
     {
         try {
@@ -29,8 +31,6 @@ public class Hibernate implements ServiceInterface
         } catch (Throwable e) {
             throw new FrameworkException(e);
         }
-
-        getSessionFactory().openSession();
 
         populateUsers();
     }

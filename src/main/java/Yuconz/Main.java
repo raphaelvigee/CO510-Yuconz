@@ -5,6 +5,7 @@ import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.DashboardController;
 import Yuconz.Controller.StaticController;
 import Yuconz.JTwigFunction.CurrentUserFunction;
+import Yuconz.Manager.LogManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Service.Hibernate;
 import com.sallyf.sallyf.Container.Container;
@@ -30,6 +31,7 @@ public class Main
 
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
+        container.add(new ServiceDefinition<>(LogManager.class));
         container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
 
         container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()
