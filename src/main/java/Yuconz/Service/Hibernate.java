@@ -49,7 +49,7 @@ public class Hibernate implements ServiceInterface
     {
         Session session = getCurrentSession();
 
-        Query query = session.createQuery("SELECT COUNT(*) FROM User");
+        Query query = session.createQuery("SELECT COUNT(*) FROM " + aClass.getSimpleName());
 
         Long count = (Long) query.getSingleResult();
 
@@ -65,7 +65,7 @@ public class Hibernate implements ServiceInterface
             employee.setUsername("employee@yuconz");
             employee.setFirstName("John");
             employee.setLastName("Doe");
-            employee.setPassword(User.hash( "123"));
+            employee.setPassword(User.hash("123"));
             employee.addRole(Role.EMPLOYEE);
 
             User manager = new User();

@@ -1,5 +1,6 @@
 package Yuconz.Controller;
 
+import com.sallyf.sallyf.Annotation.Requirement;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.Exception.FrameworkException;
@@ -17,21 +18,22 @@ import java.nio.file.Paths;
 @Route(path = "/assets")
 public class StaticController extends BaseController
 {
-    @Route(path = "/{folder}/{name}")
+    @Route(path = "/{path}", requirements = {
+            @Requirement(name = "path", requirement = "(.*)")
+    })
     public Response assets(RouteParameters routeParameters)
     {
-        String folder = (String) routeParameters.get("folder");
-        String name = (String) routeParameters.get("name");
-        String path = "assets/" + folder + "/" + name;
+        String path = (String) routeParameters.get("path");
+        String fullpath = "assets/" + path;
 
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream stream = classLoader.getResourceAsStream(path);
+        InputStream stream = classLoader.getResourceAsStream(fullpath);
 
         String content = getContent(stream);
 
         String mime;
         try {
-            mime = Files.probeContentType(Paths.get(path));
+            mime = Files.probeContentType(Paths.get(fullpath));
         } catch (IOException e) {
             mime = "text/plain";
         }
