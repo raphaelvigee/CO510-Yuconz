@@ -1,56 +1,57 @@
 {% extends 'base.twig' %}
 
 {% block page_body %}
-<div id="loginView">
+    <div id="loginView">
 
-    <div id="loginHeader">
-        <div id="loginHeaderIcon"></div>
-        <div id="loginHeaderTitle">HR Portal</div>
-        <div id="loginHeaderSubtitle">Please login to continue.</div>
-        {%  if loginErrors is defined %}
-        <div class="loginErrors">
-            {%  for error in loginErrors %}
-            <span><i class="fas fa-times"></i> {{ error }}</span>
-            {%  endfor %}
+        <div id="loginHeader">
+            <div id="loginHeaderIcon"></div>
+            <div id="loginHeaderTitle">HR Portal</div>
+            <div id="loginHeaderSubtitle">Please login to continue.</div>
+            {% if loginErrors is defined %}
+                <div class="loginErrors">
+                    {% for error in loginErrors %}
+                        <span><i class="fas fa-times"></i> {{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
-        {%  endif %}
-    </div>
 
-    <form method="post">
-        <div class="inputSection padded">
-            <h3>Email Address</h3>
-            <input type="text" placeholder="example@yuconz.co.uk" name="email"{% if emailAddress is defined %} value="{{ emailAddress }}" {% endif %}>
-        </div>
-        <div class="inputSection padded">
-            <h3>Password</h3>
-            <input type="password" placeholder="Password" name="password">
-        </div>
-        <div class="inputSection padded">
-            <h3>Role</h3>
-            <div class="selectWrapper">
-                <select name="role">
-                    <option>Employee</option>
-                    <option>Manager</option>
-                    <option>Director</option>
-                </select>
+        <form method="post">
+            <div class="inputSection padded">
+                <h3>Email Address</h3>
+                <input type="text" placeholder="example@yuconz.co.uk"
+                       name="email"{% if emailAddress is defined %} value="{{ emailAddress }}" {% endif %}>
             </div>
-        </div>
-        <div class="inputSection">
-            <input type="submit" value="Login">
-        </div>
-        <div class="detailSection">
-            <a href="#">Forgotten password?</a>
-        </div>
-        <div id="loginFooter">
-            <span>Confidential resource, provided by Yuconz.</span>
-            <br>
-            <span>Secure form sent via HTTPS.</span>
-        </div>
-    </form>
+            <div class="inputSection padded">
+                <h3>Password</h3>
+                <input type="password" placeholder="Password" name="password">
+            </div>
+            <div class="inputSection padded">
+                <h3>Role</h3>
+                <div class="selectWrapper">
+                    <select name="role">
+                        <option value="employee">Employee</option>
+                        <option value="manager">Manager</option>
+                        <option value="director">Director</option>
+                    </select>
+                </div>
+            </div>
+            <div class="inputSection">
+                <input type="submit" value="Login">
+            </div>
+            <div class="detailSection">
+                <a href="#">Forgotten password?</a>
+            </div>
+            <div id="loginFooter">
+                <span>Confidential resource, provided by Yuconz.</span>
+                <br>
+                <span>Secure form sent via HTTPS.</span>
+            </div>
+        </form>
 
-</div>
+    </div>
 {% endblock %}
 
 {% block page_head %}
-<link rel="stylesheet" rel="text/css" href="/assets/css/login.css">
+    <link rel="stylesheet" rel="text/css" href="/assets/css/login.css">
 {% endblock %}
