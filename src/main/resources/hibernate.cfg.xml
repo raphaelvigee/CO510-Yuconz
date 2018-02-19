@@ -17,5 +17,7 @@
 
         <mapping class="Yuconz.Entity.User"/>
         <mapping class="Yuconz.Entity.Log"/>
+        <mapping class="Yuconz.Entity.AbstractRecord"/>
+        <mapping class="Yuconz.Entity.InitialEmploymentDetailsRecord"/>
     </session-factory>
 </hibernate-configuration>
