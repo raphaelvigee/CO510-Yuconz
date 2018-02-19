@@ -11,11 +11,18 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table
 public class User implements UserInterface<String>, Serializable
 {
+    @Id
+    @GenericGenerator(
+            name = "sequence_yuconz_user_id",
+            strategy = "Yuconz.Generator.YuconzIdGenerator"
+    )
+    @GeneratedValue(generator = "sequence_yuconz_user_id")
     private String id;
 
     private String username;
@@ -28,6 +35,9 @@ public class User implements UserInterface<String>, Serializable
 
     private Role role;
 
+    @OneToMany(mappedBy = "user")
+    private Set<AbstractRecord> records;
+
     public static String hash(String password)
     {
         try {
@@ -39,12 +49,6 @@ public class User implements UserInterface<String>, Serializable
         }
     }
 
-    @Id
-    @GenericGenerator(
-            name = "sequence_yuconz_user_id",
-            strategy = "Yuconz.Generator.YuconzIdGenerator"
-    )
-    @GeneratedValue(generator = "sequence_yuconz_user_id")
     public String getId()
     {
         return id;
@@ -110,7 +114,6 @@ public class User implements UserInterface<String>, Serializable
         this.lastName = lastName;
     }
 
-    @Transient
     public String getFullName()
     {
         return String.format("%s %s", getFirstName(), getLastName());
@@ -141,5 +144,15 @@ public class User implements UserInterface<String>, Serializable
         String nums = random("1234567890", 3);
 
         return chars + nums;
+    }
+
+    public Set<AbstractRecord> getRecords()
+    {
+        return records;
+    }
+
+    public void setRecords(Set<AbstractRecord> records)
+    {
+        this.records = records;
     }
 }
