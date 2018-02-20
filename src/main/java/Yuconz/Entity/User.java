@@ -33,6 +33,7 @@ public class User implements UserInterface<String>, Serializable
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
