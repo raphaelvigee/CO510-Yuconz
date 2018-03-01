@@ -16,7 +16,7 @@ import java.util.List;
 @Route(path = "/auth")
 public class AuthenticationController extends BaseController
 {
-    @Route(path = "/login", method = Method.POST)
+    @Route(path = "/login", methods = {Method.POST})
     public Object loginPost(Request request, YuconzAuthenticationManager authenticationManager)
     {
         String email = String.valueOf(request.getParameter("email"));
@@ -35,7 +35,8 @@ public class AuthenticationController extends BaseController
                 errors.add("You must select your role.");
             }
 
-            return new JTwigResponse("views/login.twig", new HashMap<String, Object>() {{
+            return new JTwigResponse("views/login.twig", new HashMap<String, Object>()
+            {{
                 put("loginErrors", errors.toArray());
                 put("emailAddress", email);
             }});
@@ -44,7 +45,8 @@ public class AuthenticationController extends BaseController
         User user = (User) authenticationManager.authenticate(request, email, password, role);
 
         if (user == null) {
-            return new JTwigResponse("views/login.twig", new HashMap<String, Object>() {{
+            return new JTwigResponse("views/login.twig", new HashMap<String, Object>()
+            {{
                 put("loginErrors", new String[]{"Could not find user."});
                 put("emailAddress", email);
             }});
