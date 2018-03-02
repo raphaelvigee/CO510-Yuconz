@@ -37,7 +37,7 @@ public class PersonalDetailsController extends BaseController
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(data)
                 .add("user", UserType.class)
                 .add("submit", SubmitType.class, options -> {
-                    options.setLabel("Submit");
+                    options.setLabel("Update");
                 })
                 .getForm();
 
