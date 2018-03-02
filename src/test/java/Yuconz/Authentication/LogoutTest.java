@@ -13,7 +13,7 @@ public class LogoutTest extends AbstractTest
     @Test
     public void testLogout() throws Exception
     {
-        HtmlPage page1 = login(UserDefinition.EMPLOYEE, "employee");
+        HtmlPage page1 = login(UserDefinition.EMPLOYEE, "EMPLOYEE");
         WebClient webClient = page1.getEnclosingWindow().getWebClient();
 
         String path1 = page1.getUrl().getPath();
