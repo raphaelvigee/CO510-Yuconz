@@ -57,7 +57,7 @@
 }
 
 #loginView .row {
-    margin:15px 0px;
+    margin:20px 0px;
 }
 
 #loginView .row > label {
@@ -66,6 +66,7 @@
     color: var(--textWeakColor);
     margin:0px 0px 5px 0px;
     text-transform: uppercase;
+    display: block;
 }
 
 #loginView .detailSection {

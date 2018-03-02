@@ -28,11 +28,13 @@ public class AuthenticationController extends BaseController
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder()
                 .add("email", TextType.class, options -> {
                     options.setLabel("Email Address");
+                    options.getAttributes().put("placeholder", "example@yuconz.co.uk");
 
                     options.getConstraints().add(new NotEmpty());
                 })
                 .add("password", PasswordType.class, options -> {
                     options.setLabel("Password");
+                    options.getAttributes().put("placeholder", "123");
 
                     options.getConstraints().add(new NotEmpty());
                 })
