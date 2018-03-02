@@ -66,7 +66,6 @@ public class Hibernate implements ServiceInterface
             employee.setLastName("Doe");
             employee.setPassword(User.hash("123"));
             employee.setRole(Role.EMPLOYEE);
-            employee.setAddress(new Address());
 
             User hr_employee = new User();
             hr_employee.setEmail("hr_employee@yuconz");
@@ -74,7 +73,6 @@ public class Hibernate implements ServiceInterface
             hr_employee.setLastName("Doe HR");
             hr_employee.setPassword(User.hash("123"));
             hr_employee.setRole(Role.HR_EMPLOYEE);
-            hr_employee.setAddress(new Address());
 
             User manager = new User();
             manager.setEmail("manager@yuconz");
@@ -82,7 +80,6 @@ public class Hibernate implements ServiceInterface
             manager.setLastName("Ger");
             manager.setPassword(User.hash("123"));
             manager.setRole(Role.MANAGER);
-            manager.setAddress(new Address());
 
             User director = new User();
             director.setEmail("director@yuconz");
@@ -90,7 +87,6 @@ public class Hibernate implements ServiceInterface
             director.setLastName("Miles");
             director.setPassword(User.hash("123"));
             director.setRole(Role.DIRECTOR);
-            director.setAddress(new Address());
 
             Transaction transaction = session.beginTransaction();
 

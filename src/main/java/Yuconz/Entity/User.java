@@ -83,7 +83,8 @@ public class User implements UserInterface<String>, Serializable
         return getEmail();
     }
 
-    public void setUsername(String username) {
+    public void setUsername(String username)
+    {
         setEmail(username);
     }
 
@@ -147,7 +148,7 @@ public class User implements UserInterface<String>, Serializable
 
     public Address getAddress()
     {
-        return address;
+        return address == null ? new Address() : address;
     }
 
     public void setAddress(Address address)
