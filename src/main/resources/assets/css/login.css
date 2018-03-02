@@ -6,12 +6,11 @@
 }
 #loginFooter {
     width:280px;
-    margin:auto;
     text-align:center;
     color: var(--textWeakColor);
     font-style: italic;
     font-size:13px;
-    margin-top:20px;
+    margin: 20px auto auto;
 }
 
 #loginHeader {
@@ -47,22 +46,21 @@
     width:100%;
     margin-top:10px;
 }
-.loginErrors {
-    float:left;
-    width:100%;
-    margin-top:15px;
+
+.errors {
+    list-style: none;
+    padding: 0;
 }
-.loginErrors span {
+
+.errors .error {
     color:#f36;
 }
 
-#loginView .inputSection {
-    margin:0px 0px;
+#loginView .row {
+    margin:15px 0px;
 }
-#loginView .inputSection.padded {
-    margin:20px 0px;
-}
-#loginView .inputSection > h3 {
+
+#loginView .row > label {
     font-weight:600;
     font-size:12px;
     color: var(--textWeakColor);
