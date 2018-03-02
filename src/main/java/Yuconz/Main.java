@@ -4,7 +4,10 @@ import Yuconz.Controller.AppController;
 import Yuconz.Controller.AuthenticationController;
 import Yuconz.Controller.DashboardController;
 import Yuconz.Controller.StaticController;
+import Yuconz.FormRenderer.CustomChoiceRenderer;
+import Yuconz.JTwigFunction.CurrentRoleFunction;
 import Yuconz.JTwigFunction.CurrentUserFunction;
+import Yuconz.JTwigFunction.FormRenderFunction;
 import Yuconz.Manager.AuthorisationManager;
 import Yuconz.Manager.LogManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
@@ -13,6 +16,8 @@ import com.sallyf.sallyf.Container.Container;
 import com.sallyf.sallyf.Container.PlainReference;
 import com.sallyf.sallyf.Container.ServiceDefinition;
 import com.sallyf.sallyf.Exception.FrameworkException;
+import com.sallyf.sallyf.Form.FormManager;
+import com.sallyf.sallyf.Form.Renderer.ChoiceRenderer;
 import com.sallyf.sallyf.Kernel;
 import com.sallyf.sallyf.Router.Router;
 import com.sallyf.sallyf.Server.Configuration;
@@ -33,8 +38,11 @@ public class Main
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
         container.add(new ServiceDefinition<>(LogManager.class));
+        container.add(new ServiceDefinition<>(FormManager.class));
         container.add(new ServiceDefinition<>(AuthorisationManager.class));
         container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
+        container.add(new ServiceDefinition<>(CurrentRoleFunction.class)).addTag("jtwig.function");
+        container.add(new ServiceDefinition<>(FormRenderFunction.class)).addTag("jtwig.function");
 
         container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()
         {
@@ -53,6 +61,11 @@ public class Main
         router.registerController(StaticController.class);
         router.registerController(AuthenticationController.class);
         router.registerController(DashboardController.class);
+
+        FormManager formManager = container.get(FormManager.class);
+
+        formManager.getRenderers().removeIf(r -> r.getClass().equals(ChoiceRenderer.class));
+        formManager.addRenderer(CustomChoiceRenderer.class);
 
         app.start();
 

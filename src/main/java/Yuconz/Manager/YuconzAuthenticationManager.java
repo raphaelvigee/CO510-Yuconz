@@ -101,6 +101,8 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     public void logout(Request request)
     {
-        request.getSession(true).setAttribute("user", null);
+        HttpSession session = request.getSession(true);
+        session.setAttribute("user", null);
+        session.setAttribute("role", null);
     }
 }
