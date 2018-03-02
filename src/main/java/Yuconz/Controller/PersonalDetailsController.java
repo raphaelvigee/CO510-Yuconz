@@ -87,7 +87,7 @@ public class PersonalDetailsController extends BaseController
                     options.getConstraints().add(new NotEmpty());
                 })
                 .add("submit", SubmitType.class, options -> {
-                    options.setLabel("Submit");
+                    options.setLabel("Update");
                 })
                 .getForm();
 
