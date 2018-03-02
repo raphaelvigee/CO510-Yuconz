@@ -66,7 +66,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         Root<User> root = query.from(User.class);
         query.select(root)
                 .where(
-                        builder.equal(root.get("username"), username),
+                        builder.equal(root.get("email"), username),
                         builder.equal(root.get("password"), User.hash(password))
                 );
 

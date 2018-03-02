@@ -11,6 +11,4 @@ public class Section
     private Integer id;
 
     private String name;
-
-    private Department department;
 }
