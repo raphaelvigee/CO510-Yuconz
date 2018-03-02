@@ -9,6 +9,7 @@
 
 #nav > div {
     float: left;
+    height:50px;
 }
 
 #nav .account {
@@ -16,51 +17,61 @@
     float: right;
     margin-right: 20px;
     color: #fff;
-}
-#nav .account .accountDetails {
-	line-height:50px;
-	float:left;
-}
-
-#nav .account .accountDetails:after {
-    content: "\25be";
-    opacity: .6;
-    margin-left: 8px;
+    display:block;
 }
 
 #nav .account .accountIcon {
     width: 30px;
     height: 30px;
-    float: left;
+    display:inline-block;
     margin-top: 10px;
     background: #fff;
     border-radius: 15px;
     margin-right: 10px;
 }
 
-#nav .account .accountIcon:before {
-    position: relative;
-    content: "\f007";
-    font-family: 'Font Awesome 5 Free';
-    color: var(--tintColor);
-    font-weight: 600;
-    font-size: 16px;
-    left: 7px;
-    top: 4px;
+#nav .account .accountDetails {
+    height:50px;
+    display:inline-block;
+}
+#nav .account .accountDetails > div {
+    display:inline-block;
+    position:relative;
+    height:50px;
+}
+
+#nav .account .accountDetails .name {
+    font-weight:400;
+    font-size:16px;
+    margin:0px;
+    display:block;
+    width:100px;
+}
+
+#nav .account .accountDetails .role {
+    font-size:11px;
+    margin:0px;
+    display:block;
+}
+
+#nav .account .accountDetails > div:after {
+    position:absolute;
+    content: "\25be";
+    opacity: .6;
+    top:10px;
+    right:5px;
 }
 
 #nav .account .dropdown {
-    width: 100%;
-    max-width: 200px;
-    right: 0;
-    background: #5F415C;
-    position: absolute;
-    top: 50px;
-    display: none;
+    position:absolute;
+    top:50px;
+    width:100%;
+    max-width:200px;
+    background: var(--tintColor);
+    display:none;
 }
-
 #nav .account:hover .dropdown {
-    display: block;
+    display:block;
 }
 
 #nav .account .dropdown > div {

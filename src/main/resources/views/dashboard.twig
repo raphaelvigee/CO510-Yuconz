@@ -9,17 +9,22 @@
                 <h5>HR Portal</h5>
             </div>
             <div class="account">
-                <div class="option">
-                    <div class="accountIcon"></div>
-                    <div class="accountDetails">
-                        {{ getUser(_).getFullName() }} - {{ getRole(_).getName() }}
+                <div class="accountIcon"></div>
+                <div class="accountDetails">
+                    <div>
+                        <span class="name">
+                            {{ getUser(_).getFullName() }}
+                        </span>
+                        <span class="role">
+                            {{ getRole(_).getName() }}
+                        </span>
                     </div>
-                    <div class="dropdown">
-                        <div>
-                            <a href="{{ path('AuthenticationController.logout') }}">
-                                Logout
-                            </a>
-                        </div>
+                </div>
+                <div class="dropdown">
+                    <div>
+                        <a href="{{ path('AuthenticationController.logout') }}">
+                            Logout
+                        </a>
                     </div>
                 </div>
             </div>
@@ -29,10 +34,10 @@
             <div class="heading">
                 My Yuconz
             </div>
-            <div class="option selected">
+            <div class="option {{ activePage(_, 'DashboardController.index') }}">
                 <a href="{{ path('DashboardController.index') }}">Dashboard</a>
             </div>
-            <div class="option">
+            <div class="option {{ activePage(_, 'PersonalDetailsController.edit') }}">
                 <a href="{{ path('PersonalDetailsController.edit') }}">Personal Details</a>
             </div>
             <div class="option">

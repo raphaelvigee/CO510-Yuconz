@@ -2,6 +2,7 @@ package Yuconz;
 
 import Yuconz.Controller.*;
 import Yuconz.FormRenderer.CustomChoiceRenderer;
+import Yuconz.JTwigFunction.ActivePageFunction;
 import Yuconz.JTwigFunction.CurrentRoleFunction;
 import Yuconz.JTwigFunction.CurrentUserFunction;
 import Yuconz.JTwigFunction.FormRenderFunction;
@@ -40,6 +41,7 @@ public class Main
         container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(CurrentRoleFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(FormRenderFunction.class)).addTag("jtwig.function");
+        container.add(new ServiceDefinition<>(ActivePageFunction.class)).addTag("jtwig.function");
 
         container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()
         {
