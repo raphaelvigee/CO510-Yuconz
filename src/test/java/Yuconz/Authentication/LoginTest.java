@@ -12,31 +12,31 @@ public class LoginTest extends AbstractTest
     @Test
     public void testLoginEmployee() throws Exception
     {
-        testLogin(UserDefinition.EMPLOYEE, "employee");
+        testLogin(UserDefinition.EMPLOYEE, "EMPLOYEE");
     }
 
     @Test
     public void testLoginHREmployee() throws Exception
     {
-        testLogin(UserDefinition.HR_EMPLOYEE, "hr_employee");
+        testLogin(UserDefinition.HR_EMPLOYEE, "HR_EMPLOYEE");
     }
 
     @Test
     public void testLoginManager() throws Exception
     {
-        testLogin(UserDefinition.MANAGER, "manager");
+        testLogin(UserDefinition.MANAGER, "MANAGER");
     }
 
     @Test
     public void testLoginDirector() throws Exception
     {
-        testLogin(UserDefinition.DIRECTOR, "director");
+        testLogin(UserDefinition.DIRECTOR, "DIRECTOR");
     }
 
     @Test
     public void testLoginEmployeeAsManagerFailure() throws Exception
     {
-        HtmlPage page = login(UserDefinition.EMPLOYEE, "manager");
+        HtmlPage page = login(UserDefinition.EMPLOYEE, "MANAGER");
 
         String path = page.getUrl().getPath();
 
@@ -46,7 +46,7 @@ public class LoginTest extends AbstractTest
     @Test
     public void testLoginEmployeeFailure() throws Exception
     {
-        HtmlPage page = login("non@existent.user", "invalidPassword", "employee");
+        HtmlPage page = login("non@existent.user", "invalidPassword", "EMPLOYEE");
 
         String path = page.getUrl().getPath();
 
