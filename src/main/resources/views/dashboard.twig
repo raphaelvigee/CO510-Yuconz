@@ -30,10 +30,10 @@
                 My Yuconz
             </div>
             <div class="option selected">
-                <a href="#">Dashboard</a>
+                <a href="{{ path('DashboardController.index') }}">Dashboard</a>
             </div>
             <div class="option">
-                <a href="#">Personal Details</a>
+                <a href="{{ path('PersonalDetailsController.edit') }}">Personal Details</a>
             </div>
             <div class="option">
                 <a href="#">Employment History</a>
@@ -59,7 +59,7 @@
 
         <div id="mainContent">
 
-            123
+            {% block main_content %}{% endblock %}
 
         </div>
     </div>

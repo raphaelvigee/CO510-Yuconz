@@ -125,8 +125,10 @@
 }
 
 #mainContent {
+    padding: 20px;
     min-height: 100vh;
     margin-left: 200px;
+    margin-top: 50px;
 }
 
 .branding {
@@ -147,3 +149,8 @@
     font-weight: 300;
 }
 
+
+#mainContent form {
+    max-width: 450px;
+    width: 80%;
+}

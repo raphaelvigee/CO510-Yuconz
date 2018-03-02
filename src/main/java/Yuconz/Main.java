@@ -1,9 +1,6 @@
 package Yuconz;
 
-import Yuconz.Controller.AppController;
-import Yuconz.Controller.AuthenticationController;
-import Yuconz.Controller.DashboardController;
-import Yuconz.Controller.StaticController;
+import Yuconz.Controller.*;
 import Yuconz.FormRenderer.CustomChoiceRenderer;
 import Yuconz.JTwigFunction.CurrentRoleFunction;
 import Yuconz.JTwigFunction.CurrentUserFunction;
@@ -61,6 +58,7 @@ public class Main
         router.registerController(StaticController.class);
         router.registerController(AuthenticationController.class);
         router.registerController(DashboardController.class);
+        router.registerController(PersonalDetailsController.class);
 
         FormManager formManager = container.get(FormManager.class);
 

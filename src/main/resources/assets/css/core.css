@@ -96,6 +96,28 @@ select {
     z-index:-1;
 }
 
+form .row {
+    margin:20px 0px;
+}
+
+form .row > label {
+    font-weight:600;
+    font-size:12px;
+    color: var(--textWeakColor);
+    margin:0px 0px 5px 0px;
+    text-transform: uppercase;
+    display: block;
+}
+
+form .errors {
+    list-style: none;
+    padding: 0;
+}
+
+form .errors .error {
+    color:#f36;
+}
+
 input[type=text]:focus, input[type=password]:focus  {
     border:solid 1px var(--tintColor);
 }
