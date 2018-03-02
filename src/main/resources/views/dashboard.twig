@@ -33,7 +33,9 @@
                 <a href="{{ path('DashboardController.index') }}">Dashboard</a>
             </div>
             <div class="option">
-                <a href="{{ path('PersonalDetailsController.edit') }}">Personal Details</a>
+                <a href="{{ path('PersonalDetailsController.edit', {'user': getUser(_).getId()}) }}">
+                    Personal Details
+                </a>
             </div>
             <div class="option">
                 <a href="#">Employment History</a>

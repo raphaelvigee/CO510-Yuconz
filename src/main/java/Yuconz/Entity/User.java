@@ -10,9 +10,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table
@@ -148,7 +146,11 @@ public class User implements UserInterface<String>, Serializable
 
     public Address getAddress()
     {
-        return address == null ? new Address() : address;
+        if (address == null) {
+            address = new Address();
+        }
+
+        return address;
     }
 
     public void setAddress(Address address)
@@ -251,5 +253,30 @@ public class User implements UserInterface<String>, Serializable
     public void setSection(Section section)
     {
         this.section = section;
+    }
+
+    public Map<String, Object> toHashMap()
+    {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("firstname", getFirstName());
+        map.put("lastname", getLastName());
+        map.put("address", getAddress().toHashMap());
+        map.put("phone_number", getPhoneNumber());
+        map.put("mobile_number", getMobileNumber());
+        map.put("emergency_contact", getEmergencyContact());
+        map.put("emergency_contact_number", getEmergencyContactNumber());
+
+        return map;
+    }
+
+    public void applyHashMap(Map<String, Object> map)
+    {
+        setFirstName((String) map.get("firstname"));
+        setLastName((String) map.get("lastname"));
+        getAddress().applyHashMap((Map<String, Object>) map.get("address"));
+        setPhoneNumber((String) map.get("phone_number"));
+        setMobileNumber((String) map.get("mobile_number"));
+        setEmergencyContact((String) map.get("emergency_contact"));
+        setEmergencyContactNumber((String) map.get("emergency_contact_number"));
     }
 }

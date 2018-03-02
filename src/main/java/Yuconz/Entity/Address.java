@@ -2,6 +2,8 @@ package Yuconz.Entity;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Embeddable
@@ -77,5 +79,28 @@ public class Address
     public void setCountry(String country)
     {
         this.country = country;
+    }
+
+    public Map<String, Object> toHashMap()
+    {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("line1", getLine1());
+        map.put("line2", getLine2());
+        map.put("postcode", getPostcode());
+        map.put("city", getCity());
+        map.put("county", getCounty());
+        map.put("country", getCountry());
+
+        return map;
+    }
+
+    public void applyHashMap(Map<String, Object> map)
+    {
+        setLine1((String) map.get("line1"));
+        setLine2((String) map.get("line2"));
+        setPostcode((String) map.get("postcode"));
+        setCity((String) map.get("city"));
+        setCounty((String) map.get("county"));
+        setCountry((String) map.get("country"));
     }
 }
