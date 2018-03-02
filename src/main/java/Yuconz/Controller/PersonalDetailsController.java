@@ -1,5 +1,6 @@
 package Yuconz.Controller;
 
+import Yuconz.Entity.User;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Authentication.Annotation.Security;
@@ -19,19 +20,31 @@ import java.util.HashMap;
 public class PersonalDetailsController extends BaseController
 {
     @Route(path = "/details", methods = {Method.GET, Method.POST})
-    public Object edit(Request request)
+    public Object edit(Request request, User user)
     {
-        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder()
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("firstname", user.getFirstName());
+        data.put("lastname", user.getLastName());
+        data.put("address_1", user.getAddress().getLine1());
+        data.put("address_2", user.getAddress().getLine2());
+        data.put("city", user.getAddress().getCity());
+        data.put("county", user.getAddress().getCounty());
+        data.put("postcode", user.getAddress().getPostcode());
+        data.put("country", user.getAddress().getCountry());
+        data.put("phone_number", user.getPhoneNumber());
+        data.put("mobile_number", user.getMobileNumber());
+        data.put("emergency_contact", user.getEmergencyContact());
+        data.put("emergency_contact_number", user.getEmergencyContactNumber());
+
+
+        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(data)
                 .add("firstname", TextType.class, options -> {
                     options.setLabel("First name");
                     options.getConstraints().add(new NotEmpty());
                 })
                 .add("lastname", TextType.class, options -> {
                     options.setLabel("Last name");
-                    options.getConstraints().add(new NotEmpty());
-                })
-                .add("phone_number", TextType.class, options -> {
-                    options.setLabel("Phone number");
                     options.getConstraints().add(new NotEmpty());
                 })
                 .add("address_1", TextType.class, options -> {
@@ -57,12 +70,12 @@ public class PersonalDetailsController extends BaseController
                     options.setLabel("Country");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("mobile_number", TextType.class, options -> {
-                    options.setLabel("Mobile phone");
-                    options.getConstraints().add(new NotEmpty());
-                })
                 .add("phone_number", TextType.class, options -> {
                     options.setLabel("Phone number");
+                    options.getConstraints().add(new NotEmpty());
+                })
+                .add("mobile_number", TextType.class, options -> {
+                    options.setLabel("Mobile phone");
                     options.getConstraints().add(new NotEmpty());
                 })
                 .add("emergency_contact", TextType.class, options -> {
