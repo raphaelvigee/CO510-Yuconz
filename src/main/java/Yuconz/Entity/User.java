@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.Random;
 import java.util.Set;
 
@@ -25,13 +26,30 @@ public class User implements UserInterface<String>, Serializable
     @GeneratedValue(generator = "sequence_yuconz_user_id")
     private String id;
 
-    private String username;
+    private String email;
 
     private String firstName;
 
     private String lastName;
 
     private String password;
+
+    @Embedded
+    private Address address;
+
+    @Temporal(TemporalType.DATE)
+    private Date birthdate;
+
+    private String phoneNumber;
+
+    private String mobileNumber;
+
+    private String emergencyContact;
+
+    private String emergencyContactNumber;
+
+    @ManyToOne
+    private Section section;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -60,16 +78,23 @@ public class User implements UserInterface<String>, Serializable
         this.id = yid;
     }
 
-    @Override
     public String getUsername()
     {
-        return username;
+        return getEmail();
     }
 
-    @Override
-    public void setUsername(String username)
+    public void setUsername(String username) {
+        setEmail(username);
+    }
+
+    public String getEmail()
     {
-        this.username = username;
+        return email;
+    }
+
+    public void setEmail(String username)
+    {
+        this.email = username;
     }
 
     @Override
@@ -120,10 +145,70 @@ public class User implements UserInterface<String>, Serializable
         return String.format("%s %s", getFirstName(), getLastName());
     }
 
+    public Address getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(Address address)
+    {
+        this.address = address;
+    }
+
+    public Date getBirthdate()
+    {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate)
+    {
+        this.birthdate = birthdate;
+    }
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber)
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getMobileNumber()
+    {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber)
+    {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getEmergencyContact()
+    {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact)
+    {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getEmergencyContactNumber()
+    {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(String emergencyContactNumber)
+    {
+        this.emergencyContactNumber = emergencyContactNumber;
+    }
+
     @Override
     public String toString()
     {
-        return String.format("%s %s", getUsername(), getRole().toString());
+        return String.format("%s %s", getEmail(), getRole().toString());
     }
 
     private static String random(String chars, int l)
@@ -155,5 +240,15 @@ public class User implements UserInterface<String>, Serializable
     public void setRecords(Set<AbstractRecord> records)
     {
         this.records = records;
+    }
+
+    public Section getSection()
+    {
+        return section;
+    }
+
+    public void setSection(Section section)
+    {
+        this.section = section;
     }
 }

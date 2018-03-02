@@ -60,28 +60,28 @@ public class Hibernate implements ServiceInterface
 
         if (isEmpty(User.class)) {
             User employee = new User();
-            employee.setUsername("employee@yuconz");
+            employee.setEmail("employee@yuconz");
             employee.setFirstName("John");
             employee.setLastName("Doe");
             employee.setPassword(User.hash("123"));
             employee.setRole(Role.EMPLOYEE);
 
             User hr_employee = new User();
-            hr_employee.setUsername("hr_employee@yuconz");
+            hr_employee.setEmail("hr_employee@yuconz");
             hr_employee.setFirstName("John");
             hr_employee.setLastName("Doe HR");
             hr_employee.setPassword(User.hash("123"));
             hr_employee.setRole(Role.HR_EMPLOYEE);
 
             User manager = new User();
-            manager.setUsername("manager@yuconz");
+            manager.setEmail("manager@yuconz");
             manager.setFirstName("Mana");
             manager.setLastName("Ger");
             manager.setPassword(User.hash("123"));
             manager.setRole(Role.MANAGER);
 
             User director = new User();
-            director.setUsername("director@yuconz");
+            director.setEmail("director@yuconz");
             director.setFirstName("Roman");
             director.setLastName("Miles");
             director.setPassword(User.hash("123"));

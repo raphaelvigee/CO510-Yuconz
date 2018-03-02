@@ -21,5 +21,7 @@
         <mapping class="Yuconz.Entity.InitialEmploymentDetailsRecord"/>
         <mapping class="Yuconz.Entity.AccessRequest"/>
         <mapping class="Yuconz.Entity.Signature"/>
+        <mapping class="Yuconz.Entity.Department"/>
+        <mapping class="Yuconz.Entity.Section"/>
     </session-factory>
 </hibernate-configuration>
