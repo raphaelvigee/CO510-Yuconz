@@ -19,6 +19,7 @@ import com.sallyf.sallyf.Server.Method;
 import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,15 +71,57 @@ public class PersonalDetailsController extends BaseController
     @Security(value = "is_granted($, 'list_users')")
     public Object list(Request request, Hibernate hibernate)
     {
-        Session session = hibernate.getCurrentSession();
+        Map<String, String[]> queryParameters = request.getParameterMap();
 
+        int perPage = 20;
+        String query = queryParameters.getOrDefault("query", new String[]{null})[0];
+        int page = Integer.parseInt(queryParameters.getOrDefault("page", new String[]{"1"})[0]);
+
+        Session session = hibernate.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        List<User> users = session.createQuery("from User").list();
+
+        Query userQuery;
+
+
+        if (query == null) {
+            userQuery = session.createQuery("from User");
+        } else {
+            String[] fields = {
+                    "id",
+                    "firstName",
+                    "lastName",
+                    "email"
+            };
+
+            StringBuilder searchQuery = new StringBuilder();
+            for (String field : fields) {
+                if (searchQuery.length() > 0) {
+                    searchQuery.append(" OR");
+                }
+                searchQuery.append(String.format(" lower(%s) LIKE lower(:query)", field));
+            }
+
+            userQuery = session.createQuery("from User where " + searchQuery)
+                    .setParameter("query", "%" + query + "%");
+        }
+
+        userQuery
+                .setFirstResult((page - 1) * perPage)
+                .setMaxResults(perPage);
+
+        List users = userQuery.list();
+
+        long usersCount = (long) session.createQuery("select count(*) from User").uniqueResult();
+        long maxPages = (long) Math.ceil(usersCount / perPage);
+
         transaction.commit();
 
         return new JTwigResponse("views/personal-details/list.twig", new HashMap<String, Object>()
         {{
             put("users", users);
+            put("query", query);
+            put("page", page);
+            put("max_pages", maxPages);
         }});
     }
 

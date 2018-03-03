@@ -3,6 +3,13 @@
 {% block main_content %}
     <h1>Users</h1>
 
+    <form action="" method="get">
+        <div class="row">
+            <input type="text" name="query" value="{{ query }}" placeholder="Search...">
+            <input type="submit" value="Search">
+        </div>
+    </form>
+
     <a href="{{ path('PersonalDetailsController.create') }}">
         Add
     </a>
@@ -16,4 +23,10 @@
             </a>
         </div>
     {% endfor %}
+
+    <div>
+        {% for p in range(1, max_pages) %}
+            <a href="{{ path('PersonalDetailsController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
+        {% endfor %}
+    </div>
 {% endblock %}
