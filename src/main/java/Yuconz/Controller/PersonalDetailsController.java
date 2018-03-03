@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Security(value = "is_granted($, 'authenticated')", handler = LoginRedirectHandler.class)
@@ -62,6 +63,22 @@ public class PersonalDetailsController extends BaseController
         return new JTwigResponse("views/personal-details/form.twig", new HashMap<String, Object>()
         {{
             put("form", form.createView());
+        }});
+    }
+
+    @Route(path = "", methods = {Method.GET, Method.POST})
+    @Security(value = "is_granted($, 'list_users')")
+    public Object list(Request request, Hibernate hibernate)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        Transaction transaction = session.beginTransaction();
+        List<User> users = session.createQuery("from User").list();
+        transaction.commit();
+
+        return new JTwigResponse("views/personal-details/list.twig", new HashMap<String, Object>()
+        {{
+            put("users", users);
         }});
     }
 

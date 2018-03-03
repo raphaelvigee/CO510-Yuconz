@@ -9,12 +9,15 @@ import com.sallyf.sallyf.Authentication.UserInterface;
 import com.sallyf.sallyf.Server.RuntimeBag;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class PersonalDetailsVoter implements VoterInterface
 {
     public static final String EDIT = "edit_user";
 
     public static final String CREATE = "create_user";
+
+    public static final String LIST = "list_users";
 
     private YuconzAuthenticationManager authenticationManager;
 
@@ -29,7 +32,7 @@ public class PersonalDetailsVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject, RuntimeBag runtimeBag)
     {
-        if (!Arrays.asList(new String[]{EDIT, CREATE}).contains(attribute)) {
+        if (!Arrays.asList(EDIT, CREATE, LIST).contains(attribute)) {
             return false;
         }
 
@@ -39,7 +42,9 @@ public class PersonalDetailsVoter implements VoterInterface
             return false;
         }
 
-        if (!(subject instanceof User) && !attribute.equals(CREATE)) {
+        List<String> subjectFreeActions = Arrays.asList(CREATE, LIST);
+
+        if (!(subject instanceof User) && !subjectFreeActions.contains(attribute)) {
             return false;
         }
 
@@ -58,14 +63,21 @@ public class PersonalDetailsVoter implements VoterInterface
                 return canEdit(user, currentUser, runtimeBag);
             case CREATE:
                 return canCreate(currentUser, runtimeBag);
+            case LIST:
+                return canList(currentUser, runtimeBag);
         }
 
         return false;
     }
 
+    private boolean canList(User currentUser, RuntimeBag runtimeBag)
+    {
+        return isHR(currentUser, runtimeBag);
+    }
+
     private boolean canCreate(User currentUser, RuntimeBag runtimeBag)
     {
-        return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
+        return isHR(currentUser, runtimeBag);
     }
 
     private boolean canEdit(User user, User currentUser, RuntimeBag runtimeBag)
@@ -74,6 +86,11 @@ public class PersonalDetailsVoter implements VoterInterface
             return true;
         }
 
+        return isHR(currentUser, runtimeBag);
+    }
+
+    private boolean isHR(User currentUser, RuntimeBag runtimeBag)
+    {
         return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
     }
 }
