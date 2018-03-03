@@ -26,7 +26,8 @@ public class AuthenticationController extends BaseController
     @Route(path = "/login", methods = {Method.GET, Method.POST})
     public Object login(Request request, YuconzAuthenticationManager authenticationManager)
     {
-        Map<String, Object> in = ExpressionLanguage.evaluateStandalone("{email: 'hr_employee@yuconz', password: '123', role: 'HR_EMPLOYEE'}");
+        Map<String, Object> in = ExpressionLanguage.evaluateStandalone("{email: 'hr_employee@yuconz', password: '123'}");
+        in.put("role", Role.HR_EMPLOYEE);
 
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
                 .add("email", TextType.class, options -> {

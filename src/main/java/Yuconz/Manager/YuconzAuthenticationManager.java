@@ -81,12 +81,14 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
         if (users.isEmpty()) {
             user = null;
+            role = null;
             logDetails = "user not found";
         } else {
             user = users.get(0);
 
             if (!authorisationManager.hasUserRights(request, user, role)) {
                 user = null;
+                role = null;
                 logDetails = "invalid role";
             }
         }

@@ -56,19 +56,20 @@
                 <a href="#">Annual Reviews</a>
             </div>
 
-
-            <div class="heading">
-                Administration
-            </div>
-            <div class="option">
-                <a href="#">Dashboard</a>
-            </div>
-            <div class="option">
-                <a href="#">Employee Search</a>
-            </div>
-            <div class="option">
-                <a href="#">Employment History</a>
-            </div>
+            {% if is_granted(_, 'has_rights', 'HR_EMPLOYEE') %}
+                <div class="heading">
+                    Administration
+                </div>
+                <div class="option">
+                    <a href="#">Dashboard</a>
+                </div>
+                <div class="option">
+                    <a href="{{ path('PersonalDetailsController.list') }}">Employee Search</a>
+                </div>
+                <div class="option">
+                    <a href="#">Employment History</a>
+                </div>
+            {% endif %}
         </div>
 
         <div id="mainContent">

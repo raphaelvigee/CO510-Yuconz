@@ -1,0 +1,19 @@
+{% extends "../dashboard.twig" %}
+
+{% block main_content %}
+    <h1>Users</h1>
+
+    <a href="{{ path('PersonalDetailsController.create') }}">
+        Add
+    </a>
+
+    {% for user in users %}
+        <div>
+            {{ user.getFullName() }}
+
+            <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
+                Edit
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}
