@@ -1,5 +1,7 @@
 {% extends 'base.twig' %}
 
+{% set routeName = _.getRoute().getName() %}
+
 {% block page_body %}
     <div id="dashboard">
 
@@ -42,18 +44,33 @@
                 My Yuconz
             </div>
             <div class="option {{ activePage(_, 'DashboardController.index') }}">
-                <a href="{{ path('DashboardController.index') }}">Dashboard</a>
+                <a class="link" href="{{ path('DashboardController.index') }}">Dashboard</a>
             </div>
-            <div class="option {{ activePage(_, 'PersonalDetailsController.edit') }}">
-                <a href="{{ path('PersonalDetailsController.edit', {'user': getUser(_).getId()}) }}">
-                    Personal Details
-                </a>
+            {% if is_granted(_, 'view_user', getUser(_)) %}
+                {% set currentUserDetails = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit'] %}
+                {% if currentUserDetails %}
+                    {% set currentUserDetails = getUser(_).equals(user) %}
+                {% endif %}
+                {% set activeClass = currentUserDetails ? "selected" : "" %}
+
+                <div class="option {{ activeClass }}">
+                    <a class="link" href="{{ path('PersonalDetailsController.view', {'user': getUser(_).getId()}) }}">
+                        Personal Details
+                    </a>
+
+                    {% if is_granted(_, 'edit_user', getUser(_)) %}
+                        <a href="{{ path('PersonalDetailsController.edit', {'user': getUser(_).getId()}) }}" class="icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="option">
+                <a class="link" href="#">Employment History</a>
             </div>
             <div class="option">
-                <a href="#">Employment History</a>
-            </div>
-            <div class="option">
-                <a href="#">Annual Reviews</a>
+                <a class="link" href="#">Annual Reviews</a>
             </div>
 
             {% if is_granted(_, 'has_rights', 'HR_EMPLOYEE') %}
@@ -61,11 +78,16 @@
                     Administration
                 </div>
                 <div class="option">
-                    <a href="#">Dashboard</a>
+                    <a class="link" href="#">Dashboard</a>
                 </div>
-                <div class="option {{ activePage(_, 'PersonalDetailsController.list') }}">
-                    <a href="{{ path('PersonalDetailsController.list') }}">Employee Management</a>
-                </div>
+                {% if is_granted(_, 'list_users') %}
+                    {% set employeeManagement = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit', 'PersonalDetailsController.list'] %}
+                    {% set activeClass = employeeManagement ? "selected" : "" %}
+
+                    <div class="option {{ activeClass }}">
+                        <a class="link" href="{{ path('PersonalDetailsController.list') }}">Employee Management</a>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
 
@@ -78,6 +100,6 @@
 {% endblock %}
 
 {% block page_head %}
+    {{ parent() }}
     <link rel="stylesheet" type="text/css" href="/assets/css/dashboard.css">
 {% endblock %}
-

@@ -69,7 +69,7 @@ public class PersonalDetailsController extends BaseController
     }
 
     @Route(path = "", methods = {Method.GET, Method.POST})
-    @Security(value = "is_granted($, 'list_users')")
+    @Security("is_granted($, 'list_users')")
     public Object list(Request request, Hibernate hibernate)
     {
         Map<String, String[]> queryParameters = request.getParameterMap();
@@ -113,7 +113,7 @@ public class PersonalDetailsController extends BaseController
         List users = userQuery.list();
 
         long usersCount = (long) session.createQuery("select count(*) from User").uniqueResult();
-        long maxPages = (long) Math.ceil(usersCount / perPage);
+        long maxPages = (long) Math.ceil((double) usersCount / perPage);
 
         transaction.commit();
 
@@ -126,7 +126,7 @@ public class PersonalDetailsController extends BaseController
     }
 
     @Route(path = "/create", methods = {Method.GET, Method.POST})
-    @Security(value = "is_granted($, 'create_user')")
+    @Security("is_granted($, 'create_user')")
     public Object create(Request request, Hibernate hibernate)
     {
         User user = new User();
@@ -134,15 +134,29 @@ public class PersonalDetailsController extends BaseController
         return handle(request, hibernate, user, true);
     }
 
-    @Route(path = "/{user}", methods = {Method.GET, Method.POST}, requirements = {
+    @Route(path = "/{user}/edit", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
     })
-    @Security(value = "is_granted($, 'edit_user', user)")
+    @Security("is_granted($, 'edit_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
     public Object edit(Request request, RouteParameters routeParameters, Hibernate hibernate)
     {
         User user = (User) routeParameters.get("user");
 
         return handle(request, hibernate, user, false);
+    }
+
+    @Route(path = "/{user}", methods = {Method.GET, Method.POST}, requirements = {
+            @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
+    })
+    @Security("is_granted($, 'view_user', user)")
+    @ParameterResolver(name = "user", type = UserResolver.class)
+    public Object view(Request request, RouteParameters routeParameters, Hibernate hibernate)
+    {
+        User user = (User) routeParameters.get("user");
+
+        return new JTwigResponse("views/personal-details/view.twig", MapUtils.createHashMap(
+                entry("user", user)
+        ));
     }
 }

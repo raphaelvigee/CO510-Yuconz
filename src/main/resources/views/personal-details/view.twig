@@ -1,0 +1,82 @@
+{% extends "../dashboard.twig" %}
+
+{% block main_content %}
+    <h1>
+        {{ user.getFullName() }}
+        {% if is_granted(_, 'edit_user', user) %}
+            <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
+                <i class="fas fa-xs fa-pencil-alt"></i>
+            </a>
+        {% endif %}
+    </h1>
+
+    <div class="table">
+        <div class="row">
+            <div class="cell heading">
+                ID
+            </div>
+            <div class="cell">
+                {{ user.getId() }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
+                First name
+            </div>
+            <div class="cell">
+                {{ user.getFirstName() }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
+                Last name
+            </div>
+            <div class="cell">
+                {{ user.getLastName() }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
+                Address
+            </div>
+            <div class="cell">
+                {% set a = user.getAddress() %}
+                {{ a.getLine1() }}<br>
+                {{ a.getLine2() }}<br>
+                {{ a.getCity() }}<br>
+                {{ a.getCounty() }}<br>
+                {{ a.getPostcode() }}<br>
+                {{ a.getCountry() }}<br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
+                Phone number
+            </div>
+            <div class="cell">
+                {{ user.getPhoneNumber() }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
+                Emergency contact
+            </div>
+            <div class="cell">
+                {{ user.getEmergencyContact() }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
+                Emergency contact number
+            </div>
+            <div class="cell">
+                {{ user.getEmergencyContactNumber() }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_head %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/assets/css/view.css">
+{% endblock %}

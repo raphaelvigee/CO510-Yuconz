@@ -211,6 +211,10 @@ public class User implements UserInterface<String>, Serializable
     @Override
     public String toString()
     {
+        if(role == null) {
+            return getEmail();
+        }
+
         return String.format("%s %s", getEmail(), getRole().toString());
     }
 

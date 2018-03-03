@@ -10,41 +10,45 @@
         </div>
     </form>
 
-    <a href="{{ path('PersonalDetailsController.create') }}">
-        <button>Add Employee</button>
-    </a>
-
+    {% if is_granted(_, 'create_user') %}
+        <a href="{{ path('PersonalDetailsController.create') }}">
+            <button>Add Employee</button>
+        </a>
+    {% endif %}
 
     <h2>Results</h2>
 
     <div class="results">
-    {% for user in users %}
-
-        <div class="result">
-            <div>
-                <div class="details">
-                    <div class="name">
-                        {{ user.getFullName() }} <span>{{ user.getId() }}</span>
+        {% for user in users %}
+            <div class="result">
+                <div>
+                    <div class="details">
+                        <div class="name">
+                            {{ user.getFullName() }} <span>{{ user.getId() }}</span>
+                        </div>
+                        <div class="title">
+                            Employee - Finance
+                        </div>
                     </div>
-                    <div class="title">
-                        Employee - Finance
+
+                    <div class="spacer"></div>
+
+                    <div class="options">
+
+                        {% if is_granted(_, 'view_user', user) %}
+                            <a href="{{ path('PersonalDetailsController.view', {'user': user.getId()}) }}">
+                                View
+                            </a>
+                        {% endif %}
+                        {% if is_granted(_, 'edit_user', user) %}
+                            <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
+                                Edit
+                            </a>
+                        {% endif %}
                     </div>
-                </div>
-
-                <div class="spacer"></div>
-
-                <div class="options">
-                    <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
-                        View
-                    </a>
-                    <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
-                        Edit
-                    </a>
                 </div>
             </div>
-        </div>
-
-    {% endfor %}
+        {% endfor %}
     </div>
 
     <div>
@@ -57,5 +61,5 @@
 
 {% block page_head %}
     {{ parent() }}
-     <link rel="stylesheet" rel="text/css" href="/assets/css/search.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/search.css">
 {% endblock %}

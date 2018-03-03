@@ -33,6 +33,7 @@ public class AuthenticationController extends BaseController
                 .add("email", TextType.class, options -> {
                     options.setLabel("Email Address");
                     options.getAttributes().put("placeholder", "example@yuconz.co.uk");
+                    options.getAttributes().put("autofocus", "autofocus");
 
                     options.getConstraints().add(new NotEmpty());
                 })

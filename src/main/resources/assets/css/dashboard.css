@@ -133,12 +133,21 @@
     text-transform: uppercase;
     color: #999;
     margin-top: 5px;
-    padding: 5px 10px 5px 10px;
     box-sizing: border-box;
+    position: relative;
 }
 
-#sidePanel .option a {
+#sidePanel .option .link {
+    padding: 5px 10px 5px 10px;
     color: #222;
+    display: block;
+}
+
+#sidePanel .option .icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -10px;
 }
 
 #sidePanel .option.selected {
