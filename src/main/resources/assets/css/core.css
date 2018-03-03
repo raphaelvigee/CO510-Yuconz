@@ -130,7 +130,11 @@ input[type=text]:focus, input[type=password]:focus {
     border: solid 1px var(--tintColor);
 }
 
-input[type=submit] {
+input[type=text]:focus, input[type=password]:focus {
+    border: solid 1px var(--tintColor);
+}
+
+input[type=submit], button {
     appearance: none;
     background: red;
     border: none;
@@ -143,11 +147,10 @@ input[type=submit] {
     margin: 0px;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, button:hover {
     opacity: 0.90;
 }
 
-input[type=submit]:active {
+input[type=submit]:active, button:active {
     opacity: 1.0;
 }
-

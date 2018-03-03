@@ -103,6 +103,8 @@
     opacity:1;
 }
 
+
+
 #sidePanel {
 
     position: fixed;
@@ -177,4 +179,31 @@
 #mainContent form {
     max-width: 450px;
     width: 80%;
+}
+
+a {
+    font-weight:400;
+}
+
+a:hover {
+    opacity:0.8;
+}
+
+a:active {
+    opacity:0.9;
+}
+
+
+
+#mainContent h1 {
+    font-weight:400;
+}
+#mainContent h2 {
+    font-weight:400;
+    margin-bottom:15px;
+}
+
+#mainContent button {
+    width:auto;
+    padding:5px 15px;
 }

@@ -63,11 +63,8 @@
                 <div class="option">
                     <a href="#">Dashboard</a>
                 </div>
-                <div class="option">
-                    <a href="{{ path('PersonalDetailsController.list') }}">Employee Search</a>
-                </div>
-                <div class="option">
-                    <a href="#">Employment History</a>
+                <div class="option {{ activePage(_, 'PersonalDetailsController.list') }}">
+                    <a href="{{ path('PersonalDetailsController.list') }}">Employee Management</a>
                 </div>
             {% endif %}
         </div>
