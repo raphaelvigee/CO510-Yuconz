@@ -25,7 +25,7 @@
         <dependency>
             <groupId>com.github.sallyf</groupId>
             <artifactId>sallyf</artifactId>
-            <version>7e1751a</version>
+            <version>c5fe240</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
