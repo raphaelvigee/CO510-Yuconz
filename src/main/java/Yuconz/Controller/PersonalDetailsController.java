@@ -2,6 +2,7 @@ package Yuconz.Controller;
 
 import Yuconz.Entity.User;
 import Yuconz.Form.UserType;
+import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
 import Yuconz.Service.Hibernate;
 import com.sallyf.sallyf.Annotation.Route;
@@ -11,6 +12,7 @@ import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.Type.FormType;
 import com.sallyf.sallyf.Form.Type.SubmitType;
 import com.sallyf.sallyf.JTwig.JTwigResponse;
+import com.sallyf.sallyf.Router.ParameterResolver;
 import com.sallyf.sallyf.Router.RouteParameters;
 import com.sallyf.sallyf.Server.Method;
 import org.eclipse.jetty.server.Request;
@@ -22,14 +24,14 @@ import java.util.Map;
 
 @Security(value = "is_granted($, 'authenticated')", handler = LoginRedirectHandler.class)
 @Route(path = "/details/{user}")
+@ParameterResolver(name = "user", type = UserResolver.class)
 public class PersonalDetailsController extends BaseController
 {
     @Route(path = "", methods = {Method.GET, Method.POST})
+    @Security(value = "is_granted($, 'edit', user)")
     public Object edit(Request request, RouteParameters routeParameters, Hibernate hibernate)
     {
-        Session session = hibernate.getCurrentSession();
-
-        User user = session.find(User.class, routeParameters.get("user"));
+        User user = (User) routeParameters.get("user");
 
         HashMap<String, Object> data = new HashMap<>();
         data.put("user", user.toHashMap());
@@ -45,6 +47,8 @@ public class PersonalDetailsController extends BaseController
 
         if (form.isSubmitted() && form.isValid()) {
             user.applyHashMap((Map<String, Object>) ((Map<String, Object>) form.resolveData()).get("user"));
+
+            Session session = hibernate.getCurrentSession();
 
             Transaction transaction = session.beginTransaction();
             session.persist(user);

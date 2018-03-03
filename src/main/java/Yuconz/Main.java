@@ -9,10 +9,10 @@ import Yuconz.JTwigFunction.FormRenderFunction;
 import Yuconz.Manager.AuthorisationManager;
 import Yuconz.Manager.LogManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.Service.Hibernate;
-import com.sallyf.sallyf.Container.Container;
-import com.sallyf.sallyf.Container.PlainReference;
-import com.sallyf.sallyf.Container.ServiceDefinition;
+import Yuconz.Voter.PersonalDetailsVoter;
+import com.sallyf.sallyf.Container.*;
 import com.sallyf.sallyf.Exception.FrameworkException;
 import com.sallyf.sallyf.Form.FormManager;
 import com.sallyf.sallyf.Form.Renderer.ChoiceRenderer;
@@ -33,15 +33,28 @@ public class Main
         Kernel app = Kernel.newInstance();
         Container container = app.getContainer();
 
+        // Managers
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
         container.add(new ServiceDefinition<>(LogManager.class));
         container.add(new ServiceDefinition<>(FormManager.class));
-        container.add(new ServiceDefinition<>(AuthorisationManager.class));
+
+        container.add(new ServiceDefinition<>(AuthorisationManager.class))
+                .addMethodCallDefinitions(new MethodCallDefinition(
+                        "setAuthenticationManager",
+                        new ServiceReference<>(YuconzAuthenticationManager.class)
+                ));
+
+        // Resolvers
+        container.add(new ServiceDefinition<>(UserResolver.class));
+
         container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(CurrentRoleFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(FormRenderFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(ActivePageFunction.class)).addTag("jtwig.function");
+
+        // Voters
+        container.add(new ServiceDefinition<>(PersonalDetailsVoter.class)).addTag("authentication.voter");
 
         container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()
         {

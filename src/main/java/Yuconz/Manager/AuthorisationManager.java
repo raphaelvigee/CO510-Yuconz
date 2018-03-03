@@ -10,16 +10,29 @@ public class AuthorisationManager implements ServiceInterface
 {
     private LogManager logManager;
 
+    private YuconzAuthenticationManager authenticationManager;
+
     public AuthorisationManager(LogManager logManager)
     {
         this.logManager = logManager;
+    }
+
+    public void setAuthenticationManager(YuconzAuthenticationManager authenticationManager)
+    {
+        this.authenticationManager = authenticationManager;
     }
 
     public boolean hasRights(Request request, User user, Role expectedRole)
     {
         logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString());
 
-        switch (user.getRole()) {
+        Role currentRole = authenticationManager.getCurrentRole(request);
+
+        if (currentRole == null) {
+            return false;
+        }
+
+        switch (currentRole) {
             case EMPLOYEE:
                 return expectedRole == Role.EMPLOYEE;
             case HR_EMPLOYEE:

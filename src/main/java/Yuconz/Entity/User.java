@@ -279,4 +279,16 @@ public class User implements UserInterface<String>, Serializable
         setEmergencyContact((String) map.get("emergency_contact"));
         setEmergencyContactNumber((String) map.get("emergency_contact_number"));
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(o instanceof User) {
+            User user = (User) o;
+
+            return user.getId().equals(getId());
+        }
+
+        return false;
+    }
 }

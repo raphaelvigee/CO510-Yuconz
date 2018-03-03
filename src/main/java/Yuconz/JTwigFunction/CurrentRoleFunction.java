@@ -1,5 +1,6 @@
 package Yuconz.JTwigFunction;
 
+import Yuconz.Manager.YuconzAuthenticationManager;
 import com.sallyf.sallyf.JTwig.JTwigServiceFunction;
 import com.sallyf.sallyf.Server.RuntimeBag;
 import org.jtwig.functions.FunctionRequest;
@@ -8,6 +9,13 @@ import javax.servlet.http.HttpSession;
 
 public class CurrentRoleFunction implements JTwigServiceFunction
 {
+    private YuconzAuthenticationManager authenticationManager;
+
+    public CurrentRoleFunction(YuconzAuthenticationManager authenticationManager)
+    {
+        this.authenticationManager = authenticationManager;
+    }
+
     @Override
     public String name()
     {
@@ -22,8 +30,6 @@ public class CurrentRoleFunction implements JTwigServiceFunction
 
         RuntimeBag runtimeBag = (RuntimeBag) request.get(0);
 
-        HttpSession session = runtimeBag.getRequest().getSession(true);
-
-        return session.getAttribute("role");
+        return authenticationManager.getCurrentRole(runtimeBag);
     }
 }
