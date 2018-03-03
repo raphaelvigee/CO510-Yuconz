@@ -1,0 +1,50 @@
+.results {
+    width:100%;
+}
+
+.results > div:not(:first-child) {
+}
+
+.results .result {
+}
+
+.results .result > div {
+    display:flex;
+    flex-direction:row;
+}
+
+.results > div:after {
+    display:block;
+    content:'';
+    height:1px;
+    margin:15px 10px 15px 5px;
+    background:#eee;
+}
+
+.results .result > div .details {
+    flex: 0;
+    white-space:nowrap;
+}
+.results .result > div .spacer {
+    flex: 1;
+}
+.results .result > div .options {
+    flex: 0;
+    white-space:nowrap;
+}
+
+.results .result > div .details .name {
+    font-weight:400;
+}
+.results .result > div .details .name span {
+    opacity:0.6;
+    font-size:12px;
+    font-weight:300;
+}
+.results .result > div .details .title {
+    font-size:12px;
+}
+
+.results .result > div .options a {
+    margin:0px 5px;
+}
