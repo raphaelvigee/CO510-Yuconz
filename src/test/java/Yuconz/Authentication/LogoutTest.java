@@ -20,7 +20,7 @@ public class LogoutTest extends AbstractTest
 
         Assert.assertEquals("/dashboard", path1);
 
-        HtmlAnchor logout = page1.querySelector("#nav > div.account > div > div.dropdown > div > a");
+        HtmlAnchor logout = page1.querySelector("#nav .account .dropdown > div a");
 
         Page page2 = webClient.getPage(getUrl(logout.getHrefAttribute()));
 
