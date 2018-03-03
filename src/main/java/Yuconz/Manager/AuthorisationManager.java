@@ -22,12 +22,26 @@ public class AuthorisationManager implements ServiceInterface
         this.authenticationManager = authenticationManager;
     }
 
-    public boolean hasRights(Request request, User user, Role expectedRole)
+    public boolean hasUserRights(Request request, User user, Role expectedRole)
+    {
+        logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString());
+
+        Role currentRole = user.getRole();
+
+        return hasRights(currentRole, expectedRole);
+    }
+
+    public boolean hasSessionRights(Request request, User user, Role expectedRole)
     {
         logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString());
 
         Role currentRole = authenticationManager.getCurrentRole(request);
 
+        return hasRights(currentRole, expectedRole);
+    }
+
+    private boolean hasRights(Role currentRole, Role expectedRole)
+    {
         if (currentRole == null) {
             return false;
         }

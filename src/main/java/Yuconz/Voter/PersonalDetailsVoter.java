@@ -65,7 +65,7 @@ public class PersonalDetailsVoter implements VoterInterface
 
     private boolean canCreate(User currentUser, RuntimeBag runtimeBag)
     {
-        return authorisationManager.hasRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
+        return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
     }
 
     private boolean canEdit(User user, User currentUser, RuntimeBag runtimeBag)
@@ -74,6 +74,6 @@ public class PersonalDetailsVoter implements VoterInterface
             return true;
         }
 
-        return authorisationManager.hasRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
+        return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
     }
 }
