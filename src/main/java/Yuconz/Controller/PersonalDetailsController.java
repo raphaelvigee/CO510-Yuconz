@@ -61,8 +61,10 @@ public class PersonalDetailsController extends BaseController
             }});
         }
 
+        User finalUser1 = user;
         return new JTwigResponse("views/personal-details/form.twig", new HashMap<String, Object>()
         {{
+            put("user", finalUser1);
             put("form", form.createView());
         }});
     }

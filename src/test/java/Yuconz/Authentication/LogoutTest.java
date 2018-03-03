@@ -22,7 +22,7 @@ public class LogoutTest extends AbstractTest
 
         HtmlAnchor logout = page1.querySelector("#nav .account .dropdown > div a");
 
-        Page page2 = webClient.getPage(getUrl(logout.getHrefAttribute()));
+        Page page2 = anchorClick(logout);
 
         String path2 = page2.getUrl().getPath();
 
