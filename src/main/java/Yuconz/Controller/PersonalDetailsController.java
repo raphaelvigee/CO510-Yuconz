@@ -135,7 +135,7 @@ public class PersonalDetailsController extends BaseController
     }
 
     @Route(path = "/{user}", methods = {Method.GET, Method.POST}, requirements = {
-            @Requirement(name = "user", requirement = "([a-zA-Z]{3}[0-9]{3})")
+            @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
     })
     @Security(value = "is_granted($, 'edit_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
