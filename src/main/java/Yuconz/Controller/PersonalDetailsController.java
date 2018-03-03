@@ -16,6 +16,7 @@ import com.sallyf.sallyf.JTwig.JTwigResponse;
 import com.sallyf.sallyf.Router.ParameterResolver;
 import com.sallyf.sallyf.Router.RouteParameters;
 import com.sallyf.sallyf.Server.Method;
+import com.sallyf.sallyf.Utils.MapUtils;
 import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -24,6 +25,8 @@ import org.hibernate.query.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.sallyf.sallyf.Utils.MapUtils.entry;
 
 @Security(value = "is_granted($, 'authenticated')", handler = LoginRedirectHandler.class)
 @Route(path = "/details")
@@ -54,19 +57,15 @@ public class PersonalDetailsController extends BaseController
             session.flush();
             transaction.commit();
 
-            User finalUser = user;
-            return this.redirectToRoute("PersonalDetailsController.edit", new HashMap<String, String>()
-            {{
-                put("user", finalUser.getId());
-            }});
+            return this.redirectToRoute("PersonalDetailsController.edit", MapUtils.createHashMap(
+                    entry("user", user.getId())
+            ));
         }
 
-        User finalUser1 = user;
-        return new JTwigResponse("views/personal-details/form.twig", new HashMap<String, Object>()
-        {{
-            put("user", finalUser1);
-            put("form", form.createView());
-        }});
+        return new JTwigResponse("views/personal-details/form.twig", MapUtils.createHashMap(
+                entry("user", user),
+                entry("form", form.createView())
+        ));
     }
 
     @Route(path = "", methods = {Method.GET, Method.POST})
@@ -76,7 +75,7 @@ public class PersonalDetailsController extends BaseController
         Map<String, String[]> queryParameters = request.getParameterMap();
 
         int perPage = 20;
-        String query = queryParameters.getOrDefault("query", new String[]{null})[0];
+        String query = queryParameters.getOrDefault("query", new String[]{""})[0];
         int page = Integer.parseInt(queryParameters.getOrDefault("page", new String[]{"1"})[0]);
 
         Session session = hibernate.getCurrentSession();
@@ -85,7 +84,7 @@ public class PersonalDetailsController extends BaseController
         Query userQuery;
 
 
-        if (query == null) {
+        if (query.isEmpty()) {
             userQuery = session.createQuery("from User");
         } else {
             String[] fields = {
@@ -118,13 +117,12 @@ public class PersonalDetailsController extends BaseController
 
         transaction.commit();
 
-        return new JTwigResponse("views/personal-details/list.twig", new HashMap<String, Object>()
-        {{
-            put("users", users);
-            put("query", query);
-            put("page", page);
-            put("max_pages", maxPages);
-        }});
+        return new JTwigResponse("views/personal-details/list.twig", MapUtils.createHashMap(
+                entry("users", users),
+                entry("query", query),
+                entry("page", page),
+                entry("max_pages", maxPages)
+        ));
     }
 
     @Route(path = "/create", methods = {Method.GET, Method.POST})
