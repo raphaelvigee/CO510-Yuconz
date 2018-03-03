@@ -67,8 +67,10 @@ public class CRUTest extends AbstractTest
 
         HtmlPage page2 = button1.click();
 
-        Pattern pattern = Pattern.compile("^/details/([a-z]{3}[0-9]{3})$");
-        Matcher matcher = pattern.matcher(page2.getUrl().getPath());
+        String url = page2.getUrl().getPath();
+
+        Pattern pattern = Pattern.compile("^/details/([a-z]{3}[0-9]{3})/edit$");
+        Matcher matcher = pattern.matcher(url);
         Assert.assertTrue(matcher.find());
 
         DomElement userIdH2 = page2.getElementById("user-id");
