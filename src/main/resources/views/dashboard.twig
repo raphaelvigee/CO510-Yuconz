@@ -16,10 +16,10 @@
                     </div>
                     <div class="details">
                         <div class="name">
-                            John Doe
+                            {{ getUser(_).getFullName() }}
                         </div>
                         <div class="role">
-                            Employee - hjfh137
+                            {{ getRole(_).getName() }} - {{ getUser(_).getId() }}
                         </div>
                     </div>
                     <div class="chevron">

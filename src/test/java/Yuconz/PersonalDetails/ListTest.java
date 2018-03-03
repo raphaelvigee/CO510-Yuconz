@@ -23,7 +23,7 @@ public class ListTest extends AbstractTest
     {
         HtmlPage loginPage = login(UserDefinition.HR_EMPLOYEE, "HR_EMPLOYEE");
 
-        HtmlAnchor listAnchor = loginPage.getAnchorByText("Employee Search");
+        HtmlAnchor listAnchor = loginPage.getAnchorByText("Employee Management");
 
         Page page = anchorClick(listAnchor);
 
