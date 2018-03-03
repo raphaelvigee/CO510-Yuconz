@@ -15,10 +15,7 @@ import com.sallyf.sallyf.Router.Response;
 import com.sallyf.sallyf.Server.Method;
 import org.eclipse.jetty.server.Request;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.*;
 
 @Route(path = "/auth")
 public class AuthenticationController extends BaseController
@@ -26,8 +23,11 @@ public class AuthenticationController extends BaseController
     @Route(path = "/login", methods = {Method.GET, Method.POST})
     public Object login(Request request, YuconzAuthenticationManager authenticationManager)
     {
-        Map<String, Object> in = ExpressionLanguage.evaluateStandalone("{email: 'hr_employee@yuconz', password: '123'}");
+        Map<String, Object> in = new LinkedHashMap<>();
+        in.put("email", "hr_employee@yuconz");
+        in.put("password", "123");
         in.put("role", Role.HR_EMPLOYEE);
+        in.put("next", request.getParameter("next"));
 
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
                 .add("email", TextType.class, options -> {
@@ -51,6 +51,7 @@ public class AuthenticationController extends BaseController
 
                     options.setChoiceLabelResolver(c -> ((Role) c).getName());
                 })
+                .add("next", HiddenType.class)
                 .add("submit", SubmitType.class, options -> {
                     options.setLabel("Login");
                 })
@@ -64,10 +65,15 @@ public class AuthenticationController extends BaseController
             String email = String.valueOf(data.get("email"));
             String password = String.valueOf(data.get("password"));
             String role = String.valueOf(data.get("role"));
+            String next = String.valueOf(data.get("next"));
 
             User user = (User) authenticationManager.authenticate(request, email, password, role);
 
             if (user != null) {
+                if (!next.isEmpty()) {
+                    return this.redirect(next);
+                }
+
                 return this.redirectToRoute("AppController.index");
             } else {
                 form.getErrorsBag().addError(new ValidationError("Invalid Email / Password or Role"));
