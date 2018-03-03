@@ -12,7 +12,9 @@ import java.util.Arrays;
 
 public class PersonalDetailsVoter implements VoterInterface
 {
-    public static final String EDIT = "edit";
+    public static final String EDIT = "edit_user";
+
+    public static final String CREATE = "create_user";
 
     private YuconzAuthenticationManager authenticationManager;
 
@@ -27,7 +29,7 @@ public class PersonalDetailsVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject, RuntimeBag runtimeBag)
     {
-        if (!Arrays.asList(new String[]{EDIT}).contains(attribute)) {
+        if (!Arrays.asList(new String[]{EDIT, CREATE}).contains(attribute)) {
             return false;
         }
 
@@ -37,7 +39,7 @@ public class PersonalDetailsVoter implements VoterInterface
             return false;
         }
 
-        if (!(subject instanceof User)) {
+        if (!(subject instanceof User) && !attribute.equals(CREATE)) {
             return false;
         }
 
@@ -49,18 +51,25 @@ public class PersonalDetailsVoter implements VoterInterface
     {
         User user = (User) subject;
 
+        User currentUser = (User) authenticationManager.getUser(runtimeBag);
+
         switch (attribute) {
             case EDIT:
-                return canEdit(user, runtimeBag);
+                return canEdit(user, currentUser, runtimeBag);
+            case CREATE:
+                return canCreate(currentUser, runtimeBag);
         }
 
         return false;
     }
 
-    private boolean canEdit(User user, RuntimeBag runtimeBag)
+    private boolean canCreate(User currentUser, RuntimeBag runtimeBag)
     {
-        User currentUser = (User) authenticationManager.getUser(runtimeBag);
+        return authorisationManager.hasRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
+    }
 
+    private boolean canEdit(User user, User currentUser, RuntimeBag runtimeBag)
+    {
         if (user.equals(currentUser)) {
             return true;
         }

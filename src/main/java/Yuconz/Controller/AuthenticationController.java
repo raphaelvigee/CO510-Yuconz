@@ -5,6 +5,7 @@ import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Model.Role;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Controller.BaseController;
+import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
 import com.sallyf.sallyf.Form.Constraint.NotEmpty;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.Type.*;
@@ -25,7 +26,9 @@ public class AuthenticationController extends BaseController
     @Route(path = "/login", methods = {Method.GET, Method.POST})
     public Object login(Request request, YuconzAuthenticationManager authenticationManager)
     {
-        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder()
+        Map<String, Object> in = ExpressionLanguage.evaluateStandalone("{email: 'hr_employee@yuconz', password: '123', role: 'HR_EMPLOYEE'}");
+
+        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
                 .add("email", TextType.class, options -> {
                     options.setLabel("Email Address");
                     options.getAttributes().put("placeholder", "example@yuconz.co.uk");
