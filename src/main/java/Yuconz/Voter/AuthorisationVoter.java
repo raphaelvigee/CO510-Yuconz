@@ -3,7 +3,7 @@ package Yuconz.Voter;
 import Yuconz.Entity.User;
 import Yuconz.Manager.AuthorisationManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
-import Yuconz.Model.Role;
+import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
 import com.sallyf.sallyf.Authentication.UserInterface;
 import com.sallyf.sallyf.Server.RuntimeBag;
@@ -47,7 +47,7 @@ public class AuthorisationVoter implements VoterInterface
     @Override
     public boolean vote(String attribute, Object subject, RuntimeBag runtimeBag)
     {
-        Role expectedRole = Role.valueOf((String) subject);
+        LoginRole expectedRole = LoginRole.valueOf((String) subject);
 
         User currentUser = (User) authenticationManager.getUser(runtimeBag);
 
@@ -59,7 +59,7 @@ public class AuthorisationVoter implements VoterInterface
         return false;
     }
 
-    private boolean hasRights(RuntimeBag runtimeBag, User currentUser, Role expectedRole)
+    private boolean hasRights(RuntimeBag runtimeBag, User currentUser, LoginRole expectedRole)
     {
         return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, expectedRole);
     }

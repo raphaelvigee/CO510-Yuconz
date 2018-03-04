@@ -2,10 +2,9 @@ package Yuconz.Controller;
 
 import Yuconz.Entity.User;
 import Yuconz.Manager.YuconzAuthenticationManager;
-import Yuconz.Model.Role;
+import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Controller.BaseController;
-import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
 import com.sallyf.sallyf.Form.Constraint.NotEmpty;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.Type.*;
@@ -26,7 +25,7 @@ public class AuthenticationController extends BaseController
         Map<String, Object> in = new LinkedHashMap<>();
         in.put("email", "hr_employee@yuconz");
         in.put("password", "123");
-        in.put("role", Role.HR_EMPLOYEE);
+        in.put("role", LoginRole.HR_EMPLOYEE);
         in.put("next", request.getParameter("next"));
 
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
@@ -46,11 +45,11 @@ public class AuthenticationController extends BaseController
                 .add("role", ChoiceType.class, options -> {
                     options.setLabel("Role");
 
-                    options.setChoices(new LinkedHashSet<>(Arrays.asList(Role.values())));
+                    options.setChoices(new LinkedHashSet<>(Arrays.asList(LoginRole.values())));
                     options.setMultiple(false);
                     options.setExpanded(false);
 
-                    options.setChoiceLabelResolver(c -> ((Role) c).getName());
+                    options.setChoiceLabelResolver(c -> ((LoginRole) c).getName());
                 })
                 .add("next", HiddenType.class)
                 .add("submit", SubmitType.class, options -> {

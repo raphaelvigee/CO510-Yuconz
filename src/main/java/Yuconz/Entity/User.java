@@ -1,6 +1,7 @@
 package Yuconz.Entity;
 
-import Yuconz.Model.Role;
+import Yuconz.Model.UserRole;
+import com.github.javafaker.Faker;
 import com.sallyf.sallyf.Authentication.UserInterface;
 import com.sallyf.sallyf.Exception.FrameworkException;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Entity
@@ -46,11 +48,11 @@ public class User implements UserInterface<String>, Serializable
 
     private String emergencyContactNumber;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private Section section;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
 
     @OneToMany(mappedBy = "user")
     private Set<AbstractRecord> records;
@@ -109,12 +111,12 @@ public class User implements UserInterface<String>, Serializable
     }
 
     @Enumerated(EnumType.STRING)
-    public Role getRole()
+    public UserRole getRole()
     {
         return role;
     }
 
-    public void setRole(Role roles)
+    public void setRole(UserRole roles)
     {
         this.role = roles;
     }
@@ -279,6 +281,7 @@ public class User implements UserInterface<String>, Serializable
         map.put("mobile_number", getMobileNumber());
         map.put("emergency_contact", getEmergencyContact());
         map.put("emergency_contact_number", getEmergencyContactNumber());
+        map.put("section", getSection());
 
         return map;
     }
@@ -294,6 +297,7 @@ public class User implements UserInterface<String>, Serializable
         setMobileNumber((String) map.get("mobile_number"));
         setEmergencyContact((String) map.get("emergency_contact"));
         setEmergencyContactNumber((String) map.get("emergency_contact_number"));
+        setSection((Section) map.get("section"));
     }
 
     @Override
@@ -306,5 +310,35 @@ public class User implements UserInterface<String>, Serializable
         }
 
         return false;
+    }
+
+    public static User bulk()
+    {
+        Faker faker = new Faker();
+
+        User user = new User();
+        user.setFirstName(faker.name().firstName());
+        user.setLastName(faker.name().lastName());
+        user.setEmail(faker.internet().emailAddress());
+        user.setBirthdate(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        user.setPassword(User.hash("123"));
+
+        Address address = new Address();
+        address.setLine1(faker.address().fullAddress());
+        address.setLine2(faker.lorem().sentence(3));
+        address.setCity(faker.address().city());
+        address.setCounty(faker.address().state());
+        address.setPostcode(faker.address().zipCode());
+        address.setCountry(faker.address().country());
+        user.setAddress(address);
+
+        user.setPhoneNumber(faker.phoneNumber().phoneNumber());
+        user.setMobileNumber(faker.phoneNumber().phoneNumber());
+        user.setEmergencyContact(faker.name().fullName());
+        user.setEmergencyContactNumber(faker.phoneNumber().phoneNumber());
+        user.setSection(Section.random());
+        user.setRole(UserRole.random());
+
+        return user;
     }
 }

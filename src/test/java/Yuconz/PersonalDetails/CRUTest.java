@@ -1,6 +1,7 @@
 package Yuconz.PersonalDetails;
 
 import Yuconz.AbstractTest;
+import Yuconz.Entity.Section;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.github.javafaker.Faker;
@@ -48,6 +49,7 @@ public class CRUTest extends AbstractTest
             data.put("user[birthdate][day]", String.valueOf(birthday.getDayOfMonth()));
             data.put("user[birthdate][month]", String.valueOf(birthday.getMonthValue()));
             data.put("user[birthdate][year]", String.valueOf(birthday.getYear()));
+            data.put("user[section]", String.valueOf(Section.random()));
 
             return data;
         };

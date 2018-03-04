@@ -1,8 +1,9 @@
 package Yuconz.Service;
 
-import Yuconz.Entity.Address;
+import Yuconz.Entity.Department;
+import Yuconz.Entity.Section;
 import Yuconz.Entity.User;
-import Yuconz.Model.Role;
+import Yuconz.Model.UserRole;
 import com.sallyf.sallyf.Container.ServiceInterface;
 import com.sallyf.sallyf.Exception.FrameworkException;
 import org.hibernate.Session;
@@ -60,39 +61,51 @@ public class Hibernate implements ServiceInterface
         Session session = getCurrentSession();
 
         if (isEmpty(User.class)) {
-            User employee = new User();
+            User employee = User.bulk();
             employee.setEmail("employee@yuconz");
             employee.setFirstName("John");
             employee.setLastName("Doe");
-            employee.setPassword(User.hash("123"));
-            employee.setRole(Role.EMPLOYEE);
+            employee.setRole(UserRole.EMPLOYEE);
+            employee.setSection(Section.RECRUITMENT);
 
-            User hr_employee = new User();
+            User hr_employee = User.bulk();
             hr_employee.setEmail("hr_employee@yuconz");
             hr_employee.setFirstName("John");
             hr_employee.setLastName("Doe HR");
-            hr_employee.setPassword(User.hash("123"));
-            hr_employee.setRole(Role.HR_EMPLOYEE);
+            hr_employee.setRole(UserRole.EMPLOYEE);
+            hr_employee.setSection(Section.RECRUITMENT);
 
-            User manager = new User();
+            User manager = User.bulk();
             manager.setEmail("manager@yuconz");
             manager.setFirstName("Mana");
             manager.setLastName("Ger");
-            manager.setPassword(User.hash("123"));
-            manager.setRole(Role.MANAGER);
+            manager.setRole(UserRole.MANAGER);
+            manager.setSection(Section.FRONT_END);
 
-            User director = new User();
+            User hr_manager = User.bulk();
+            hr_manager.setEmail("hr_manager@yuconz");
+            hr_manager.setFirstName("Mana");
+            hr_manager.setLastName("Ger HR");
+            hr_manager.setRole(UserRole.MANAGER);
+            hr_manager.setSection(Section.INTERNAL);
+
+            User director = User.bulk();
             director.setEmail("director@yuconz");
             director.setFirstName("Roman");
             director.setLastName("Miles");
-            director.setPassword(User.hash("123"));
-            director.setRole(Role.DIRECTOR);
+            director.setRole(UserRole.DIRECTOR);
+            director.setSection(Section.DIRECTORATE);
 
             Transaction transaction = session.beginTransaction();
 
+            for (int i = 0; i < 20; i++) {
+                session.persist(User.bulk());
+            }
+            
             session.persist(employee);
             session.persist(hr_employee);
             session.persist(manager);
+            session.persist(hr_manager);
             session.persist(director);
 
             transaction.commit();

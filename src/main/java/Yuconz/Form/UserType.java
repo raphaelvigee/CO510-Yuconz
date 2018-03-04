@@ -1,14 +1,18 @@
 package Yuconz.Form;
 
+import Yuconz.Entity.Section;
 import com.sallyf.sallyf.Form.Constraint.NotEmpty;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;
 import com.sallyf.sallyf.Form.FormTypeInterface;
 import com.sallyf.sallyf.Form.Options;
 import com.sallyf.sallyf.Form.Type.AbstractFormType;
+import com.sallyf.sallyf.Form.Type.ChoiceType;
 import com.sallyf.sallyf.Form.Type.TextType;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 public class UserType extends AbstractFormType<Options, Object>
@@ -50,6 +54,14 @@ public class UserType extends AbstractFormType<Options, Object>
                 .add("emergency_contact_number", TextType.class, options -> {
                     options.setLabel("Emergency contact number");
                     options.getConstraints().add(new NotEmpty());
+                })
+                .add("section", ChoiceType.class, options -> {
+                    options.setMultiple(false);
+                    options.setExpanded(false);
+                    options.setLabel("Section");
+
+                    options.setChoices(new LinkedHashSet<>(Arrays.asList(Section.values())));
+                    options.setChoiceLabelResolver(Object::toString);
                 });
     }
 

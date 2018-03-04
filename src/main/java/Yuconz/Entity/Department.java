@@ -1,18 +1,39 @@
 package Yuconz.Entity;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table
-public class Department
+public enum Department
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    HUMAN_RESOURCES("Human Resources"),
+    DESIGN("Design"),
+    FINANCE("Finance");
 
     private String name;
 
-    @OneToMany
     private List<Section> sections;
+
+    Department(String name)
+    {
+        this.name = name;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public List<Section> getSections()
+    {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections)
+    {
+        this.sections = sections;
+    }
 }

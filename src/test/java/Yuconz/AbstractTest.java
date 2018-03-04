@@ -19,6 +19,7 @@ public abstract class AbstractTest
         EMPLOYEE("employee@yuconz", "123"),
         HR_EMPLOYEE("hr_employee@yuconz", "123"),
         MANAGER("manager@yuconz", "123"),
+        HR_MANAGER("hr_manager@yuconz", "123"),
         DIRECTOR("director@yuconz", "123");
 
         final String email;
