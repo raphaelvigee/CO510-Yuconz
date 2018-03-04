@@ -85,6 +85,7 @@ public class PersonalDetailsController extends BaseController
     {
         Map<String, String[]> queryParameters = request.getParameterMap();
 
+        // Failsafe defaults
         int perPage = 20;
         String query = queryParameters.getOrDefault("query", new String[]{""})[0];
         int page = Integer.parseInt(queryParameters.getOrDefault("page", new String[]{"1"})[0]);
@@ -96,10 +97,12 @@ public class PersonalDetailsController extends BaseController
 
         Query countQuery;
 
+        // No query provided
         if (query.isEmpty()) {
             userQuery = session.createQuery("from User");
             countQuery = session.createQuery("select count(*) from User");
         } else {
+            // Query provided -> filter results
             String[] fields = {
                     "id",
                     "firstName",
@@ -127,6 +130,7 @@ public class PersonalDetailsController extends BaseController
 
         List users = userQuery.list();
 
+        // Compute pagination
         long usersCount = (long) countQuery.uniqueResult();
         long maxPages = (long) Math.ceil((double) usersCount / perPage);
 

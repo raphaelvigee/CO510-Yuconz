@@ -56,8 +56,10 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     public UserInterface authenticate(Request request, String username, String password, String roleStr)
     {
+        // Get requested LoginRole
         LoginRole loginRole = LoginRole.valueOf(roleStr.toUpperCase());
 
+        // Try finding user in DB
         Session session = hibernate.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
@@ -79,13 +81,16 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         User user;
         String logDetails = null;
 
+        // No user found
         if (users.isEmpty()) {
             user = null;
             loginRole = null;
             logDetails = "user not found";
         } else {
+            // User found
             user = users.get(0);
 
+            // Check if requested role is allowed
             if (!authorisationManager.hasUserRights(request, user, loginRole)) {
                 user = null;
                 loginRole = null;
@@ -93,6 +98,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
             }
         }
 
+        // Persist data to session
         HttpSession httpSession = request.getSession(true);
         httpSession.setAttribute("user", user);
         httpSession.setAttribute("role", loginRole);
@@ -104,6 +110,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     public void logout(Request request)
     {
+        // Clear session data
         HttpSession session = request.getSession(true);
         session.setAttribute("user", null);
         session.setAttribute("role", null);
