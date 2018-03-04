@@ -29,6 +29,7 @@ public class LoginRedirectHandler implements SecurityDeniedHandler
 
         String loginUrl = urlGenerator.url("AuthenticationController.login");
 
+        // Add current URL as a get parameter for post login redirection
         try {
             loginUrl += "?next=" + URLEncoder.encode(runtimeBag.getRequest().getRequestURL().toString(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
