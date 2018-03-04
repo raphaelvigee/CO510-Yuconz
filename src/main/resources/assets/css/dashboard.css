@@ -216,3 +216,15 @@ a:active {
     width:auto;
     padding:5px 15px;
 }
+
+form .row.date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0;
+}
+
+form .row.date .row {
+    margin: 0;
+    flex-grow: 0.2;
+}

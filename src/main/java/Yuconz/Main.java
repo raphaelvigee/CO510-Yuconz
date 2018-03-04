@@ -2,6 +2,7 @@ package Yuconz;
 
 import Yuconz.Controller.*;
 import Yuconz.FormRenderer.CustomChoiceRenderer;
+import Yuconz.FormRenderer.DateRenderer;
 import Yuconz.JTwigFunction.*;
 import Yuconz.Manager.AuthorisationManager;
 import Yuconz.Manager.LogManager;
@@ -52,6 +53,7 @@ public class Main
         container.add(new ServiceDefinition<>(ActivePageFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(IsGrantedFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(RangeFunction.class)).addTag("jtwig.function");
+        container.add(new ServiceDefinition<>(DateFunction.class)).addTag("jtwig.function");
 
         // Voters
         container.add(new ServiceDefinition<>(PersonalDetailsVoter.class)).addTag("authentication.voter");
@@ -80,6 +82,7 @@ public class Main
 
         formManager.getRenderers().removeIf(r -> r.getClass().equals(ChoiceRenderer.class));
         formManager.addRenderer(CustomChoiceRenderer.class);
+        formManager.addRenderer(DateRenderer.class);
 
         app.start();
 

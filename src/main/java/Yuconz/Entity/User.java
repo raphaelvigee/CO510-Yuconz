@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -35,8 +36,7 @@ public class User implements UserInterface<String>, Serializable
     @Embedded
     private Address address;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthdate;
+    private LocalDate birthdate;
 
     private String phoneNumber;
 
@@ -158,12 +158,12 @@ public class User implements UserInterface<String>, Serializable
         this.address = address;
     }
 
-    public Date getBirthdate()
+    public LocalDate getBirthdate()
     {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate)
+    public void setBirthdate(LocalDate birthdate)
     {
         this.birthdate = birthdate;
     }
@@ -211,7 +211,7 @@ public class User implements UserInterface<String>, Serializable
     @Override
     public String toString()
     {
-        if(role == null) {
+        if (role == null) {
             return getEmail();
         }
 
@@ -264,6 +264,15 @@ public class User implements UserInterface<String>, Serializable
         HashMap<String, Object> map = new HashMap<>();
         map.put("firstname", getFirstName());
         map.put("lastname", getLastName());
+
+        if (getBirthdate() != null) {
+            Map<String, Object> birthdate = new LinkedHashMap<>();
+            birthdate.put("day", getBirthdate().getDayOfMonth());
+            birthdate.put("month", getBirthdate().getMonth());
+            birthdate.put("year", getBirthdate().getYear());
+            map.put("birthdate", birthdate);
+        }
+
         map.put("address", getAddress().toHashMap());
         map.put("phone_number", getPhoneNumber());
         map.put("mobile_number", getMobileNumber());
@@ -277,6 +286,7 @@ public class User implements UserInterface<String>, Serializable
     {
         setFirstName((String) map.get("firstname"));
         setLastName((String) map.get("lastname"));
+        setBirthdate((LocalDate) map.get("birthdate"));
         getAddress().applyHashMap((Map<String, Object>) map.get("address"));
         setPhoneNumber((String) map.get("phone_number"));
         setMobileNumber((String) map.get("mobile_number"));
@@ -287,7 +297,7 @@ public class User implements UserInterface<String>, Serializable
     @Override
     public boolean equals(Object o)
     {
-        if(o instanceof User) {
+        if (o instanceof User) {
             User user = (User) o;
 
             return user.getId().equals(getId());

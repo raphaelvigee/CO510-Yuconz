@@ -34,10 +34,10 @@ public class PersonalDetailsController extends BaseController
 {
     private Object handle(Request request, Hibernate hibernate, User user, boolean create)
     {
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("user", user.toHashMap());
+        HashMap<String, Object> in = new HashMap<>();
+        in.put("user", user.toHashMap());
 
-        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(data)
+        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
                 .add("user", UserType.class)
                 .add("submit", SubmitType.class, options -> {
                     options.setLabel(create ? "Create" : "Update");
@@ -47,7 +47,8 @@ public class PersonalDetailsController extends BaseController
         form.handleRequest(request);
 
         if (form.isSubmitted() && form.isValid()) {
-            user.applyHashMap((Map<String, Object>) ((Map<String, Object>) form.resolveData()).get("user"));
+            Map<String, Object> data = (Map<String, Object>) form.resolveData();
+            user.applyHashMap((Map<String, Object>) data.get("user"));
 
             Session session = hibernate.getCurrentSession();
 

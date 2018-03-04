@@ -29,6 +29,14 @@
         </div>
         <div class="row">
             <div class="cell heading">
+                Birth date
+            </div>
+            <div class="cell">
+                {{ localdate(user.getBirthdate(), 'dd/MM/yyyy') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
                 Last name
             </div>
             <div class="cell">

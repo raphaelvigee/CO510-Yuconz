@@ -7,6 +7,8 @@ import com.github.javafaker.Faker;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -21,7 +23,7 @@ public class CRUTest extends AbstractTest
     {
         Faker faker = new Faker();
 
-        Supplier<Map<String, String>> dataSupplier = () -> {
+        Supplier<Map<String, String>> dataTextSupplier = () -> {
             Map<String, String> data = new LinkedHashMap<>();
             data.put("user[firstname]", faker.name().firstName());
             data.put("user[lastname]", faker.name().lastName());
@@ -39,17 +41,41 @@ public class CRUTest extends AbstractTest
             return data;
         };
 
-        BiConsumer<HtmlForm, Map<String, String>> formSetter = (form, data) -> {
+        Supplier<Map<String, String>> dataSelectSupplier = () -> {
+            Map<String, String> data = new LinkedHashMap<>();
+            LocalDate birthday = faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            data.put("user[birthdate][day]", String.valueOf(birthday.getDayOfMonth()));
+            data.put("user[birthdate][month]", String.valueOf(birthday.getMonthValue()));
+            data.put("user[birthdate][year]", String.valueOf(birthday.getYear()));
+
+            return data;
+        };
+
+        BiConsumer<HtmlForm, Map<String, String>> formTextSetter = (form, data) -> {
             data.forEach((name, value) -> {
                 HtmlTextInput field = form.getInputByName(name);
                 field.setValueAttribute(value);
             });
         };
 
-        BiConsumer<HtmlForm, Map<String, String>> formChecker = (form, data) -> {
+        BiConsumer<HtmlForm, Map<String, String>> formTextChecker = (form, data) -> {
             data.forEach((name, value) -> {
                 HtmlTextInput field = form.getInputByName(name);
                 Assert.assertEquals(value, field.getValueAttribute());
+            });
+        };
+
+        BiConsumer<HtmlForm, Map<String, String>> formSelectSetter = (form, data) -> {
+            data.forEach((name, value) -> {
+                HtmlSelect field = form.getSelectByName(name);
+                field.setSelectedAttribute(value, true);
+            });
+        };
+
+        BiConsumer<HtmlForm, Map<String, String>> formSelectChecker = (form, data) -> {
+            data.forEach((name, value) -> {
+                HtmlSelect field = form.getSelectByName(name);
+                Assert.assertEquals(value, field.getSelectedOptions().get(0).getValueAttribute());
             });
         };
 
@@ -59,9 +85,11 @@ public class CRUTest extends AbstractTest
 
         HtmlForm form1 = page1.getForms().get(0);
 
-        Map<String, String> data = dataSupplier.get();
+        Map<String, String> textData = dataTextSupplier.get();
+        Map<String, String> selectData = dataSelectSupplier.get();
 
-        formSetter.accept(form1, data);
+        formTextSetter.accept(form1, textData);
+        formSelectSetter.accept(form1, selectData);
 
         HtmlSubmitInput button1 = form1.getInputByValue("Create");
 
@@ -79,11 +107,14 @@ public class CRUTest extends AbstractTest
 
         HtmlForm form2 = page2.getForms().get(0);
 
-        formChecker.accept(form2, data);
+        formTextChecker.accept(form2, textData);
+        formSelectChecker.accept(form2, selectData);
 
-        Map<String, String> newData = dataSupplier.get();
+        Map<String, String> newTextData = dataTextSupplier.get();
+        Map<String, String> newSelectData = dataSelectSupplier.get();
 
-        formSetter.accept(form2, newData);
+        formTextSetter.accept(form2, newTextData);
+        formSelectSetter.accept(form2, newSelectData);
 
         HtmlSubmitInput button2 = form2.getInputByValue("Update");
 
@@ -91,6 +122,7 @@ public class CRUTest extends AbstractTest
 
         HtmlForm form3 = page3.getForms().get(0);
 
-        formChecker.accept(form3, newData);
+        formTextChecker.accept(form3, newTextData);
+        formSelectChecker.accept(form3, newSelectData);
     }
 }
