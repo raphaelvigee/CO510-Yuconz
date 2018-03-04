@@ -264,6 +264,7 @@ public class User implements UserInterface<String>, Serializable
         HashMap<String, Object> map = new HashMap<>();
         map.put("firstname", getFirstName());
         map.put("lastname", getLastName());
+        map.put("email", getEmail());
 
         if (getBirthdate() != null) {
             Map<String, Object> birthdate = new LinkedHashMap<>();
@@ -286,6 +287,7 @@ public class User implements UserInterface<String>, Serializable
     {
         setFirstName((String) map.get("firstname"));
         setLastName((String) map.get("lastname"));
+        setEmail((String) map.get("email"));
         setBirthdate((LocalDate) map.get("birthdate"));
         getAddress().applyHashMap((Map<String, Object>) map.get("address"));
         setPhoneNumber((String) map.get("phone_number"));

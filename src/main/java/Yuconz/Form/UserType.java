@@ -27,6 +27,10 @@ public class UserType extends AbstractFormType<Options, Object>
                     options.setLabel("Last name");
                     options.getConstraints().add(new NotEmpty());
                 })
+                .add("email", TextType.class, options -> {
+                    options.setLabel("Email address");
+                    options.getConstraints().add(new NotEmpty());
+                })
                 .add("birthdate", DateType.class, options -> {
                     options.setLabel("Birth date");
                 })

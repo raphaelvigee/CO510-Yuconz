@@ -27,6 +27,7 @@ public class CRUTest extends AbstractTest
             Map<String, String> data = new LinkedHashMap<>();
             data.put("user[firstname]", faker.name().firstName());
             data.put("user[lastname]", faker.name().lastName());
+            data.put("user[email]", faker.internet().emailAddress());
             data.put("user[address][line1]", faker.address().fullAddress());
             data.put("user[address][line2]", faker.lorem().sentence(3));
             data.put("user[address][city]", faker.address().city());
