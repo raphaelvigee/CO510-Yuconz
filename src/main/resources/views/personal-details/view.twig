@@ -31,6 +31,14 @@
         </div>
         <div class="row">
             <div class="cell heading">
+                Last name
+            </div>
+            <div class="cell">
+                {{ user.getLastName() }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="cell heading">
                 Email address
             </div>
             <div class="cell">
@@ -43,14 +51,6 @@
             </div>
             <div class="cell">
                 {{ localdate(user.getBirthdate(), 'dd/MM/yyyy') }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="cell heading">
-                Last name
-            </div>
-            <div class="cell">
-                {{ user.getLastName() }}
             </div>
         </div>
         <div class="row">
