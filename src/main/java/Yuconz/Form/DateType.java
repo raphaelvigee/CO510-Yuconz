@@ -1,10 +1,12 @@
 package Yuconz.Form;
 
+import Yuconz.FormConstraint.ValidDate;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormTypeInterface;
 import com.sallyf.sallyf.Form.Options;
 import com.sallyf.sallyf.Form.Type.AbstractFormType;
 import com.sallyf.sallyf.Form.Type.ChoiceType;
+import org.eclipse.jetty.server.Request;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -59,6 +61,14 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
 
                     options.setChoices(years);
                 });
+
+        form.getOptions().getConstraints().add(new ValidDate());
+    }
+
+    @Override
+    public LocalDate requestToNorm(Form<?, DateOptions, LocalDate> form, Request request)
+    {
+        return super.requestToNorm(form, request);
     }
 
     @Override

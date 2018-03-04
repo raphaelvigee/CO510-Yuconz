@@ -30,7 +30,7 @@
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:android:1.19" level="project" />
     <orderEntry type="library" name="Maven: com.github.mifmif:generex:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: dk.brics.automaton:automaton:1.11-8" level="project" />
-    <orderEntry type="library" name="Maven: com.github.sallyf:sallyf:8725059" level="project" />
+    <orderEntry type="library" name="Maven: com.github.sallyf:sallyf:fb145d5" level="project" />
     <orderEntry type="library" name="Maven: com.github.raphaelvigee:JavaExpressionLanguage:62663c9" level="project" />
     <orderEntry type="library" name="Maven: com.squareup:javapoet:1.10.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-server:9.4.6.v20170531" level="project" />
