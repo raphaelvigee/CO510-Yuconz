@@ -5,18 +5,24 @@
 {% block main_content %}
     <h1>Employee management</h1>
 
-    <form action="" method="get">
-        <div class="row">
-            <input type="text" name="query" value="{{ query }}" placeholder="Search...">
-            <input type="submit" value="Search">
-        </div>
-    </form>
+    <div id="userHeader">
 
-    {% if is_granted(_, 'create_user') %}
-        <a href="{{ path('PersonalDetailsController.create') }}">
-            <button>Add Employee</button>
-        </a>
-    {% endif %}
+        <form action="" method="get">
+            <div class="row" id="userSearch">
+                <input type="text" name="query" value="{{ query }}" placeholder="Search...">
+                <input type="submit" value="Search">
+            </div>
+        </form>
+
+        <div class="spacer"></div>
+
+        {% if is_granted(_, 'create_user') %}
+            <a href="{{ path('PersonalDetailsController.create') }}">
+                <button>Add Employee</button>
+            </a>
+        {% endif %}
+
+    </div>
 
     <h2>Results</h2>
 
