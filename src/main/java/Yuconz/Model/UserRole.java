@@ -15,4 +15,9 @@ public enum UserRole
     {
         return name;
     }
+
+    public static UserRole random()
+    {
+        return UserRole.values()[(int) (Math.random() * UserRole.values().length)];
+    }
 }

@@ -337,6 +337,7 @@ public class User implements UserInterface<String>, Serializable
         user.setEmergencyContact(faker.name().fullName());
         user.setEmergencyContactNumber(faker.phoneNumber().phoneNumber());
         user.setSection(Section.random());
+        user.setRole(UserRole.random());
 
         return user;
     }

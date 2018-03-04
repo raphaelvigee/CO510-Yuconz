@@ -73,28 +73,28 @@ public class Hibernate implements ServiceInterface
             hr_employee.setFirstName("John");
             hr_employee.setLastName("Doe HR");
             hr_employee.setRole(UserRole.EMPLOYEE);
-            employee.setSection(Section.RECRUITMENT);
+            hr_employee.setSection(Section.RECRUITMENT);
 
             User manager = User.bulk();
             manager.setEmail("manager@yuconz");
             manager.setFirstName("Mana");
             manager.setLastName("Ger");
             manager.setRole(UserRole.MANAGER);
-            employee.setSection(Section.FRONT_END);
+            manager.setSection(Section.FRONT_END);
 
             User hr_manager = User.bulk();
             hr_manager.setEmail("hr_manager@yuconz");
             hr_manager.setFirstName("Mana");
             hr_manager.setLastName("Ger HR");
             hr_manager.setRole(UserRole.MANAGER);
-            employee.setSection(Section.RECRUITMENT);
+            hr_manager.setSection(Section.INTERNAL);
 
             User director = User.bulk();
             director.setEmail("director@yuconz");
             director.setFirstName("Roman");
             director.setLastName("Miles");
             director.setRole(UserRole.DIRECTOR);
-            employee.setSection(Section.DIRECTORATE);
+            director.setSection(Section.DIRECTORATE);
 
             Transaction transaction = session.beginTransaction();
 
