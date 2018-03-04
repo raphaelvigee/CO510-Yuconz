@@ -5,14 +5,26 @@ import org.jtwig.functions.FunctionRequest;
 
 import java.util.stream.IntStream;
 
+/**
+ * JTwig function for generating an array from a range
+ */
 public class RangeFunction implements JTwigServiceFunction
 {
+    /**
+     * Name of function.
+     * @return name of function.
+     */
     @Override
     public String name()
     {
         return "range";
     }
 
+    /**
+     * Execute function.
+     * @param request page request
+     * @return the requested range array
+     */
     @Override
     public Object execute(FunctionRequest request)
     {
