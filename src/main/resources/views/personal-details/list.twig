@@ -27,7 +27,7 @@
                             {{ user.getFullName() }} <span>{{ user.getId() }}</span>
                         </div>
                         <div class="title">
-                            Employee - Finance
+                            {{ default(user.getRole().getName(), "N/A") }} - Finance
                         </div>
                     </div>
 
