@@ -404,11 +404,12 @@ public class User implements UserInterface<String>, Serializable
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            return new String(hash);
+            return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e) {
             throw new FrameworkException(e);
         }
     }
+
     /**
      * Generates a new randomised string of a specific length from a provided set of characters (strictly, a string).
      * @param chars Characters to use as the input source for randomisation
@@ -464,7 +465,6 @@ public class User implements UserInterface<String>, Serializable
     {
         if (o instanceof User) {
             User user = (User) o;
-
             return user.getId().equals(getId());
         }
 
