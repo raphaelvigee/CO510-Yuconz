@@ -17,12 +17,19 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
+/**
+ * Class to wrap Hibernate session factory and event dispatcher.
+ */
 public class Hibernate implements ServiceInterface
 {
     private SessionFactory sessionFactory;
 
     private EventDispatcher eventDispatcher;
 
+    /**
+     * New Hibernate wrapper.
+     * @param eventDispatcher the eventDispatcher
+     */
     public Hibernate(EventDispatcher eventDispatcher)
     {
         this.eventDispatcher = eventDispatcher;
@@ -38,6 +45,10 @@ public class Hibernate implements ServiceInterface
         }
     }
 
+    /**
+     * Initialise the container, to be called after the service is ready.
+     * @param container the container
+     */
     @Override
     public void initialize(Container container)
     {
@@ -47,21 +58,37 @@ public class Hibernate implements ServiceInterface
         populate();
     }
 
+    /**
+     * Gets the SessionFactory.
+     * @return
+     */
     public SessionFactory getSessionFactory()
     {
         return sessionFactory;
     }
 
+    /**
+     * Gets the CurrentSession.
+     * @return
+     */
     public Session getCurrentSession()
     {
         return getSessionFactory().getCurrentSession();
     }
 
+    /**
+     * Populates database with dummy data, for debugging.
+     * TODO: Remove for production release.
+     */
     private void populate()
     {
         populateUsers();
     }
 
+    /**
+     * Populate's database with dummy users, for debugging.
+     * TODO: Remove for production release.
+     */
     private void populateUsers()
     {
         Session session = getSessionFactory().openSession();
@@ -120,6 +147,12 @@ public class Hibernate implements ServiceInterface
         session.close();
     }
 
+    /**
+     * Returns true if a class (table) is empty, else false.
+     * @param aClass Class (table) to test
+     * @param <T> data type
+     * @return boolean
+     */
     private <T> boolean isEmpty(Class<T> aClass)
     {
         Session session = getCurrentSession();
