@@ -7,6 +7,9 @@ import org.hibernate.id.IdentifierGenerator;
 
 import java.io.Serializable;
 
+/**
+ * Generator for Yuconz IDs.
+ */
 public class YuconzIdGenerator implements IdentifierGenerator
 {
     /**

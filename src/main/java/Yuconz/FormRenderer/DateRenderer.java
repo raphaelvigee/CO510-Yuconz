@@ -6,6 +6,9 @@ import com.sallyf.sallyf.Form.FormTypeInterface;
 import com.sallyf.sallyf.Form.FormView;
 import com.sallyf.sallyf.Form.Renderer.BaseFormRenderer;
 
+/**
+ * Renders dates in forms. (e.g. dd/mm/yy inputs)
+ */
 public class DateRenderer extends BaseFormRenderer<DateType, DateType.DateOptions>
 {
     private FormManager manager;

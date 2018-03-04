@@ -5,6 +5,9 @@ import com.sallyf.sallyf.Form.FormView;
 import com.sallyf.sallyf.Form.Renderer.ChoiceRenderer;
 import com.sallyf.sallyf.Form.Type.ChoiceType;
 
+/**
+ * Renderer for custom select elements.
+ */
 public class CustomChoiceRenderer extends ChoiceRenderer
 {
     /**
