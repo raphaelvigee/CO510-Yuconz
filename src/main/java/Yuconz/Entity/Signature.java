@@ -56,7 +56,7 @@ public class Signature
 
     /**
      * Gets Signature's date
-     * @return
+     * @return date
      */
     public Date getDate()
     {

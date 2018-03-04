@@ -9,6 +9,13 @@ import com.sallyf.sallyf.Server.RuntimeBag;
 
 public class AppController extends BaseController
 {
+    /**
+     * If user is logged, redirect to log in screen,
+     * if not redirect to dashboard index.
+     * @param runtimeBag current runtime bag
+     * @param authenticationManager system authentication manager
+     * @return response
+     */
     @Route(path = "/")
     public Response index(RuntimeBag runtimeBag, YuconzAuthenticationManager authenticationManager)
     {
