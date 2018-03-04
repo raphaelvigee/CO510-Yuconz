@@ -1,6 +1,7 @@
 package Yuconz.Service;
 
-import Yuconz.Entity.Address;
+import Yuconz.Entity.Department;
+import Yuconz.Entity.Section;
 import Yuconz.Entity.User;
 import Yuconz.Model.Role;
 import com.sallyf.sallyf.Container.ServiceInterface;
@@ -60,36 +61,36 @@ public class Hibernate implements ServiceInterface
         Session session = getCurrentSession();
 
         if (isEmpty(User.class)) {
-            User employee = new User();
+            User employee = User.bulk();
             employee.setEmail("employee@yuconz");
             employee.setFirstName("John");
             employee.setLastName("Doe");
-            employee.setPassword(User.hash("123"));
             employee.setRole(Role.EMPLOYEE);
 
-            User hr_employee = new User();
+            User hr_employee = User.bulk();
             hr_employee.setEmail("hr_employee@yuconz");
             hr_employee.setFirstName("John");
             hr_employee.setLastName("Doe HR");
-            hr_employee.setPassword(User.hash("123"));
             hr_employee.setRole(Role.HR_EMPLOYEE);
 
-            User manager = new User();
+            User manager = User.bulk();
             manager.setEmail("manager@yuconz");
             manager.setFirstName("Mana");
             manager.setLastName("Ger");
-            manager.setPassword(User.hash("123"));
             manager.setRole(Role.MANAGER);
 
-            User director = new User();
+            User director = User.bulk();
             director.setEmail("director@yuconz");
             director.setFirstName("Roman");
             director.setLastName("Miles");
-            director.setPassword(User.hash("123"));
             director.setRole(Role.DIRECTOR);
 
             Transaction transaction = session.beginTransaction();
 
+            for (int i = 0; i < 20; i++) {
+                session.persist(User.bulk());
+            }
+            
             session.persist(employee);
             session.persist(hr_employee);
             session.persist(manager);
