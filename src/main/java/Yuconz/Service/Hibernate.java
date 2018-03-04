@@ -1,10 +1,13 @@
 package Yuconz.Service;
 
-import Yuconz.Entity.Address;
+import Yuconz.Entity.Section;
 import Yuconz.Entity.User;
-import Yuconz.Model.Role;
+import Yuconz.Model.UserRole;
+import com.sallyf.sallyf.Container.Container;
 import com.sallyf.sallyf.Container.ServiceInterface;
+import com.sallyf.sallyf.EventDispatcher.EventDispatcher;
 import com.sallyf.sallyf.Exception.FrameworkException;
+import com.sallyf.sallyf.KernelEvents;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,8 +21,11 @@ public class Hibernate implements ServiceInterface
 {
     private SessionFactory sessionFactory;
 
-    public Hibernate()
+    private EventDispatcher eventDispatcher;
+
+    public Hibernate(EventDispatcher eventDispatcher)
     {
+        this.eventDispatcher = eventDispatcher;
         try {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .configure("hibernate.cfg.xml").build();
@@ -30,8 +36,15 @@ public class Hibernate implements ServiceInterface
         } catch (Throwable e) {
             throw new FrameworkException(e);
         }
+    }
 
-        populateUsers();
+    @Override
+    public void initialize(Container container)
+    {
+        eventDispatcher.register(KernelEvents.POST_MATCH_ROUTE, (et, e) -> getSessionFactory().openSession());
+        eventDispatcher.register(KernelEvents.PRE_SEND_RESPONSE, (et, e) -> getSessionFactory().getCurrentSession().close());
+
+        populate();
     }
 
     public SessionFactory getSessionFactory()
@@ -41,61 +54,82 @@ public class Hibernate implements ServiceInterface
 
     public Session getCurrentSession()
     {
-        return getSessionFactory().openSession();
+        return getSessionFactory().getCurrentSession();
+    }
+
+    private void populate()
+    {
+        populateUsers();
+    }
+
+    private void populateUsers()
+    {
+        Session session = getSessionFactory().openSession();
+
+        if (isEmpty(User.class)) {
+            User employee = User.bulk();
+            employee.setEmail("employee@yuconz");
+            employee.setFirstName("John");
+            employee.setLastName("Doe");
+            employee.setRole(UserRole.EMPLOYEE);
+            employee.setSection(Section.RECRUITMENT);
+
+            User hr_employee = User.bulk();
+            hr_employee.setEmail("hr_employee@yuconz");
+            hr_employee.setFirstName("John");
+            hr_employee.setLastName("Doe HR");
+            hr_employee.setRole(UserRole.EMPLOYEE);
+            hr_employee.setSection(Section.RECRUITMENT);
+
+            User manager = User.bulk();
+            manager.setEmail("manager@yuconz");
+            manager.setFirstName("Mana");
+            manager.setLastName("Ger");
+            manager.setRole(UserRole.MANAGER);
+            manager.setSection(Section.FRONT_END);
+
+            User hr_manager = User.bulk();
+            hr_manager.setEmail("hr_manager@yuconz");
+            hr_manager.setFirstName("Mana");
+            hr_manager.setLastName("Ger HR");
+            hr_manager.setRole(UserRole.MANAGER);
+            hr_manager.setSection(Section.INTERNAL);
+
+            User director = User.bulk();
+            director.setEmail("director@yuconz");
+            director.setFirstName("Roman");
+            director.setLastName("Miles");
+            director.setRole(UserRole.DIRECTOR);
+            director.setSection(Section.DIRECTORATE);
+
+            Transaction transaction = session.beginTransaction();
+
+            for (int i = 0; i < 20; i++) {
+                session.persist(User.bulk());
+            }
+
+            session.persist(employee);
+            session.persist(hr_employee);
+            session.persist(manager);
+            session.persist(hr_manager);
+            session.persist(director);
+
+            transaction.commit();
+        }
+
+        session.close();
     }
 
     private <T> boolean isEmpty(Class<T> aClass)
     {
         Session session = getCurrentSession();
 
+        Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("SELECT COUNT(*) FROM " + aClass.getSimpleName());
 
         Long count = (Long) query.getSingleResult();
+        transaction.commit();
 
         return count == 0;
-    }
-
-    private void populateUsers()
-    {
-        Session session = getCurrentSession();
-
-        if (isEmpty(User.class)) {
-            User employee = new User();
-            employee.setEmail("employee@yuconz");
-            employee.setFirstName("John");
-            employee.setLastName("Doe");
-            employee.setPassword(User.hash("123"));
-            employee.setRole(Role.EMPLOYEE);
-
-            User hr_employee = new User();
-            hr_employee.setEmail("hr_employee@yuconz");
-            hr_employee.setFirstName("John");
-            hr_employee.setLastName("Doe HR");
-            hr_employee.setPassword(User.hash("123"));
-            hr_employee.setRole(Role.HR_EMPLOYEE);
-
-            User manager = new User();
-            manager.setEmail("manager@yuconz");
-            manager.setFirstName("Mana");
-            manager.setLastName("Ger");
-            manager.setPassword(User.hash("123"));
-            manager.setRole(Role.MANAGER);
-
-            User director = new User();
-            director.setEmail("director@yuconz");
-            director.setFirstName("Roman");
-            director.setLastName("Miles");
-            director.setPassword(User.hash("123"));
-            director.setRole(Role.DIRECTOR);
-
-            Transaction transaction = session.beginTransaction();
-
-            session.persist(employee);
-            session.persist(hr_employee);
-            session.persist(manager);
-            session.persist(director);
-
-            transaction.commit();
-        }
     }
 }

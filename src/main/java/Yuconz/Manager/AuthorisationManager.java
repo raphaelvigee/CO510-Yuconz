@@ -1,8 +1,10 @@
 package Yuconz.Manager;
 
+import Yuconz.Entity.Department;
 import Yuconz.Entity.User;
 import Yuconz.Model.LogType;
-import Yuconz.Model.Role;
+import Yuconz.Model.LoginRole;
+import Yuconz.Model.UserRole;
 import com.sallyf.sallyf.Container.ServiceInterface;
 import org.eclipse.jetty.server.Request;
 
@@ -22,41 +24,39 @@ public class AuthorisationManager implements ServiceInterface
         this.authenticationManager = authenticationManager;
     }
 
-    public boolean hasUserRights(Request request, User user, Role expectedRole)
+    public boolean hasUserRights(Request request, User user, LoginRole expectedRole)
     {
         logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString());
 
-        Role currentRole = user.getRole();
+        UserRole userRole = user.getRole();
+        boolean isHr = user.getSection().getDepartment().equals(Department.HUMAN_RESOURCES);
 
-        return hasRights(currentRole, expectedRole);
-    }
-
-    public boolean hasSessionRights(Request request, User user, Role expectedRole)
-    {
-        logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString());
-
-        Role currentRole = authenticationManager.getCurrentRole(request);
-
-        return hasRights(currentRole, expectedRole);
-    }
-
-    private boolean hasRights(Role currentRole, Role expectedRole)
-    {
-        if (currentRole == null) {
-            return false;
-        }
-
-        switch (currentRole) {
+        switch (userRole) {
             case EMPLOYEE:
-                return expectedRole == Role.EMPLOYEE;
-            case HR_EMPLOYEE:
-                return expectedRole == Role.EMPLOYEE || expectedRole == Role.HR_EMPLOYEE;
+                if (expectedRole == LoginRole.HR_EMPLOYEE) {
+                    return isHr;
+                }
+
+                return expectedRole == LoginRole.EMPLOYEE;
             case MANAGER:
-                return expectedRole == Role.EMPLOYEE || expectedRole == Role.MANAGER;
+                if (expectedRole == LoginRole.HR_MANAGER || expectedRole == LoginRole.HR_EMPLOYEE) {
+                    return isHr;
+                }
+
+                return expectedRole == LoginRole.MANAGER || expectedRole == LoginRole.EMPLOYEE;
             case DIRECTOR:
                 return true;
         }
 
         return false;
+    }
+
+    public boolean hasSessionRights(Request request, User user, LoginRole expectedRole)
+    {
+        logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString());
+
+        LoginRole loginRole = authenticationManager.getCurrentRole(request);
+
+        return loginRole.getContainedRoles().contains(expectedRole);
     }
 }

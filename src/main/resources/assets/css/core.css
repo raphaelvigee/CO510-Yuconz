@@ -6,11 +6,6 @@
     --textStrongColor: #111;
     --textWeakColor: #555;
 
-    --tintColor: #c4ff00;
-    --tintColor: #c4c4ff;
-    --tintColor: #00ffc4;
-    --tintColor: #00c4ff;
-    --tintColor: #c4ff00;
     --tintColor: #502F4C;
 }
 
@@ -77,6 +72,10 @@ select {
     background: transparent;
     color: var(--textColour);
     cursor: pointer;
+}
+
+select:focus {
+    border: solid 1px var(--tintColor);
 }
 
 .selectWrapper {

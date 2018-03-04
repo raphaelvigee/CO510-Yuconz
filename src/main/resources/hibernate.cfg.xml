@@ -14,6 +14,7 @@
         <property name="connection.password"></property>
 
         <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.current_session_context_class">thread</property>
 
         <mapping class="Yuconz.Entity.User"/>
         <mapping class="Yuconz.Entity.Log"/>

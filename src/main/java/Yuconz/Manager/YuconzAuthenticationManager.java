@@ -2,7 +2,7 @@ package Yuconz.Manager;
 
 import Yuconz.Entity.User;
 import Yuconz.Model.LogType;
-import Yuconz.Model.Role;
+import Yuconz.Model.LoginRole;
 import Yuconz.Service.Hibernate;
 import Yuconz.Voter.YuconzAuthenticationVoter;
 import com.sallyf.sallyf.Authentication.AuthenticationManager;
@@ -56,7 +56,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     public UserInterface authenticate(Request request, String username, String password, String roleStr)
     {
-        Role role = Role.valueOf(roleStr.toUpperCase());
+        LoginRole loginRole = LoginRole.valueOf(roleStr.toUpperCase());
 
         Session session = hibernate.getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -81,21 +81,21 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
         if (users.isEmpty()) {
             user = null;
-            role = null;
+            loginRole = null;
             logDetails = "user not found";
         } else {
             user = users.get(0);
 
-            if (!authorisationManager.hasUserRights(request, user, role)) {
+            if (!authorisationManager.hasUserRights(request, user, loginRole)) {
                 user = null;
-                role = null;
+                loginRole = null;
                 logDetails = "invalid role";
             }
         }
 
         HttpSession httpSession = request.getSession(true);
         httpSession.setAttribute("user", user);
-        httpSession.setAttribute("role", role);
+        httpSession.setAttribute("role", loginRole);
 
         logManager.log(user, request.getRemoteAddr(), user == null ? LogType.AUTHENTICATION_LOGIN_FAIL : LogType.AUTHENTICATION_LOGIN_SUCCESS, logDetails);
 
@@ -109,15 +109,15 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         session.setAttribute("role", null);
     }
 
-    public Role getCurrentRole(RuntimeBag runtimeBag)
+    public LoginRole getCurrentRole(RuntimeBag runtimeBag)
     {
         return getCurrentRole(runtimeBag.getRequest());
     }
 
-    public Role getCurrentRole(Request request)
+    public LoginRole getCurrentRole(Request request)
     {
         HttpSession session = request.getSession(true);
 
-        return (Role) session.getAttribute("role");
+        return (LoginRole) session.getAttribute("role");
     }
 }
