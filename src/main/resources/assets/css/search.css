@@ -1,3 +1,36 @@
+#userHeader {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0;
+}
+
+#userHeader > * {
+    flex: 0;
+}
+
+#userHeader .spacer {
+    flex: 1;
+}
+
+#userHeader button {
+    white-space: nowrap;
+}
+
+#userSearch {
+    display: flex;
+    flex-direction: row;
+    min-width: 300px;
+    margin: 0;
+}
+
+#userSearch input[type=text] {
+    flex: 1;
+}
+
+#userSearch input[type=submit] {
+    flex: 0;
+}
+
 .results {
     width:100%;
 }
