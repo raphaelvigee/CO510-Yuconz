@@ -7,6 +7,10 @@ import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.Router.Response;
 import com.sallyf.sallyf.Server.RuntimeBag;
 
+/**
+ * Main app controller, redirects to specific part of
+ * site: auth controller or dashboard index.
+ */
 public class AppController extends BaseController
 {
     /**

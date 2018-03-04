@@ -15,9 +15,17 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Controller for static content types (css, js, etc).
+ */
 @Route(path = "/assets")
 public class StaticController extends BaseController
 {
+    /**
+     * Route for static asset types.
+     * @param routeParameters the route's parameters
+     * @return response
+     */
     @Route(path = "/{path}", requirements = {
             @Requirement(name = "path", requirement = "(.*)")
     })
@@ -41,6 +49,11 @@ public class StaticController extends BaseController
         return new Response(content, Status.OK, mime);
     }
 
+    /**
+     * Get content string for a file's InputStream.
+     * @param stream
+     * @return
+     */
     private String getContent(InputStream stream)
     {
         StringBuilder result = new StringBuilder("");
