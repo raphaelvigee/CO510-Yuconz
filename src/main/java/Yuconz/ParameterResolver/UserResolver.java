@@ -7,6 +7,7 @@ import com.sallyf.sallyf.Router.RouteParameterResolverInterface;
 import com.sallyf.sallyf.Server.RuntimeBag;
 import com.sallyf.sallyf.Server.Status;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class UserResolver implements RouteParameterResolverInterface<User>
 {
@@ -22,7 +23,9 @@ public class UserResolver implements RouteParameterResolverInterface<User>
     {
         Session session = hibernate.getCurrentSession();
 
+        Transaction transaction = session.beginTransaction();
         User user = session.find(User.class, value);
+        transaction.commit();
 
         if (user == null) {
             throw new HttpException(Status.NOT_FOUND);

@@ -1,55 +1,59 @@
 #loginView {
-    width:280px;
-    margin:auto;
-    top:100px;
+    width: 280px;
+    margin: auto;
+    top: 100px;
     position: relative;
 }
+
 #loginFooter {
-    width:280px;
-    text-align:center;
+    width: 280px;
+    text-align: center;
     color: var(--textWeakColor);
     font-style: italic;
-    font-size:13px;
+    font-size: 13px;
     margin: 20px auto auto;
 }
 
 #loginHeader {
-    clear:both;
-    overflow:auto;
+    clear: both;
+    overflow: auto;
 }
 
 #loginHeaderIcon {
-    float:left;
-    width:30px;
-    height:30px;
+    float: left;
+    width: 30px;
+    height: 30px;
     background: var(--tintColor);
 }
+
 #loginHeaderIcon:before {
-    position:relative;
+    position: relative;
     content: "\f023";
     font-family: 'Font Awesome 5 Free';
-    color:var(--backgroundColor);
-    font-weight:900;
-    font-size:18px;
-    left:7px;
-    top:5px;
+    color: var(--backgroundColor);
+    font-weight: 900;
+    font-size: 18px;
+    left: 7px;
+    top: 5px;
 }
+
 #loginHeaderTitle {
-    float:left;
-    margin-left:10px;
-    color:var(--tintColor);
-    font-weight:600;
-    font-size:20px;
+    float: left;
+    margin-left: 10px;
+    color: var(--tintColor);
+    font-weight: 600;
+    font-size: 20px;
 }
+
 #loginHeaderSubtitle {
-    float:left;
-    width:100%;
-    margin-top:10px;
+    float: left;
+    width: 100%;
+    margin-top: 10px;
 }
 
 #loginView .detailSection {
     text-align: center;
-    margin-top:10px;
-    font-size:14px;
+    margin-top: 10px;
+    font-size: 14px;
 }
 

@@ -94,9 +94,11 @@ public class PersonalDetailsController extends BaseController
 
         Query userQuery;
 
+        Query countQuery;
 
         if (query.isEmpty()) {
             userQuery = session.createQuery("from User");
+            countQuery = session.createQuery("select count(*) from User");
         } else {
             String[] fields = {
                     "id",
@@ -115,6 +117,8 @@ public class PersonalDetailsController extends BaseController
 
             userQuery = session.createQuery("from User where " + searchQuery)
                     .setParameter("query", "%" + query + "%");
+            countQuery = session.createQuery("select count(*) from User where " + searchQuery)
+                    .setParameter("query", "%" + query + "%");
         }
 
         userQuery
@@ -123,7 +127,7 @@ public class PersonalDetailsController extends BaseController
 
         List users = userQuery.list();
 
-        long usersCount = (long) session.createQuery("select count(*) from User").uniqueResult();
+        long usersCount = (long) countQuery.uniqueResult();
         long maxPages = (long) Math.ceil((double) usersCount / perPage);
 
         transaction.commit();
