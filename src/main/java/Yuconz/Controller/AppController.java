@@ -20,16 +20,4 @@ public class AppController extends BaseController
 
         return redirectToRoute("DashboardController.index");
     }
-
-    @Route(path = "/user")
-    public String user(RuntimeBag runtimeBag, YuconzAuthenticationManager authenticationManager)
-    {
-        UserInterface user = authenticationManager.getUser(runtimeBag);
-
-        if (user == null) {
-            return "Anonymous";
-        }
-
-        return user.toString();
-    }
 }
