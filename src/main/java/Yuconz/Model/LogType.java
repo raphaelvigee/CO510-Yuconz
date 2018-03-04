@@ -1,5 +1,8 @@
 package Yuconz.Model;
 
+/**
+ * Log types.
+ */
 public enum LogType
 {
     AUTHENTICATION_LOGIN_SUCCESS,

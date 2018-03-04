@@ -1,5 +1,8 @@
 package Yuconz.Model;
 
+/**
+ * Employee User role levels.
+ */
 public enum UserRole
 {
     EMPLOYEE("Employee"), MANAGER("Manager"), DIRECTOR("Director");
