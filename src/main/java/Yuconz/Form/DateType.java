@@ -66,12 +66,6 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
     }
 
     @Override
-    public LocalDate requestToNorm(Form<?, DateOptions, LocalDate> form, Request request)
-    {
-        return super.requestToNorm(form, request);
-    }
-
-    @Override
     public <T extends FormTypeInterface<DateType.DateOptions, LocalDate>> Object resolveData(Form<T, DateOptions, LocalDate> form)
     {
         Integer day = (Integer) form.getChildren("day").resolveData();
