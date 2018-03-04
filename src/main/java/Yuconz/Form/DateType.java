@@ -26,12 +26,20 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
 
     }
 
+    /**
+     * Creates the options container.
+     * @return new DateOptions object
+     */
     @Override
     public DateOptions createOptions()
     {
         return new DateOptions();
     }
 
+    /**
+     * Builds a form structure.
+     * @param form form
+     */
     @Override
     public void buildForm(Form<?, DateOptions, LocalDate> form)
     {
@@ -65,6 +73,12 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
         form.getOptions().getConstraints().add(new ValidDate());
     }
 
+    /**
+     * Transforms the data of the form, into the representation of the data.
+     * @param form form
+     * @param <T> generic class
+     * @return representation of the data
+     */
     @Override
     public <T extends FormTypeInterface<DateType.DateOptions, LocalDate>> Object resolveData(Form<T, DateOptions, LocalDate> form)
     {

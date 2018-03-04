@@ -7,11 +7,20 @@ import com.sallyf.sallyf.Form.Type.ChoiceType;
 
 public class CustomChoiceRenderer extends ChoiceRenderer
 {
+    /**
+     * Constructor for CustomChoiceRenderer.
+     * @param manager manager
+     */
     public CustomChoiceRenderer(FormManager manager)
     {
         super(manager);
     }
 
+    /**
+     * Renders the select.
+     * @param form form
+     * @return rendered select
+     */
     @Override
     public String renderSelect(FormView<ChoiceType, ChoiceType.ChoiceOptions, ?> form)
     {

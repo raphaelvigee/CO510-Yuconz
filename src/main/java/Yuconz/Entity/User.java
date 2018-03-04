@@ -436,6 +436,10 @@ public class User implements UserInterface<String>, Serializable
         return chars + nums;
     }
 
+    /**
+     * Custom toString method.
+     * @return The String to be returned.
+     */
     @Override
     public String toString()
     {
@@ -446,6 +450,11 @@ public class User implements UserInterface<String>, Serializable
         return String.format("%s %s", getEmail(), getRole().toString());
     }
 
+    /**
+     * Custom equals method.
+     * @param o The object to be tested.
+     * @return True or false.
+     */
     @Override
     public boolean equals(Object o)
     {
@@ -458,6 +467,10 @@ public class User implements UserInterface<String>, Serializable
         return false;
     }
 
+    /**
+     * Generates a User.
+     * @return New Random User.
+     */
     public static User bulk()
     {
         Faker faker = new Faker();

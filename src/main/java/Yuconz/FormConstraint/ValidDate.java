@@ -11,6 +11,11 @@ import java.time.Month;
 
 public class ValidDate implements ConstraintInterface
 {
+    /**
+     * Checks if the date is valid.
+     * @param form form
+     * @param errorsBag errorsBag
+     */
     @Override
     public void validate(Form<?, ?, ?> form, ErrorsBag errorsBag)
     {
