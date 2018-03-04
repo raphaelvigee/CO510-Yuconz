@@ -32,9 +32,6 @@ public class AuthenticationController extends BaseController
     public Object login(Request request, YuconzAuthenticationManager authenticationManager)
     {
         Map<String, Object> in = new LinkedHashMap<>();
-        in.put("email", "hr_employee@yuconz");
-        in.put("password", "123");
-        in.put("role", LoginRole.HR_EMPLOYEE);
         in.put("next", request.getParameter("next"));
 
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
