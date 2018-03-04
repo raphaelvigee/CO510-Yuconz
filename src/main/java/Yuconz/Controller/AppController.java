@@ -7,8 +7,19 @@ import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.Router.Response;
 import com.sallyf.sallyf.Server.RuntimeBag;
 
+/**
+ * Main app controller, redirects to specific part of
+ * site: auth controller or dashboard index.
+ */
 public class AppController extends BaseController
 {
+    /**
+     * If user is logged, redirect to log in screen,
+     * if not redirect to dashboard index.
+     * @param runtimeBag current runtime bag
+     * @param authenticationManager system authentication manager
+     * @return response
+     */
     @Route(path = "/")
     public Response index(RuntimeBag runtimeBag, YuconzAuthenticationManager authenticationManager)
     {

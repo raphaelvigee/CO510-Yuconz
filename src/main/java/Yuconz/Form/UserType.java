@@ -15,8 +15,15 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
+/**
+ * Form type for user details.
+ */
 public class UserType extends AbstractFormType<Options, Object>
 {
+    /**
+     * Builds a form structure.
+     * @param form form
+     */
     @Override
     public void buildForm(Form<?, Options, Object> form)
     {
@@ -65,6 +72,12 @@ public class UserType extends AbstractFormType<Options, Object>
                 });
     }
 
+    /**
+     * Transforms the data of the form, into the representation of the data.
+     * @param form form
+     * @param <T> generic class
+     * @return representation of the data
+     */
     @Override
     public <T extends FormTypeInterface<Options, Object>> Object resolveData(Form<T, Options, Object> form)
     {

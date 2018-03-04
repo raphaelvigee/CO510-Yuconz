@@ -16,9 +16,18 @@ import org.eclipse.jetty.server.Request;
 
 import java.util.*;
 
+/**
+ * Controller for authentication routes.
+ */
 @Route(path = "/auth")
 public class AuthenticationController extends BaseController
 {
+    /**
+     * Login route, displays login form to user.
+     * @param request the request
+     * @param authenticationManager the system's authentication manager
+     * @return response
+     */
     @Route(path = "/login", methods = {Method.GET, Method.POST})
     public Object login(Request request, YuconzAuthenticationManager authenticationManager)
     {
@@ -86,6 +95,12 @@ public class AuthenticationController extends BaseController
         }});
     }
 
+    /**
+     * Logout route, redirects to app index.
+     * @param request the request
+     * @param authenticationManager the system's authentication manager
+     * @return response (redirection)
+     */
     @Route(path = "/logout")
     public Response logout(Request request, YuconzAuthenticationManager authenticationManager)
     {

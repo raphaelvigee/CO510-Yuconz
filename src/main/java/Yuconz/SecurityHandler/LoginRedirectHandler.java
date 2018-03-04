@@ -11,8 +11,17 @@ import com.sallyf.sallyf.Server.Status;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+/**
+ * Handler for Login Redirection.
+ */
 public class LoginRedirectHandler implements SecurityDeniedHandler
 {
+    /**
+     * Execute a login redirection.
+     * @param container the current container
+     * @param runtimeBag The runtimeBag itself.
+     * @return
+     */
     @Override
     public Object apply(Container container, RuntimeBag runtimeBag)
     {
@@ -20,6 +29,7 @@ public class LoginRedirectHandler implements SecurityDeniedHandler
 
         String loginUrl = urlGenerator.url("AuthenticationController.login");
 
+        // Add current URL as a get parameter for post login redirection
         try {
             loginUrl += "?next=" + URLEncoder.encode(runtimeBag.getRequest().getRequestURL().toString(), "UTF-8");
         } catch (UnsupportedEncodingException e) {

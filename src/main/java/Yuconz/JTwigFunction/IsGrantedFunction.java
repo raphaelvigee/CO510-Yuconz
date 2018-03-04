@@ -6,21 +6,37 @@ import com.sallyf.sallyf.JTwig.JTwigServiceFunction;
 import com.sallyf.sallyf.Server.RuntimeBag;
 import org.jtwig.functions.FunctionRequest;
 
+/**
+ * JTwig function for testing if user has expected privileges.
+ */
 public class IsGrantedFunction implements JTwigServiceFunction
 {
     private AccessDecisionManager accessDecisionManager;
 
+    /**
+     * New IsGrantedFunction
+     * @param accessDecisionManager the accessDeciscionManager
+     */
     public IsGrantedFunction(AccessDecisionManager accessDecisionManager)
     {
         this.accessDecisionManager = accessDecisionManager;
     }
 
+    /**
+     * Name of function.
+     * @return name of function.
+     */
     @Override
     public String name()
     {
         return "is_granted";
     }
 
+    /**
+     * Execute function.
+     * @param request page request
+     * @return true if has privilege, else false
+     */
     @Override
     public Object execute(FunctionRequest request)
     {

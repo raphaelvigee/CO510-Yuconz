@@ -2,6 +2,9 @@ package Yuconz.Entity;
 
 import java.util.List;
 
+/**
+ * Entity for a department, should contain list of the department's sections.
+ */
 public enum Department
 {
     HUMAN_RESOURCES("Human Resources"),
@@ -17,21 +20,37 @@ public enum Department
         this.name = name;
     }
 
+    /**
+     * Get the name.
+     * @return name.
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Set the name.
+     * @param name name.
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Get the sections.
+     * @return sections.
+     */
     public List<Section> getSections()
     {
         return sections;
     }
 
+    /**
+     * Set the sections.
+     * @param sections sections.
+     */
     public void setSections(List<Section> sections)
     {
         this.sections = sections;

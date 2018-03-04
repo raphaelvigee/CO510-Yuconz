@@ -9,8 +9,16 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
 
+/**
+ * Form Constraint for date validation.
+ */
 public class ValidDate implements ConstraintInterface
 {
+    /**
+     * Checks if the date is valid.
+     * @param form form
+     * @param errorsBag errorsBag
+     */
     @Override
     public void validate(Form<?, ?, ?> form, ErrorsBag errorsBag)
     {

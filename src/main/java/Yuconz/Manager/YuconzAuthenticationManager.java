@@ -26,6 +26,9 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Authentication Manager for system.
+ */
 public class YuconzAuthenticationManager extends AuthenticationManager
 {
     private final Hibernate hibernate;
@@ -34,6 +37,16 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     private final AuthorisationManager authorisationManager;
 
+    /**
+     * New Authentication Manager
+     * @param container the container
+     * @param router the router
+     * @param eventDispatcher the eventDispatcher
+     * @param expressionLanguage the expressionLanguage handler
+     * @param hibernate The Hibernate itself.
+     * @param logManager the logManager
+     * @param authorisationManager the authorisationManager
+     */
     public YuconzAuthenticationManager(Container container, Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate, LogManager logManager, AuthorisationManager authorisationManager)
     {
         super(container, new Configuration(), router, eventDispatcher, expressionLanguage);
@@ -42,6 +55,10 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         this.authorisationManager = authorisationManager;
     }
 
+    /**
+     * Initialise authentication manager container
+     * @param container
+     */
     @Override
     public void initialize(Container container)
     {
@@ -54,10 +71,20 @@ public class YuconzAuthenticationManager extends AuthenticationManager
                 .removeIf(pair -> pair.getValue().getClass().equals(AuthenticationVoter.class));
     }
 
+    /**
+     * Attempt to authenticate a user given a provided password and role
+     * @param request the request
+     * @param username user's username
+     * @param password user's password
+     * @param roleStr requested role
+     * @return new UserInterface for provided input
+     */
     public UserInterface authenticate(Request request, String username, String password, String roleStr)
     {
+        // Get requested LoginRole
         LoginRole loginRole = LoginRole.valueOf(roleStr.toUpperCase());
 
+        // Try finding user in DB
         Session session = hibernate.getCurrentSession();
         Transaction transaction = session.beginTransaction();
 
@@ -79,13 +106,16 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         User user;
         String logDetails = null;
 
+        // No user found
         if (users.isEmpty()) {
             user = null;
             loginRole = null;
             logDetails = "user not found";
         } else {
+            // User found
             user = users.get(0);
 
+            // Check if requested role is allowed
             if (!authorisationManager.hasUserRights(request, user, loginRole)) {
                 user = null;
                 loginRole = null;
@@ -93,6 +123,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
             }
         }
 
+        // Persist data to session
         HttpSession httpSession = request.getSession(true);
         httpSession.setAttribute("user", user);
         httpSession.setAttribute("role", loginRole);
@@ -102,18 +133,33 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         return user;
     }
 
+    /**
+     * Log out a user, invalidating the session.
+     * @param request the request
+     */
     public void logout(Request request)
     {
+        // Clear session data
         HttpSession session = request.getSession(true);
         session.setAttribute("user", null);
         session.setAttribute("role", null);
     }
 
+    /**
+     * Gets current role for a session's runtimeBag.
+     * @param runtimeBag The runtimeBag itself.
+     * @return LoginRole for runtimeBag
+     */
     public LoginRole getCurrentRole(RuntimeBag runtimeBag)
     {
         return getCurrentRole(runtimeBag.getRequest());
     }
 
+    /**
+     * Gets the current role for a session's request.
+     * @param request the request
+     * @return LoginRole for request
+     */
     public LoginRole getCurrentRole(Request request)
     {
         HttpSession session = request.getSession(true);
