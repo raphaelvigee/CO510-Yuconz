@@ -11,6 +11,9 @@ import com.sallyf.sallyf.Server.RuntimeBag;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Voter for PersonalDetails actions.
+ */
 public class PersonalDetailsVoter implements VoterInterface
 {
     public static final String EDIT = "edit_user";
@@ -25,12 +28,24 @@ public class PersonalDetailsVoter implements VoterInterface
 
     private AuthorisationManager authorisationManager;
 
+    /**
+     * Generates new PersonalDetailsVoter.
+     * @param authenticationManager system AuthenticationManager
+     * @param authorisationManager system AuthorisationManager
+     */
     public PersonalDetailsVoter(YuconzAuthenticationManager authenticationManager, AuthorisationManager authorisationManager)
     {
         this.authenticationManager = authenticationManager;
         this.authorisationManager = authorisationManager;
     }
 
+    /**
+     * Checks if voter has authority to vote.
+     * @param attribute the name of the attribute being voted on
+     * @param subject User being voted on
+     * @param runtimeBag The runtimeBag itself.
+     * @return true if supports
+     */
     @Override
     public boolean supports(String attribute, Object subject, RuntimeBag runtimeBag)
     {
@@ -53,6 +68,13 @@ public class PersonalDetailsVoter implements VoterInterface
         return true;
     }
 
+    /**
+     * Check if User has the requested rights for specified action.
+     * @param attribute the name of the attribute being voted on
+     * @param subject object being voted on
+     * @param runtimeBag The runtimeBag itself.
+     * @return
+     */
     @Override
     public boolean vote(String attribute, Object subject, RuntimeBag runtimeBag)
     {
@@ -74,21 +96,47 @@ public class PersonalDetailsVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Checks if user can get list of system users.
+     * @param currentUser user to test
+     * @param runtimeBag The runtimeBag itself.
+     * @return
+     */
     private boolean canList(User currentUser, RuntimeBag runtimeBag)
     {
         return isHR(currentUser, runtimeBag);
     }
 
+    /**
+     * Checks if user can create a system user.
+     * @param currentUser user to test
+     * @param runtimeBag The runtimeBag itself.
+     * @return
+     */
     private boolean canCreate(User currentUser, RuntimeBag runtimeBag)
     {
         return isHR(currentUser, runtimeBag);
     }
 
+    /**
+     * Checks if user can view a system user.
+     * @param user user to test
+     * @param currentUser user to view
+     * @param runtimeBag The runtimeBag itself.
+     * @return
+     */
     private boolean canView(User user, User currentUser, RuntimeBag runtimeBag)
     {
         return canEdit(user, currentUser, runtimeBag);
     }
 
+    /**
+     * Checks if a user can edit a system user.
+     * @param user user to test
+     * @param currentUser user to edit
+     * @param runtimeBag The runtimeBag itself.
+     * @return
+     */
     private boolean canEdit(User user, User currentUser, RuntimeBag runtimeBag)
     {
         if (user.equals(currentUser)) {
@@ -98,6 +146,12 @@ public class PersonalDetailsVoter implements VoterInterface
         return isHR(currentUser, runtimeBag);
     }
 
+    /**
+     * Identifies if a user has the rights of an HR employee.
+     * @param currentUser
+     * @param runtimeBag The runtimeBag itself.
+     * @return
+     */
     private boolean isHR(User currentUser, RuntimeBag runtimeBag)
     {
         return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, LoginRole.HR_EMPLOYEE);
