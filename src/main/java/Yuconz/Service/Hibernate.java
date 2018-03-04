@@ -1,11 +1,13 @@
 package Yuconz.Service;
 
-import Yuconz.Entity.Department;
 import Yuconz.Entity.Section;
 import Yuconz.Entity.User;
 import Yuconz.Model.UserRole;
+import com.sallyf.sallyf.Container.Container;
 import com.sallyf.sallyf.Container.ServiceInterface;
+import com.sallyf.sallyf.EventDispatcher.EventDispatcher;
 import com.sallyf.sallyf.Exception.FrameworkException;
+import com.sallyf.sallyf.KernelEvents;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,12 +17,17 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class Hibernate implements ServiceInterface
 {
     private SessionFactory sessionFactory;
 
-    public Hibernate()
+    private EventDispatcher eventDispatcher;
+
+    public Hibernate(EventDispatcher eventDispatcher)
     {
+        this.eventDispatcher = eventDispatcher;
         try {
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .configure("hibernate.cfg.xml").build();
@@ -35,6 +42,15 @@ public class Hibernate implements ServiceInterface
         populateUsers();
     }
 
+    @Override
+    public void initialize(Container container)
+    {
+        AtomicReference<Session> session = new AtomicReference<>();
+
+        eventDispatcher.register(KernelEvents.POST_MATCH_ROUTE, (et, e) -> session.set(getSessionFactory().openSession()));
+        eventDispatcher.register(KernelEvents.PRE_SEND_RESPONSE, (et, e) -> session.get().close());
+    }
+
     public SessionFactory getSessionFactory()
     {
         return sessionFactory;
@@ -42,16 +58,18 @@ public class Hibernate implements ServiceInterface
 
     public Session getCurrentSession()
     {
-        return getSessionFactory().openSession();
+        return getSessionFactory().getCurrentSession();
     }
 
     private <T> boolean isEmpty(Class<T> aClass)
     {
         Session session = getCurrentSession();
 
+        Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("SELECT COUNT(*) FROM " + aClass.getSimpleName());
 
         Long count = (Long) query.getSingleResult();
+        transaction.commit();
 
         return count == 0;
     }
@@ -101,7 +119,7 @@ public class Hibernate implements ServiceInterface
             for (int i = 0; i < 20; i++) {
                 session.persist(User.bulk());
             }
-            
+
             session.persist(employee);
             session.persist(hr_employee);
             session.persist(manager);
