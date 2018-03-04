@@ -1,7 +1,6 @@
 package Yuconz.Form;
 
 import Yuconz.Entity.Section;
-import Yuconz.Model.Role;
 import com.sallyf.sallyf.Form.Constraint.NotEmpty;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;

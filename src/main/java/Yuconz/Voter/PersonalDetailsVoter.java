@@ -3,7 +3,7 @@ package Yuconz.Voter;
 import Yuconz.Entity.User;
 import Yuconz.Manager.AuthorisationManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
-import Yuconz.Model.Role;
+import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
 import com.sallyf.sallyf.Authentication.UserInterface;
 import com.sallyf.sallyf.Server.RuntimeBag;
@@ -100,6 +100,6 @@ public class PersonalDetailsVoter implements VoterInterface
 
     private boolean isHR(User currentUser, RuntimeBag runtimeBag)
     {
-        return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, Role.HR_EMPLOYEE);
+        return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, LoginRole.HR_EMPLOYEE);
     }
 }

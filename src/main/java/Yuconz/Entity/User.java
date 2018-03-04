@@ -1,6 +1,6 @@
 package Yuconz.Entity;
 
-import Yuconz.Model.Role;
+import Yuconz.Model.UserRole;
 import com.github.javafaker.Faker;
 import com.sallyf.sallyf.Authentication.UserInterface;
 import com.sallyf.sallyf.Exception.FrameworkException;
@@ -52,7 +52,7 @@ public class User implements UserInterface<String>, Serializable
     private Section section;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
 
     @OneToMany(mappedBy = "user")
     private Set<AbstractRecord> records;
@@ -111,12 +111,12 @@ public class User implements UserInterface<String>, Serializable
     }
 
     @Enumerated(EnumType.STRING)
-    public Role getRole()
+    public UserRole getRole()
     {
         return role;
     }
 
-    public void setRole(Role roles)
+    public void setRole(UserRole roles)
     {
         this.role = roles;
     }

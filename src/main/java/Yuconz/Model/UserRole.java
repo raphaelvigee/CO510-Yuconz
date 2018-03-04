@@ -1,12 +1,12 @@
 package Yuconz.Model;
 
-public enum Role
+public enum UserRole
 {
-    EMPLOYEE("Employee"), HR_EMPLOYEE("HR Employee"), MANAGER("Manager"), DIRECTOR("Director");
+    EMPLOYEE("Employee"), MANAGER("Manager"), DIRECTOR("Director");
 
     private String name;
 
-    Role(String name)
+    UserRole(String name)
     {
         this.name = name;
     }
