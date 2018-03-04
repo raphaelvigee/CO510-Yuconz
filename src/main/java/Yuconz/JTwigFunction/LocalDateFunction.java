@@ -6,7 +6,7 @@ import org.jtwig.functions.FunctionRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class DateFunction implements JTwigServiceFunction
+public class LocalDateFunction implements JTwigServiceFunction
 {
     @Override
     public String name()
@@ -22,6 +22,10 @@ public class DateFunction implements JTwigServiceFunction
 
         LocalDate date = (LocalDate) request.get(0);
         String format = (String) request.get(1);
+
+        if (date == null) {
+            return null;
+        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return date.format(formatter);
