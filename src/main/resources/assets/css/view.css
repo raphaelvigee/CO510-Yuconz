@@ -20,5 +20,6 @@
 .table .row .cell.heading {
     flex: 0.3;
     font-weight: bold;
+    padding-right: 20px;
 }
 
