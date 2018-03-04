@@ -166,7 +166,7 @@ public class PersonalDetailsController extends BaseController
     })
     @Security("is_granted($, 'view_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
-    public Object view(Request request, RouteParameters routeParameters, Hibernate hibernate)
+    public Object view(RouteParameters routeParameters)
     {
         User user = (User) routeParameters.get("user");
 
