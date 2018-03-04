@@ -53,6 +53,7 @@ public class Main
         container.add(new ServiceDefinition<>(ActivePageFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(IsGrantedFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(RangeFunction.class)).addTag("jtwig.function");
+        container.add(new ServiceDefinition<>(ServiceFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(LocalDateFunction.class)).addTag("jtwig.function");
 
         // Voters

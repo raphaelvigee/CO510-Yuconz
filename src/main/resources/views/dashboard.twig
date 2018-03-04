@@ -93,6 +93,18 @@
 
         <div id="mainContent">
 
+            {% set flashMessages = service('FlashManager').getCurrentFlashes(_) %}
+
+            {% for message in flashMessages %}
+                <div class="alert {{ message.getType() }}">
+                    {% if message.getIcon() %}
+                        <span class="fas fa-{{ message.getIcon() }}"></span>
+                    {% endif %}
+
+                    {{ message.getBody() }}
+                </div>
+            {% endfor %}
+
             {% block main_content %}{% endblock %}
 
         </div>

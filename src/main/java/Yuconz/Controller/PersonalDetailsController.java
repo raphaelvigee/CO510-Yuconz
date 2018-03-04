@@ -2,6 +2,7 @@ package Yuconz.Controller;
 
 import Yuconz.Entity.User;
 import Yuconz.Form.UserType;
+import Yuconz.Model.FlashMessage;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
 import Yuconz.Service.Hibernate;
@@ -9,6 +10,7 @@ import com.sallyf.sallyf.Annotation.Requirement;
 import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Authentication.Annotation.Security;
 import com.sallyf.sallyf.Controller.BaseController;
+import com.sallyf.sallyf.FlashManager.FlashManager;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.Type.FormType;
 import com.sallyf.sallyf.Form.Type.SubmitType;
@@ -16,6 +18,7 @@ import com.sallyf.sallyf.JTwig.JTwigResponse;
 import com.sallyf.sallyf.Router.ParameterResolver;
 import com.sallyf.sallyf.Router.RouteParameters;
 import com.sallyf.sallyf.Server.Method;
+import com.sallyf.sallyf.Server.RuntimeBag;
 import com.sallyf.sallyf.Utils.MapUtils;
 import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
@@ -32,8 +35,11 @@ import static com.sallyf.sallyf.Utils.MapUtils.entry;
 @Route(path = "/details")
 public class PersonalDetailsController extends BaseController
 {
-    private Object handle(Request request, Hibernate hibernate, User user, boolean create)
+    private Object handle(RuntimeBag runtimeBag, User user, boolean create)
     {
+        Hibernate hibernate = this.getContainer().get(Hibernate.class);
+        FlashManager flashManager = this.getContainer().get(FlashManager.class);
+
         HashMap<String, Object> in = new HashMap<>();
         in.put("user", user.toHashMap());
 
@@ -44,7 +50,7 @@ public class PersonalDetailsController extends BaseController
                 })
                 .getForm();
 
-        form.handleRequest(request);
+        form.handleRequest(runtimeBag.getRequest());
 
         if (form.isSubmitted() && form.isValid()) {
             Map<String, Object> data = (Map<String, Object>) form.resolveData();
@@ -57,6 +63,10 @@ public class PersonalDetailsController extends BaseController
 
             session.flush();
             transaction.commit();
+
+            String message = create ? "User successfully created" : "User successfully updated";
+
+            flashManager.addFlash(runtimeBag, new FlashMessage(message, "success", "check"));
 
             return this.redirectToRoute("PersonalDetailsController.edit", MapUtils.createHashMap(
                     entry("user", user.getId())
@@ -128,11 +138,11 @@ public class PersonalDetailsController extends BaseController
 
     @Route(path = "/create", methods = {Method.GET, Method.POST})
     @Security("is_granted($, 'create_user')")
-    public Object create(Request request, Hibernate hibernate)
+    public Object create(RuntimeBag runtimeBag)
     {
         User user = new User();
 
-        return handle(request, hibernate, user, true);
+        return handle(runtimeBag, user, true);
     }
 
     @Route(path = "/{user}/edit", methods = {Method.GET, Method.POST}, requirements = {
@@ -140,11 +150,11 @@ public class PersonalDetailsController extends BaseController
     })
     @Security("is_granted($, 'edit_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
-    public Object edit(Request request, RouteParameters routeParameters, Hibernate hibernate)
+    public Object edit(RuntimeBag runtimeBag, RouteParameters routeParameters)
     {
         User user = (User) routeParameters.get("user");
 
-        return handle(request, hibernate, user, false);
+        return handle(runtimeBag, user, false);
     }
 
     @Route(path = "/{user}", methods = {Method.GET, Method.POST}, requirements = {

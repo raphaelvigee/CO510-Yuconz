@@ -154,3 +154,24 @@ input[type=submit]:hover, button:hover {
 input[type=submit]:active, button:active {
     opacity: 1.0;
 }
+
+.alert {
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.alert .fas {
+    margin-right: 10px;
+}
+
+.alert.success {
+    background: #64ff64;
+}
+
+.alert.error {
+    background: #ff6464;
+}
+
+.alert.warning {
+    background: #ffcf64;
+}
