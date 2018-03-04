@@ -17,8 +17,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public class Hibernate implements ServiceInterface
 {
     private SessionFactory sessionFactory;
@@ -38,17 +36,15 @@ public class Hibernate implements ServiceInterface
         } catch (Throwable e) {
             throw new FrameworkException(e);
         }
-
-        populateUsers();
     }
 
     @Override
     public void initialize(Container container)
     {
-        AtomicReference<Session> session = new AtomicReference<>();
+        eventDispatcher.register(KernelEvents.POST_MATCH_ROUTE, (et, e) -> getSessionFactory().openSession());
+        eventDispatcher.register(KernelEvents.PRE_SEND_RESPONSE, (et, e) -> getSessionFactory().getCurrentSession().close());
 
-        eventDispatcher.register(KernelEvents.POST_MATCH_ROUTE, (et, e) -> session.set(getSessionFactory().openSession()));
-        eventDispatcher.register(KernelEvents.PRE_SEND_RESPONSE, (et, e) -> session.get().close());
+        populate();
     }
 
     public SessionFactory getSessionFactory()
@@ -61,22 +57,14 @@ public class Hibernate implements ServiceInterface
         return getSessionFactory().getCurrentSession();
     }
 
-    private <T> boolean isEmpty(Class<T> aClass)
+    private void populate()
     {
-        Session session = getCurrentSession();
-
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("SELECT COUNT(*) FROM " + aClass.getSimpleName());
-
-        Long count = (Long) query.getSingleResult();
-        transaction.commit();
-
-        return count == 0;
+        populateUsers();
     }
 
     private void populateUsers()
     {
-        Session session = getCurrentSession();
+        Session session = getSessionFactory().openSession();
 
         if (isEmpty(User.class)) {
             User employee = User.bulk();
@@ -128,5 +116,20 @@ public class Hibernate implements ServiceInterface
 
             transaction.commit();
         }
+
+        session.close();
+    }
+
+    private <T> boolean isEmpty(Class<T> aClass)
+    {
+        Session session = getCurrentSession();
+
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("SELECT COUNT(*) FROM " + aClass.getSimpleName());
+
+        Long count = (Long) query.getSingleResult();
+        transaction.commit();
+
+        return count == 0;
     }
 }
