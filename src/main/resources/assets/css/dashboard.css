@@ -5,6 +5,7 @@
     right: 0;
     height: 50px;
     background: var(--tintColor);
+    z-index: 999;
 }
 
 #nav > div {
