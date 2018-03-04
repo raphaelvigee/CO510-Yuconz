@@ -14,6 +14,7 @@ import com.sallyf.sallyf.Container.ServiceDefinition;
 import com.sallyf.sallyf.EventDispatcher.EventDispatcher;
 import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
 import com.sallyf.sallyf.Router.Router;
+import com.sallyf.sallyf.Server.RuntimeBag;
 import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -46,7 +47,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
     {
         super.initialize(container);
 
-        container.add(new ServiceDefinition(YuconzAuthenticationVoter.class)).addTag("authentication.voter");
+        container.add(new ServiceDefinition<>(YuconzAuthenticationVoter.class)).addTag("authentication.voter");
 
         container.getServiceDefinitions()
                 .entrySet()
@@ -66,7 +67,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         Root<User> root = query.from(User.class);
         query.select(root)
                 .where(
-                        builder.equal(root.get("username"), username),
+                        builder.equal(root.get("email"), username),
                         builder.equal(root.get("password"), User.hash(password))
                 );
 
@@ -80,12 +81,14 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
         if (users.isEmpty()) {
             user = null;
+            role = null;
             logDetails = "user not found";
         } else {
             user = users.get(0);
 
-            if (!authorisationManager.hasRights(request, user, role)) {
+            if (!authorisationManager.hasUserRights(request, user, role)) {
                 user = null;
+                role = null;
                 logDetails = "invalid role";
             }
         }
@@ -104,5 +107,17 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         HttpSession session = request.getSession(true);
         session.setAttribute("user", null);
         session.setAttribute("role", null);
+    }
+
+    public Role getCurrentRole(RuntimeBag runtimeBag)
+    {
+        return getCurrentRole(runtimeBag.getRequest());
+    }
+
+    public Role getCurrentRole(Request request)
+    {
+        HttpSession session = request.getSession(true);
+
+        return (Role) session.getAttribute("role");
     }
 }

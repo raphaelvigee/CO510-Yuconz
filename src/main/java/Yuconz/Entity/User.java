@@ -10,15 +10,22 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
-@Table(name = "user")
+@Table
 public class User implements UserInterface<String>, Serializable
 {
+    @Id
+    @GenericGenerator(
+            name = "sequence_yuconz_user_id",
+            strategy = "Yuconz.Generator.YuconzIdGenerator"
+    )
+    @GeneratedValue(generator = "sequence_yuconz_user_id")
     private String id;
 
-    private String username;
+    private String email;
 
     private String firstName;
 
@@ -26,7 +33,27 @@ public class User implements UserInterface<String>, Serializable
 
     private String password;
 
+    @Embedded
+    private Address address;
+
+    private LocalDate birthdate;
+
+    private String phoneNumber;
+
+    private String mobileNumber;
+
+    private String emergencyContact;
+
+    private String emergencyContactNumber;
+
+    @ManyToOne
+    private Section section;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private Set<AbstractRecord> records;
 
     public static String hash(String password)
     {
@@ -39,12 +66,6 @@ public class User implements UserInterface<String>, Serializable
         }
     }
 
-    @Id
-    @GenericGenerator(
-            name = "sequence_yuconz_user_id",
-            strategy = "Yuconz.Generator.YuconzIdGenerator"
-    )
-    @GeneratedValue(generator = "sequence_yuconz_user_id")
     public String getId()
     {
         return id;
@@ -55,16 +76,24 @@ public class User implements UserInterface<String>, Serializable
         this.id = yid;
     }
 
-    @Override
     public String getUsername()
     {
-        return username;
+        return getEmail();
     }
 
-    @Override
     public void setUsername(String username)
     {
-        this.username = username;
+        setEmail(username);
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail(String username)
+    {
+        this.email = username;
     }
 
     @Override
@@ -110,16 +139,83 @@ public class User implements UserInterface<String>, Serializable
         this.lastName = lastName;
     }
 
-    @Transient
     public String getFullName()
     {
         return String.format("%s %s", getFirstName(), getLastName());
     }
 
+    public Address getAddress()
+    {
+        if (address == null) {
+            address = new Address();
+        }
+
+        return address;
+    }
+
+    public void setAddress(Address address)
+    {
+        this.address = address;
+    }
+
+    public LocalDate getBirthdate()
+    {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate)
+    {
+        this.birthdate = birthdate;
+    }
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber)
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getMobileNumber()
+    {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber)
+    {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getEmergencyContact()
+    {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact)
+    {
+        this.emergencyContact = emergencyContact;
+    }
+
+    public String getEmergencyContactNumber()
+    {
+        return emergencyContactNumber;
+    }
+
+    public void setEmergencyContactNumber(String emergencyContactNumber)
+    {
+        this.emergencyContactNumber = emergencyContactNumber;
+    }
+
     @Override
     public String toString()
     {
-        return String.format("%s %s", getUsername(), getRole().toString());
+        if (role == null) {
+            return getEmail();
+        }
+
+        return String.format("%s %s", getEmail(), getRole().toString());
     }
 
     private static String random(String chars, int l)
@@ -141,5 +237,74 @@ public class User implements UserInterface<String>, Serializable
         String nums = random("1234567890", 3);
 
         return chars + nums;
+    }
+
+    public Set<AbstractRecord> getRecords()
+    {
+        return records;
+    }
+
+    public void setRecords(Set<AbstractRecord> records)
+    {
+        this.records = records;
+    }
+
+    public Section getSection()
+    {
+        return section;
+    }
+
+    public void setSection(Section section)
+    {
+        this.section = section;
+    }
+
+    public Map<String, Object> toHashMap()
+    {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("firstname", getFirstName());
+        map.put("lastname", getLastName());
+        map.put("email", getEmail());
+
+        if (getBirthdate() != null) {
+            Map<String, Object> birthdate = new LinkedHashMap<>();
+            birthdate.put("day", getBirthdate().getDayOfMonth());
+            birthdate.put("month", getBirthdate().getMonth());
+            birthdate.put("year", getBirthdate().getYear());
+            map.put("birthdate", birthdate);
+        }
+
+        map.put("address", getAddress().toHashMap());
+        map.put("phone_number", getPhoneNumber());
+        map.put("mobile_number", getMobileNumber());
+        map.put("emergency_contact", getEmergencyContact());
+        map.put("emergency_contact_number", getEmergencyContactNumber());
+
+        return map;
+    }
+
+    public void applyHashMap(Map<String, Object> map)
+    {
+        setFirstName((String) map.get("firstname"));
+        setLastName((String) map.get("lastname"));
+        setEmail((String) map.get("email"));
+        setBirthdate((LocalDate) map.get("birthdate"));
+        getAddress().applyHashMap((Map<String, Object>) map.get("address"));
+        setPhoneNumber((String) map.get("phone_number"));
+        setMobileNumber((String) map.get("mobile_number"));
+        setEmergencyContact((String) map.get("emergency_contact"));
+        setEmergencyContactNumber((String) map.get("emergency_contact_number"));
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof User) {
+            User user = (User) o;
+
+            return user.getId().equals(getId());
+        }
+
+        return false;
     }
 }

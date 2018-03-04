@@ -1,5 +1,7 @@
 {% extends 'base.twig' %}
 
+{% block title %}Login{% endblock %}
+
 {% block page_body %}
     <div id="loginView">
 
@@ -24,5 +26,6 @@
 {% endblock %}
 
 {% block page_head %}
-    <link rel="stylesheet" rel="text/css" href="/assets/css/login.css">
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/assets/css/login.css">
 {% endblock %}

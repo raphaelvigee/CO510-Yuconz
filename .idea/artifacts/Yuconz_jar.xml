@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Yuconz:jar">
+  <artifact type="jar" build-on-make="true" name="Yuconz:jar">
     <output-path>$PROJECT_DIR$/out</output-path>
     <root id="archive" name="Yuconz.jar">
       <element id="module-output" name="Yuconz" />
@@ -31,10 +31,10 @@
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/9.4.6.v20170531/jetty-io-9.4.6.v20170531.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/freemarker/freemarker/2.3.20/freemarker-2.3.20.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jtwig/jtwig-core/5.86.1.RELEASE/jtwig-core-5.86.1.RELEASE.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/sallyf/sallyf/722f990/sallyf-722f990.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jboss/spec/javax/transaction/jboss-transaction-api_1.2_spec/1.0.1.Final/jboss-transaction-api_1.2_spec-1.0.1.Final.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/9.4.6.v20170531/jetty-http-9.4.6.v20170531.jar" path-in-jar="/" />
       <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/sallyf/sallyf/51be0ee/sallyf-51be0ee.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

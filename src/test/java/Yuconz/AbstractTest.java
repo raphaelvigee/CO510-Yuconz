@@ -1,5 +1,6 @@
 package Yuconz;
 
+import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.sallyf.sallyf.Exception.FrameworkException;
@@ -93,5 +94,10 @@ public abstract class AbstractTest
         HtmlSubmitInput button = form.getInputByValue("Login");
 
         return button.click();
+    }
+
+    public Page anchorClick(HtmlAnchor anchor) throws IOException
+    {
+        return anchor.getPage().getWebClient().getPage(getUrl(anchor.getHrefAttribute()));
     }
 }

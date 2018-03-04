@@ -1,29 +1,31 @@
 package Yuconz.Entity;
 
 import Yuconz.Model.LogType;
-import Yuconz.Model.Role;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "log")
+@Table
 public class Log
 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @ManyToOne
     private User user;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timestamp;
 
     private String ip;
 
+    @Enumerated(EnumType.STRING)
     private LogType logType;
 
     private String details;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId()
     {
         return id;
@@ -34,7 +36,6 @@ public class Log
         this.id = id;
     }
 
-    @OneToOne
     public User getUser()
     {
         return user;
@@ -65,7 +66,6 @@ public class Log
         this.ip = ip;
     }
 
-    @Enumerated(EnumType.STRING)
     public LogType getLogType()
     {
         return logType;

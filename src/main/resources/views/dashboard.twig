@@ -1,5 +1,7 @@
 {% extends 'base.twig' %}
 
+{% set routeName = _.getRoute().getName() %}
+
 {% block page_body %}
     <div id="dashboard">
 
@@ -8,64 +10,108 @@
                 <h1>Yuconz</h1>
                 <h5>HR Portal</h5>
             </div>
+
             <div class="account">
-                <div class="option">
-                    <div class="accountIcon"></div>
-                    <div class="accountDetails">
-                        {{ getUser(_).getFullName() }} - {{ getRole(_).getName() }}
+                <div class="main">
+                    <div class="icon">
+                        <div class="profilePicture"></div>
                     </div>
-                    <div class="dropdown">
-                        <div>
-                            <a href="{{ path('AuthenticationController.logout') }}">
-                                Logout
-                            </a>
+                    <div class="details">
+                        <div class="name">
+                            {{ getUser(_).getFullName() }}
                         </div>
+                        <div class="role">
+                            {{ getRole(_).getName() }} - {{ getUser(_).getId() }}
+                        </div>
+                    </div>
+                    <div class="chevron">
+                        &#9662;
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <div>
+                        <a href="{{ path('AuthenticationController.logout') }}">
+                            Logout
+                        </a>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div id="sidePanel">
             <div class="heading">
                 My Yuconz
             </div>
-            <div class="option selected">
-                <a href="#">Dashboard</a>
+            <div class="option {{ activePage(_, 'DashboardController.index') }}">
+                <a class="link" href="{{ path('DashboardController.index') }}">Dashboard</a>
+            </div>
+            {% if is_granted(_, 'view_user', getUser(_)) %}
+                {% set currentUserDetails = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit'] %}
+                {% if currentUserDetails %}
+                    {% set currentUserDetails = getUser(_).equals(user) %}
+                {% endif %}
+                {% set activeClass = currentUserDetails ? "selected" : "" %}
+
+                <div class="option {{ activeClass }}">
+                    <a class="link" href="{{ path('PersonalDetailsController.view', {'user': getUser(_).getId()}) }}">
+                        Personal Details
+                    </a>
+
+                    {% if is_granted(_, 'edit_user', getUser(_)) %}
+                        <a href="{{ path('PersonalDetailsController.edit', {'user': getUser(_).getId()}) }}" class="icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="option">
+                <a class="link" href="#">Employment History</a>
             </div>
             <div class="option">
-                <a href="#">Personal Details</a>
-            </div>
-            <div class="option">
-                <a href="#">Employment History</a>
-            </div>
-            <div class="option">
-                <a href="#">Annual Reviews</a>
+                <a class="link" href="#">Annual Reviews</a>
             </div>
 
+            {% if is_granted(_, 'has_rights', 'HR_EMPLOYEE') %}
+                <div class="heading">
+                    Administration
+                </div>
+                <div class="option">
+                    <a class="link" href="#">Dashboard</a>
+                </div>
+                {% if is_granted(_, 'list_users') %}
+                    {% set employeeManagement = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit', 'PersonalDetailsController.list'] %}
+                    {% set activeClass = employeeManagement ? "selected" : "" %}
 
-            <div class="heading">
-                Administration
-            </div>
-            <div class="option">
-                <a href="#">Dashboard</a>
-            </div>
-            <div class="option">
-                <a href="#">Employee Search</a>
-            </div>
-            <div class="option">
-                <a href="#">Employment History</a>
-            </div>
+                    <div class="option {{ activeClass }}">
+                        <a class="link" href="{{ path('PersonalDetailsController.list') }}">Employee Management</a>
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
 
         <div id="mainContent">
 
-            123
+            {% set flashMessages = service('FlashManager').getCurrentFlashes(_) %}
+
+            {% for message in flashMessages %}
+                <div class="alert {{ message.getType() }}">
+                    {% if message.getIcon() %}
+                        <span class="fas fa-{{ message.getIcon() }}"></span>
+                    {% endif %}
+
+                    {{ message.getBody() }}
+                </div>
+            {% endfor %}
+
+            {% block main_content %}{% endblock %}
 
         </div>
     </div>
 {% endblock %}
 
 {% block page_head %}
+    {{ parent() }}
     <link rel="stylesheet" type="text/css" href="/assets/css/dashboard.css">
 {% endblock %}
-

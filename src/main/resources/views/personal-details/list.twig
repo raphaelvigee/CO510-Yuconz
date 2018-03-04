@@ -1,0 +1,67 @@
+{% extends "../dashboard.twig" %}
+
+{% block title %}Employee management{% endblock %}
+
+{% block main_content %}
+    <h1>Employee management</h1>
+
+    <form action="" method="get">
+        <div class="row">
+            <input type="text" name="query" value="{{ query }}" placeholder="Search...">
+            <input type="submit" value="Search">
+        </div>
+    </form>
+
+    {% if is_granted(_, 'create_user') %}
+        <a href="{{ path('PersonalDetailsController.create') }}">
+            <button>Add Employee</button>
+        </a>
+    {% endif %}
+
+    <h2>Results</h2>
+
+    <div class="results">
+        {% for user in users %}
+            <div class="result">
+                <div>
+                    <div class="details">
+                        <div class="name">
+                            {{ user.getFullName() }} <span>{{ user.getId() }}</span>
+                        </div>
+                        <div class="title">
+                            {{ default(user.getRole().getName(), "N/A") }} - Finance
+                        </div>
+                    </div>
+
+                    <div class="spacer"></div>
+
+                    <div class="options">
+
+                        {% if is_granted(_, 'view_user', user) %}
+                            <a href="{{ path('PersonalDetailsController.view', {'user': user.getId()}) }}">
+                                View
+                            </a>
+                        {% endif %}
+                        {% if is_granted(_, 'edit_user', user) %}
+                            <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
+                                Edit
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div>
+        {% for p in range(1, max_pages) %}
+            <a href="{{ path('PersonalDetailsController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block page_head %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/assets/css/search.css">
+{% endblock %}

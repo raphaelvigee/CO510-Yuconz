@@ -9,58 +9,78 @@
 
 #nav > div {
     float: left;
+    height:50px;
 }
 
 #nav .account {
     position: relative;
+    display: inline-block;
     float: right;
     margin-right: 20px;
     color: #fff;
 }
-#nav .account .accountDetails {
-	line-height:50px;
-	float:left;
+
+#nav .account .main {
+    display:flex;
+    flex-direction: row;
 }
 
-#nav .account .accountDetails:after {
-    content: "\25be";
-    opacity: .6;
-    margin-left: 8px;
+#nav .account .main .icon {
 }
-
-#nav .account .accountIcon {
-    width: 30px;
-    height: 30px;
-    float: left;
-    margin-top: 10px;
-    background: #fff;
-    border-radius: 15px;
+#nav .account .main .icon .profilePicture {
+    width:30px;
+    height:30px;
+    margin-top:10px;
+    background:#fff;
+    border-radius:15px;
     margin-right: 10px;
+    margin-left:10px;
 }
-
-#nav .account .accountIcon:before {
-    position: relative;
+#nav .account .main .icon .profilePicture:before {
+    position:relative;
     content: "\f007";
     font-family: 'Font Awesome 5 Free';
-    color: var(--tintColor);
-    font-weight: 600;
-    font-size: 16px;
-    left: 7px;
-    top: 4px;
+    color:var(--tintColor);
+    font-weight:600;
+    font-size:16px;
+    left:7px;
+    top:4px;
+}
+
+#nav .account .main .details {
+    display:flex;
+    flex-direction: column;
+    padding-top:5px;
+}
+
+#nav .account .main .details .name {
+    font-weight:400;
+    font-size:16px;
+    min-width:100px;
+}
+
+#nav .account .main .details .role {
+    font-size:11px;
+    margin:0px;
+    display:block;
+}
+
+#nav .account .main .chevron {
+    opacity: .6;
+    line-height:50px;
+    padding:0px 10px;
 }
 
 #nav .account .dropdown {
-    width: 100%;
-    max-width: 200px;
-    right: 0;
-    background: #5F415C;
-    position: absolute;
-    top: 50px;
-    display: none;
+    position:absolute;
+    top:50px;
+    width:100%;
+    max-width:200px;
+    background: var(--tintColor);
+    display:none;
 }
-
 #nav .account:hover .dropdown {
-    display: block;
+    display:block;
 }
 
 #nav .account .dropdown > div {
@@ -78,6 +98,12 @@
     width: 100%;
     height: 100%;
 }
+#nav .account .dropdown > div a:hover {
+    color:#fff;
+    opacity:1;
+}
+
+
 
 #sidePanel {
 
@@ -107,12 +133,21 @@
     text-transform: uppercase;
     color: #999;
     margin-top: 5px;
-    padding: 5px 10px 5px 10px;
     box-sizing: border-box;
+    position: relative;
 }
 
-#sidePanel .option a {
+#sidePanel .option .link {
+    padding: 5px 10px 5px 10px;
     color: #222;
+    display: block;
+}
+
+#sidePanel .option .icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -10px;
 }
 
 #sidePanel .option.selected {
@@ -125,8 +160,10 @@
 }
 
 #mainContent {
+    padding: 20px;
     min-height: 100vh;
     margin-left: 200px;
+    margin-top: 50px;
 }
 
 .branding {
@@ -147,3 +184,47 @@
     font-weight: 300;
 }
 
+
+#mainContent form {
+    max-width: 450px;
+    width: 80%;
+}
+
+a {
+    font-weight:400;
+}
+
+a:hover {
+    opacity:0.8;
+}
+
+a:active {
+    opacity:0.9;
+}
+
+
+
+#mainContent h1 {
+    font-weight:400;
+}
+#mainContent h2 {
+    font-weight:400;
+    margin-bottom:15px;
+}
+
+#mainContent button {
+    width:auto;
+    padding:5px 15px;
+}
+
+form .row.date {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0;
+}
+
+form .row.date .row {
+    margin: 0;
+    flex-grow: 0.2;
+}

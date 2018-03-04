@@ -2,10 +2,14 @@ package Yuconz.SecurityHandler;
 
 import com.sallyf.sallyf.Authentication.SecurityDeniedHandler;
 import com.sallyf.sallyf.Container.Container;
+import com.sallyf.sallyf.Exception.FrameworkException;
 import com.sallyf.sallyf.Router.RedirectResponse;
 import com.sallyf.sallyf.Router.URLGenerator;
 import com.sallyf.sallyf.Server.RuntimeBag;
 import com.sallyf.sallyf.Server.Status;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class LoginRedirectHandler implements SecurityDeniedHandler
 {
@@ -14,8 +18,14 @@ public class LoginRedirectHandler implements SecurityDeniedHandler
     {
         URLGenerator urlGenerator = container.get(URLGenerator.class);
 
-        String url = urlGenerator.url("AuthenticationController.login");
+        String loginUrl = urlGenerator.url("AuthenticationController.login");
 
-        return new RedirectResponse(url, Status.MOVED_TEMPORARILY);
+        try {
+            loginUrl += "?next=" + URLEncoder.encode(runtimeBag.getRequest().getRequestURL().toString(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new FrameworkException(e);
+        }
+
+        return new RedirectResponse(loginUrl, Status.MOVED_TEMPORARILY);
     }
 }
