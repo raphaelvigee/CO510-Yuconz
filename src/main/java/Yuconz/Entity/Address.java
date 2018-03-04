@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Entity for an address, will typically be embedded.
+ */
 @Entity
 @Embeddable
 public class Address

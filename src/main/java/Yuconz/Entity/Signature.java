@@ -3,6 +3,9 @@ package Yuconz.Entity;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Entity for user signatures.
+ */
 @Entity
 @Table
 public class Signature

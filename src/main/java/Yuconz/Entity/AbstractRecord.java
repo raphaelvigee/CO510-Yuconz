@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * Entity for an abstract record, base implementation for all record types.
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class AbstractRecord

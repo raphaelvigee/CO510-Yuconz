@@ -19,6 +19,9 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Form type for dates.
+ */
 public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
 {
     public class DateOptions extends Options

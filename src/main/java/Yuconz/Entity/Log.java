@@ -5,6 +5,9 @@ import Yuconz.Model.LogType;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Entity for a log entry.
+ */
 @Entity
 @Table
 public class Log
@@ -28,7 +31,7 @@ public class Log
 
     /**
      * Get Log's ID.
-     * @return ID.
+     * @return ID
      */
     public Integer getId()
     {
@@ -37,7 +40,7 @@ public class Log
 
     /**
      * Set a Log's ID.
-     * @param id ID.
+     * @param id ID
      */
     public void setId(Integer id)
     {
@@ -46,7 +49,7 @@ public class Log
 
     /**
      * Get a User.
-     * @return user.
+     * @return user
      */
     public User getUser()
     {
@@ -55,7 +58,7 @@ public class Log
 
     /**
      * Set a User.
-     * @param user user.
+     * @param user user
      */
     public void setUser(User user)
     {
@@ -64,7 +67,7 @@ public class Log
 
     /**
      * Get the time.
-     * @return timestamp.
+     * @return timestamp
      */
     public Date getTime()
     {
@@ -82,7 +85,7 @@ public class Log
 
     /**
      * Get the IP Address.
-     * @return IP Address.
+     * @return IP Address
      */
     public String getIp()
     {
@@ -91,7 +94,7 @@ public class Log
 
     /**
      * Set the IP Address.
-     * @param ip IP Address.
+     * @param ip IP Address
      */
     public void setIp(String ip)
     {
@@ -100,7 +103,7 @@ public class Log
 
     /**
      * Get the Log type.
-     * @return logType.
+     * @return logType
      */
     public LogType getLogType()
     {
@@ -109,7 +112,7 @@ public class Log
 
     /**
      * Set the Log type.
-     * @param logType logType.
+     * @param logType logType
      */
     public void setLogType(LogType logType)
     {
@@ -118,7 +121,7 @@ public class Log
 
     /**
      * Get details about a Log.
-     * @return details.
+     * @return details
      */
     public String getDetails()
     {
@@ -127,7 +130,7 @@ public class Log
 
     /**
      * Sets details about a Log.
-     * @param details details.
+     * @param details details
      */
     public void setDetails(String details)
     {

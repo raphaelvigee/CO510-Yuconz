@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Entity for an initial employment details record.
+ */
 @Entity
 @Table
 public class InitialEmploymentDetailsRecord extends AbstractRecord
@@ -51,7 +54,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the Interviewers.
-     * @return interviewers.
+     * @return interviewers
      */
     public List<User> getInterviewers()
     {
@@ -60,7 +63,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the Interviewers.
-     * @param interviewers interviewers.
+     * @param interviewers interviewers
      */
     public void setInterviewers(List<User> interviewers)
     {
@@ -69,7 +72,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get period start.
-     * @return periodStart.
+     * @return periodStart
      */
     public Date getPeriodStart()
     {
@@ -78,7 +81,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the period start.
-     * @param periodStart periodStart.
+     * @param periodStart periodStart
      */
     public void setPeriodStart(Date periodStart)
     {
@@ -87,7 +90,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get period end.
-     * @return periodEnd.
+     * @return periodEnd
      */
     public Date getPeriodEnd()
     {
@@ -96,7 +99,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the period end.
-     * @param periodEnd periodEnd.
+     * @param periodEnd periodEnd
      */
     public void setPeriodEnd(Date periodEnd)
     {
@@ -105,7 +108,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the achievement outcomes review.
-     * @return achievementOutcomesReview.
+     * @return achievementOutcomesReview
      */
     public String getAchievementOutcomesReview()
     {
@@ -114,7 +117,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the achievement outcomes review.
-     * @param achievementOutcomesReview achievementOutcomesReview.
+     * @param achievementOutcomesReview achievementOutcomesReview
      */
     public void setAchievementOutcomesReview(String achievementOutcomesReview)
     {
@@ -123,7 +126,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the future objective plans.
-     * @return futureObjectivePlans.
+     * @return futureObjectivePlans
      */
     public String getFutureObjectivePlans()
     {
@@ -132,7 +135,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the future objective plans.
-     * @param futureObjectivePlans futureObjectivePlans.
+     * @param futureObjectivePlans futureObjectivePlans
      */
     public void setFutureObjectivePlans(String futureObjectivePlans)
     {
@@ -141,7 +144,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the training mentoring review.
-     * @return trainingMentoringReview.
+     * @return trainingMentoringReview
      */
     public String getTrainingMentoringReview()
     {
@@ -150,7 +153,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the training mentoring review.
-     * @param trainingMentoringReview trainingMentoringReview.
+     * @param trainingMentoringReview trainingMentoringReview
      */
     public void setTrainingMentoringReview(String trainingMentoringReview)
     {
@@ -159,7 +162,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the reviewer summary.
-     * @return reviewerSummary.
+     * @return reviewerSummary
      */
     public String getReviewerSummary()
     {
@@ -177,7 +180,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get employee comments.
-     * @return employeeComments.
+     * @return employeeComments
      */
     public String getEmployeeComments()
     {
@@ -186,7 +189,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the employee comments.
-     * @param employeeComments employeeComments.
+     * @param employeeComments employeeComments
      */
     public void setEmployeeComments(String employeeComments)
     {
@@ -195,7 +198,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the training mentoring development.
-     * @return trainingMentoringDevelopment.
+     * @return trainingMentoringDevelopment
      */
     public String getTrainingMentoringDevelopment()
     {
@@ -204,7 +207,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the training mentoring development.
-     * @param trainingMentoringDevelopment trainingMentoringDevelopment.
+     * @param trainingMentoringDevelopment trainingMentoringDevelopment
      */
     public void setTrainingMentoringDevelopment(String trainingMentoringDevelopment)
     {
@@ -213,7 +216,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * If has been reviewed by HR.
-     * @return True or false.
+     * @return True or false
      */
     public boolean isAccepted()
     {
@@ -222,7 +225,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set if HR has reviewed.
-     * @param accepted True or false.
+     * @param accepted True or false
      */
     public void setAccepted(boolean accepted)
     {
@@ -231,7 +234,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the reviewee signature.
-     * @return revieweeSignature.
+     * @return revieweeSignature
      */
     public Signature getRevieweeSignature()
     {
@@ -240,7 +243,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the reviewee signature.
-     * @param revieweeSignature revieweeSignature.
+     * @param revieweeSignature revieweeSignature
      */
     public void setRevieweeSignature(Signature revieweeSignature)
     {
@@ -258,7 +261,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the first reviewer signature.
-     * @param reviewer1Signature reviewer1Signature.
+     * @param reviewer1Signature reviewer1Signature
      */
     public void setReviewer1Signature(Signature reviewer1Signature)
     {
@@ -276,7 +279,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the second reviewer signature.
-     * @param reviewer2Signature reviewer2Signature.
+     * @param reviewer2Signature reviewer2Signature
      */
     public void setRevieweer2ignature(Signature reviewer2Signature)
     {
@@ -285,7 +288,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the moderator.
-     * @return moderator.
+     * @return moderator
      */
     public User getModerator()
     {
@@ -294,7 +297,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the moderator.
-     * @param moderator moderator.
+     * @param moderator moderator
      */
     public void setModerator(User moderator)
     {
@@ -303,7 +306,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the first reviewer.
-     * @return reviewer1.
+     * @return reviewer1
      */
     public User getReviewer1()
     {
@@ -312,7 +315,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the first reviewer.
-     * @param reviewer1 reviewer1.
+     * @param reviewer1 reviewer1
      */
     public void setReviewer1(User reviewer1)
     {
@@ -321,7 +324,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Get the second reviewer.
-     * @return reviewer2.
+     * @return reviewer2
      */
     public User getReviewer2()
     {
@@ -330,7 +333,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * Set the second reviewer.
-     * @param reviewer2 reviewer2.
+     * @param reviewer2 reviewer2
      */
     public void setReviewer2(User reviewer2)
     {

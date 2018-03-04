@@ -3,6 +3,9 @@ package Yuconz.Entity;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * Entity for an access request.
+ */
 @Entity
 @Table
 public class AccessRequest

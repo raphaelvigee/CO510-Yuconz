@@ -11,6 +11,9 @@ import com.sallyf.sallyf.Form.Type.TextType;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Form type for addresses.
+ */
 public class AddressType extends AbstractFormType<Options, Object>
 {
     /**

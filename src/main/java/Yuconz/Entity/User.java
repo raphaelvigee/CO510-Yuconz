@@ -15,6 +15,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * Entity for system users (i.e. employees).
+ * Stores all user data and references records.
+ */
 @Entity
 @Table
 public class User implements UserInterface<String>, Serializable

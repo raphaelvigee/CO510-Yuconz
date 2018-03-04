@@ -1,5 +1,9 @@
 package Yuconz.Entity;
 
+/**
+ * Enum for employment sections.
+ * Sections are parts of a department.
+ */
 public enum Section
 {
     RECRUITMENT("Recruitment", Department.HUMAN_RESOURCES),

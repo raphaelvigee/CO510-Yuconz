@@ -15,6 +15,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
+/**
+ * Form type for user details.
+ */
 public class UserType extends AbstractFormType<Options, Object>
 {
     /**

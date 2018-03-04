@@ -2,6 +2,9 @@ package Yuconz.Entity;
 
 import java.util.List;
 
+/**
+ * Entity for a department, should contain list of the department's sections.
+ */
 public enum Department
 {
     HUMAN_RESOURCES("Human Resources"),
