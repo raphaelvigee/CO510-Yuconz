@@ -35,7 +35,7 @@
                             {{ user.getFullName() }} <span>{{ user.getId() }}</span>
                         </div>
                         <div class="title">
-                            {{ default(user.getRole().getName(), "N/A") }} - Finance
+                            {{ default(user.getRole().getName(), "N/A") }} &bull; <i>{{ user.getSection().getDepartment().getName() }}</i> - {{ user.getSection().getName() }}
                         </div>
                     </div>
 
