@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 public class YuconzIdGenerator implements IdentifierGenerator
 {
-
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object o) throws HibernateException
     {
