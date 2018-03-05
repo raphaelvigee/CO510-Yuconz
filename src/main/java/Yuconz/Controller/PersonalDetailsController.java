@@ -63,7 +63,7 @@ public class PersonalDetailsController extends BaseController
                 })
                 .getForm();
 
-        form.handleRequest(runtimeBag.getRequest());
+        form.handleRequest();
 
         if (form.isSubmitted() && form.isValid()) {
             Map<String, Object> data = (Map<String, Object>) form.resolveData();
@@ -85,7 +85,7 @@ public class PersonalDetailsController extends BaseController
 
             String message = create ? "User successfully created" : "User successfully updated";
 
-            flashManager.addFlash(runtimeBag, new FlashMessage(message, "success", "check"));
+            flashManager.addFlash(new FlashMessage(message, "success", "check"));
 
             return this.redirectToRoute("PersonalDetailsController.edit", MapUtils.createHashMap(
                     entry("user", user.getId())

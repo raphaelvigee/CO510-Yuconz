@@ -4,6 +4,7 @@ import com.sallyf.sallyf.AccessDecisionManager.AccessDecisionManager;
 import com.sallyf.sallyf.AccessDecisionManager.DecisionStrategy;
 import com.sallyf.sallyf.JTwig.JTwigServiceFunction;
 import com.sallyf.sallyf.Server.RuntimeBag;
+import com.sallyf.sallyf.Server.RuntimeBagContext;
 import org.jtwig.functions.FunctionRequest;
 
 /**
@@ -40,23 +41,24 @@ public class IsGrantedFunction implements JTwigServiceFunction
     @Override
     public Object execute(FunctionRequest request)
     {
-        request.minimumNumberOfArguments(2);
-        request.maximumNumberOfArguments(4);
+        request.minimumNumberOfArguments(1);
+        request.maximumNumberOfArguments(3);
 
-        RuntimeBag runtimeBag = (RuntimeBag) request.get(0);
-        String attribute = (String) request.get(1);
+        RuntimeBag runtimeBag = RuntimeBagContext.get();
 
-        if (request.getNumberOfArguments() == 2) {
+        String attribute = (String) request.get(0);
+
+        if (request.getNumberOfArguments() == 1) {
             return accessDecisionManager.vote(runtimeBag, attribute, null);
         }
 
-        Object subject = request.get(2);
+        Object subject = request.get(1);
 
-        if (request.getNumberOfArguments() == 3) {
+        if (request.getNumberOfArguments() == 2) {
             return accessDecisionManager.vote(runtimeBag, attribute, subject);
         }
 
-        String strategyStr = (String) request.get(3);
+        String strategyStr = (String) request.get(2);
 
         DecisionStrategy strategy = DecisionStrategy.valueOf(strategyStr);
 

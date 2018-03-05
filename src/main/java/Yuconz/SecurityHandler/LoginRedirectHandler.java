@@ -6,7 +6,9 @@ import com.sallyf.sallyf.Exception.FrameworkException;
 import com.sallyf.sallyf.Router.RedirectResponse;
 import com.sallyf.sallyf.Router.URLGenerator;
 import com.sallyf.sallyf.Server.RuntimeBag;
+import com.sallyf.sallyf.Server.RuntimeBagContext;
 import com.sallyf.sallyf.Server.Status;
+import org.eclipse.jetty.server.Request;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -23,8 +25,10 @@ public class LoginRedirectHandler implements SecurityDeniedHandler
      * @return
      */
     @Override
-    public Object apply(Container container, RuntimeBag runtimeBag)
+    public Object apply(Container container)
     {
+        RuntimeBag runtimeBag = RuntimeBagContext.get();
+
         URLGenerator urlGenerator = container.get(URLGenerator.class);
 
         String loginUrl = urlGenerator.url("AuthenticationController.login");

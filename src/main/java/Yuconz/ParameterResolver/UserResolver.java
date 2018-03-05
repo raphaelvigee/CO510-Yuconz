@@ -33,7 +33,7 @@ public class UserResolver implements RouteParameterResolverInterface<User>
      * @return User from database
      */
     @Override
-    public User resolve(String name, String value, RuntimeBag runtimeBag)
+    public User resolve(String name, String value)
     {
         Session session = hibernate.getCurrentSession();
 

@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.github.sallyf</groupId>
             <artifactId>sallyf</artifactId>
-            <version>9b2329b</version>
+            <version>d50cdd8</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>

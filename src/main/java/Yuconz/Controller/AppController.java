@@ -16,14 +16,13 @@ public class AppController extends BaseController
     /**
      * If user is logged, redirect to log in screen,
      * if not redirect to dashboard index.
-     * @param runtimeBag current runtime bag
      * @param authenticationManager system authentication manager
      * @return response
      */
     @Route(path = "/")
-    public Response index(RuntimeBag runtimeBag, YuconzAuthenticationManager authenticationManager)
+    public Response index(YuconzAuthenticationManager authenticationManager)
     {
-        UserInterface user = authenticationManager.getUser(runtimeBag);
+        UserInterface user = authenticationManager.getUser();
 
         if (user == null) {
             return redirectToRoute("AuthenticationController.login");
