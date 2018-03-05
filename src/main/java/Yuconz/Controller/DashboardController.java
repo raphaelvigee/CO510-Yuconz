@@ -10,7 +10,7 @@ import com.sallyf.sallyf.JTwig.JTwigResponse;
  * Controller for system dashboard.
  */
 @Route(path = "/dashboard")
-@Security(value = "is_granted($, 'authenticated')", handler = LoginRedirectHandler.class)
+@Security(value = "is_granted('authenticated')", handler = LoginRedirectHandler.class)
 public class DashboardController extends BaseController
 {
     /**

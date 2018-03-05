@@ -36,17 +36,16 @@ public class AuthorisationVoter implements VoterInterface
      * Checks if voter has authority to vote.
      * @param attribute the name of the attribute being voted on
      * @param subject User being voted on
-     * @param runtimeBag The runtimeBag itself.
      * @return true if supports
      */
     @Override
-    public boolean supports(String attribute, Object subject, RuntimeBag runtimeBag)
+    public boolean supports(String attribute, Object subject)
     {
         if (!Arrays.asList(HAS_RIGHTS).contains(attribute)) {
             return false;
         }
 
-        UserInterface currentUser = authenticationManager.getUser(runtimeBag);
+        UserInterface currentUser = authenticationManager.getUser();
 
         if (currentUser == null) {
             return false;
@@ -63,19 +62,18 @@ public class AuthorisationVoter implements VoterInterface
      * Check if User has the requested rights
      * @param attribute the name of the attribute being voted on
      * @param subject object being voted on
-     * @param runtimeBag The runtimeBag itself.
      * @return
      */
     @Override
-    public boolean vote(String attribute, Object subject, RuntimeBag runtimeBag)
+    public boolean vote(String attribute, Object subject)
     {
         LoginRole expectedRole = LoginRole.valueOf((String) subject);
 
-        User currentUser = (User) authenticationManager.getUser(runtimeBag);
+        User currentUser = (User) authenticationManager.getUser();
 
         switch (attribute) {
             case HAS_RIGHTS:
-                return hasRights(runtimeBag, currentUser, expectedRole);
+                return hasRights(currentUser, expectedRole);
         }
 
         return false;
@@ -83,13 +81,12 @@ public class AuthorisationVoter implements VoterInterface
 
     /**
      * Checks if the User's Session has the selected authority role.
-     * @param runtimeBag The runtimeBag itself.
      * @param currentUser user being checked
      * @param expectedRole expected role for action
      * @return
      */
-    private boolean hasRights(RuntimeBag runtimeBag, User currentUser, LoginRole expectedRole)
+    private boolean hasRights(User currentUser, LoginRole expectedRole)
     {
-        return authorisationManager.hasSessionRights(runtimeBag.getRequest(), currentUser, expectedRole);
+        return authorisationManager.hasSessionRights(currentUser, expectedRole);
     }
 }

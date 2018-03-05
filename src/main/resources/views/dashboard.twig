@@ -20,10 +20,10 @@
                     </div>
                     <div class="details">
                         <div class="name">
-                            {{ getUser(_).getFullName() }}
+                            {{ getUser().getFullName() }}
                         </div>
                         <div class="role">
-                            {{ getRole(_).getName() }} &bull; {{ getUser(_).getId() }}
+                            {{ getRole().getName() }} &bull; {{ getUser().getId() }}
                         </div>
                     </div>
                     <div class="chevron">
@@ -45,23 +45,23 @@
             <div class="heading">
                 My Yuconz
             </div>
-            <div class="option {{ activePage(_, 'DashboardController.index') }}">
+            <div class="option {{ activePage('DashboardController.index') }}">
                 <a class="link" href="{{ path('DashboardController.index') }}">Dashboard</a>
             </div>
-            {% if is_granted(_, 'view_user', getUser(_)) %}
+            {% if is_granted('view_user', getUser()) %}
                 {% set currentUserDetails = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit'] %}
                 {% if currentUserDetails %}
-                    {% set currentUserDetails = getUser(_).equals(user) %}
+                    {% set currentUserDetails = getUser().equals(user) %}
                 {% endif %}
                 {% set activeClass = currentUserDetails ? "selected" : "" %}
 
                 <div class="option {{ activeClass }}">
-                    <a class="link" href="{{ path('PersonalDetailsController.view', {'user': getUser(_).getId()}) }}">
+                    <a class="link" href="{{ path('PersonalDetailsController.view', {'user': getUser().getId()}) }}">
                         Personal Details
                     </a>
 
-                    {% if is_granted(_, 'edit_user', getUser(_)) %}
-                        <a href="{{ path('PersonalDetailsController.edit', {'user': getUser(_).getId()}) }}" class="icon">
+                    {% if is_granted('edit_user', getUser()) %}
+                        <a href="{{ path('PersonalDetailsController.edit', {'user': getUser().getId()}) }}" class="icon">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                     {% endif %}
@@ -75,14 +75,14 @@
                 <a class="link" href="#">Annual Reviews</a>
             </div>
 
-            {% if is_granted(_, 'has_rights', 'HR_EMPLOYEE') %}
+            {% if is_granted('has_rights', 'HR_EMPLOYEE') %}
                 <div class="heading">
                     Administration
                 </div>
                 <div class="option">
                     <a class="link" href="#">Dashboard</a>
                 </div>
-                {% if is_granted(_, 'list_users') %}
+                {% if is_granted('list_users') %}
                     {% set employeeManagement = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit', 'PersonalDetailsController.list'] %}
                     {% set activeClass = employeeManagement ? "selected" : "" %}
 
@@ -95,7 +95,7 @@
 
         <div id="mainContent">
 
-            {% set flashMessages = service('FlashManager').getCurrentFlashes(_) %}
+            {% set flashMessages = service('FlashManager').getCurrentFlashes() %}
 
             {% for message in flashMessages %}
                 <div class="alert {{ message.getType() }}">
