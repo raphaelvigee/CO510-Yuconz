@@ -16,7 +16,7 @@
 
         <div class="spacer"></div>
 
-        {% if is_granted(_, 'create_user') %}
+        {% if is_granted('create_user') %}
             <a href="{{ path('PersonalDetailsController.create') }}">
                 <button>Add Employee</button>
             </a>
@@ -43,12 +43,12 @@
 
                     <div class="options">
 
-                        {% if is_granted(_, 'view_user', user) %}
+                        {% if is_granted('view_user', user) %}
                             <a href="{{ path('PersonalDetailsController.view', {'user': user.getId()}) }}">
                                 View
                             </a>
                         {% endif %}
-                        {% if is_granted(_, 'edit_user', user) %}
+                        {% if is_granted('edit_user', user) %}
                             <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
                                 Edit
                             </a>

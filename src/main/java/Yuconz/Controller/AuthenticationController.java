@@ -63,7 +63,7 @@ public class AuthenticationController extends BaseController
                 })
                 .getForm();
 
-        form.handleRequest(request);
+        form.handleRequest();
 
         if (form.isSubmitted() && form.isValid()) {
             Map<String, Object> data = (Map<String, Object>) form.resolveData();

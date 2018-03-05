@@ -6,6 +6,8 @@ import Yuconz.Model.LogType;
 import Yuconz.Model.LoginRole;
 import Yuconz.Model.UserRole;
 import com.sallyf.sallyf.Container.ServiceInterface;
+import com.sallyf.sallyf.Server.RuntimeBag;
+import com.sallyf.sallyf.Server.RuntimeBagContext;
 import org.eclipse.jetty.server.Request;
 
 import java.util.function.Supplier;
@@ -42,13 +44,15 @@ public class AuthorisationManager implements ServiceInterface
     /**
      * Tests if user has the rights for the specified role.
      *
-     * @param request      current request
      * @param user         user to test on
      * @param expectedRole role to test for
      * @return true if has rights, else false
      */
-    public boolean hasUserRights(Request request, User user, LoginRole expectedRole)
+    public boolean hasUserRights(User user, LoginRole expectedRole)
     {
+        RuntimeBag runtimeBag = RuntimeBagContext.get();
+        Request request = runtimeBag.getRequest();
+
         UserRole userRole = user.getRole();
         boolean isHr = user.getSection().getDepartment().equals(Department.HUMAN_RESOURCES);
 
@@ -88,14 +92,16 @@ public class AuthorisationManager implements ServiceInterface
     /**
      * Tests if a user's session role has the rights of an expected role.
      *
-     * @param request      current request
      * @param user         user to test
      * @param expectedRole role to test for
      * @return true if has rights, else false
      */
-    public boolean hasSessionRights(Request request, User user, LoginRole expectedRole)
+    public boolean hasSessionRights(User user, LoginRole expectedRole)
     {
-        LoginRole loginRole = authenticationManager.getCurrentRole(request);
+        RuntimeBag runtimeBag = RuntimeBagContext.get();
+        Request request = runtimeBag.getRequest();
+
+        LoginRole loginRole = authenticationManager.getCurrentRole();
 
         boolean r = loginRole.getContainedRoles().contains(expectedRole);
 

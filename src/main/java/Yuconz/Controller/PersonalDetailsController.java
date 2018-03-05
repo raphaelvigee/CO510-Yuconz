@@ -34,19 +34,18 @@ import static com.sallyf.sallyf.Utils.MapUtils.entry;
 /**
  * Controller for personal details views.
  */
-@Security(value = "is_granted($, 'authenticated')", handler = LoginRedirectHandler.class)
+@Security(value = "is_granted('authenticated')", handler = LoginRedirectHandler.class)
 @Route(path = "/details")
 public class PersonalDetailsController extends BaseController
 {
     /**
      * Handles the editing and creation of personal details.
      *
-     * @param runtimeBag The runtimeBag itself.
      * @param user       user to edit
      * @param create     is new user
      * @return response
      */
-    private Object handle(RuntimeBag runtimeBag, User user, boolean create)
+    private Object handle(User user, boolean create)
     {
         Hibernate hibernate = this.getContainer().get(Hibernate.class);
         FlashManager flashManager = this.getContainer().get(FlashManager.class);
@@ -63,7 +62,7 @@ public class PersonalDetailsController extends BaseController
                 })
                 .getForm();
 
-        form.handleRequest(runtimeBag.getRequest());
+        form.handleRequest();
 
         if (form.isSubmitted() && form.isValid()) {
             Map<String, Object> data = (Map<String, Object>) form.resolveData();
@@ -85,7 +84,7 @@ public class PersonalDetailsController extends BaseController
 
             String message = create ? "User successfully created" : "User successfully updated";
 
-            flashManager.addFlash(runtimeBag, new FlashMessage(message, "success", "check"));
+            flashManager.addFlash(new FlashMessage(message, "success", "check"));
 
             return this.redirectToRoute("PersonalDetailsController.edit", MapUtils.createHashMap(
                     entry("user", user.getId())
@@ -106,7 +105,7 @@ public class PersonalDetailsController extends BaseController
      * @return response
      */
     @Route(path = "", methods = {Method.GET, Method.POST})
-    @Security("is_granted($, 'list_users')")
+    @Security("is_granted('list_users')")
     public Object list(Request request, Hibernate hibernate)
     {
         Map<String, String[]> queryParameters = request.getParameterMap();
@@ -177,12 +176,12 @@ public class PersonalDetailsController extends BaseController
      * @return response
      */
     @Route(path = "/create", methods = {Method.GET, Method.POST})
-    @Security("is_granted($, 'create_user')")
+    @Security("is_granted('create_user')")
     public Object create(RuntimeBag runtimeBag)
     {
         User user = new User();
 
-        return handle(runtimeBag, user, true);
+        return handle(user, true);
     }
 
     /**
@@ -195,13 +194,13 @@ public class PersonalDetailsController extends BaseController
     @Route(path = "/{user}/edit", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
     })
-    @Security("is_granted($, 'edit_user', user)")
+    @Security("is_granted('edit_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
     public Object edit(RuntimeBag runtimeBag, RouteParameters routeParameters)
     {
         User user = (User) routeParameters.get("user");
 
-        return handle(runtimeBag, user, false);
+        return handle(user, false);
     }
 
     /**
@@ -213,7 +212,7 @@ public class PersonalDetailsController extends BaseController
     @Route(path = "/{user}", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
     })
-    @Security("is_granted($, 'view_user', user)")
+    @Security("is_granted('view_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
     public Object view(RouteParameters routeParameters)
     {

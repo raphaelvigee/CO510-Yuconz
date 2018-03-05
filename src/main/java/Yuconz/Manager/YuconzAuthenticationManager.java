@@ -15,6 +15,7 @@ import com.sallyf.sallyf.EventDispatcher.EventDispatcher;
 import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
 import com.sallyf.sallyf.Router.Router;
 import com.sallyf.sallyf.Server.RuntimeBag;
+import com.sallyf.sallyf.Server.RuntimeBagContext;
 import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -116,7 +117,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
             user = users.get(0);
 
             // Check if requested role is allowed
-            if (!authorisationManager.hasUserRights(request, user, loginRole)) {
+            if (!authorisationManager.hasUserRights(user, loginRole)) {
                 user = null;
                 loginRole = null;
                 logDetails = "invalid role";
@@ -146,22 +147,14 @@ public class YuconzAuthenticationManager extends AuthenticationManager
     }
 
     /**
-     * Gets current role for a session's runtimeBag.
-     * @param runtimeBag The runtimeBag itself.
-     * @return LoginRole for runtimeBag
-     */
-    public LoginRole getCurrentRole(RuntimeBag runtimeBag)
-    {
-        return getCurrentRole(runtimeBag.getRequest());
-    }
-
-    /**
      * Gets the current role for a session's request.
-     * @param request the request
      * @return LoginRole for request
      */
-    public LoginRole getCurrentRole(Request request)
+    public LoginRole getCurrentRole()
     {
+        RuntimeBag runtimeBag = RuntimeBagContext.get();
+        Request request = runtimeBag.getRequest();
+
         HttpSession session = request.getSession(true);
 
         return (LoginRole) session.getAttribute("role");

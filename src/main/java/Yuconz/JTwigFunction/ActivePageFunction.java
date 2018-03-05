@@ -2,6 +2,7 @@ package Yuconz.JTwigFunction;
 
 import com.sallyf.sallyf.JTwig.JTwigServiceFunction;
 import com.sallyf.sallyf.Server.RuntimeBag;
+import com.sallyf.sallyf.Server.RuntimeBagContext;
 import org.jtwig.functions.FunctionRequest;
 
 import javax.servlet.http.HttpSession;
@@ -29,11 +30,12 @@ public class ActivePageFunction implements JTwigServiceFunction
     @Override
     public Object execute(FunctionRequest request)
     {
-        request.minimumNumberOfArguments(2);
-        request.maximumNumberOfArguments(2);
+        request.minimumNumberOfArguments(1);
+        request.maximumNumberOfArguments(1);
 
-        RuntimeBag runtimeBag = (RuntimeBag) request.get(0);
-        String expected = (String) request.get(1);
+        String expected = (String) request.get(0);
+
+        RuntimeBag runtimeBag = RuntimeBagContext.get();
 
         return runtimeBag.getRoute().getName().equals(expected) ? "selected" : "";
     }
