@@ -40,9 +40,10 @@ public class PersonalDetailsController extends BaseController
 {
     /**
      * Handles the editing and creation of personal details.
+     *
      * @param runtimeBag The runtimeBag itself.
-     * @param user user to edit
-     * @param create is new user
+     * @param user       user to edit
+     * @param create     is new user
      * @return response
      */
     private Object handle(RuntimeBag runtimeBag, User user, boolean create)
@@ -54,7 +55,9 @@ public class PersonalDetailsController extends BaseController
         in.put("user", user.toHashMap());
 
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
-                .add("user", UserType.class)
+                .add("user", UserType.class, options -> {
+                    options.setCreate(create);
+                })
                 .add("submit", SubmitType.class, options -> {
                     options.setLabel(create ? "Create" : "Update");
                 })
@@ -64,7 +67,13 @@ public class PersonalDetailsController extends BaseController
 
         if (form.isSubmitted() && form.isValid()) {
             Map<String, Object> data = (Map<String, Object>) form.resolveData();
-            user.applyHashMap((Map<String, Object>) data.get("user"));
+            Map<String, Object> userData = (Map<String, Object>) data.get("user");
+            user.applyHashMap(userData);
+
+            String password = (String) userData.get("password");
+            if (!password.isEmpty()) {
+                user.setPassword(User.hash(password));
+            }
 
             Session session = hibernate.getCurrentSession();
 
@@ -91,7 +100,8 @@ public class PersonalDetailsController extends BaseController
 
     /**
      * Route for user listing / searching.
-     * @param request current request
+     *
+     * @param request   current request
      * @param hibernate hibernate
      * @return response
      */
@@ -162,6 +172,7 @@ public class PersonalDetailsController extends BaseController
 
     /**
      * Route for creating users.
+     *
      * @param runtimeBag The runtimeBag itself.
      * @return response
      */
@@ -176,7 +187,8 @@ public class PersonalDetailsController extends BaseController
 
     /**
      * Route for editing user's personal details.
-     * @param runtimeBag The runtimeBag itself.
+     *
+     * @param runtimeBag      The runtimeBag itself.
      * @param routeParameters the route's parameters
      * @return response
      */
@@ -194,6 +206,7 @@ public class PersonalDetailsController extends BaseController
 
     /**
      * Route for viewing user's personal details.
+     *
      * @param routeParameters the route's parameters
      * @return response
      */

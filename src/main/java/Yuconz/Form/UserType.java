@@ -8,6 +8,7 @@ import com.sallyf.sallyf.Form.FormTypeInterface;
 import com.sallyf.sallyf.Form.Options;
 import com.sallyf.sallyf.Form.Type.AbstractFormType;
 import com.sallyf.sallyf.Form.Type.ChoiceType;
+import com.sallyf.sallyf.Form.Type.PasswordType;
 import com.sallyf.sallyf.Form.Type.TextType;
 
 import java.util.Arrays;
@@ -18,16 +19,38 @@ import java.util.Map;
 /**
  * Form type for user details.
  */
-public class UserType extends AbstractFormType<Options, Object>
+public class UserType extends AbstractFormType<UserType.UserOptions, Object>
 {
+    public class UserOptions extends Options
+    {
+        public void setCreate(boolean c)
+        {
+            put("create", c);
+        }
+
+        public boolean isCreate()
+        {
+            return (boolean) get("create");
+        }
+    }
+
+    @Override
+    public UserOptions createOptions()
+    {
+        return new UserOptions();
+    }
+
     /**
      * Builds a form structure.
+     *
      * @param form form
      */
     @Override
-    public void buildForm(Form<?, Options, Object> form)
+    public void buildForm(Form<?, UserOptions, Object> form)
     {
-        FormBuilder<?, Options, Object> builder = form.getBuilder();
+        UserOptions parentOptions = form.getOptions();
+
+        FormBuilder<?, UserOptions, Object> builder = form.getBuilder();
 
         builder
                 .add("firstname", TextType.class, options -> {
@@ -41,6 +64,14 @@ public class UserType extends AbstractFormType<Options, Object>
                 .add("email", TextType.class, options -> {
                     options.setLabel("Email address");
                     options.getConstraints().add(new NotEmpty());
+                })
+                .add("password", PasswordType.class, options -> {
+                    if (parentOptions.isCreate()) {
+                        options.setLabel("Password");
+                        options.getConstraints().add(new NotEmpty());
+                    } else {
+                        options.setLabel("Password (Leave blank to leave unchanged)");
+                    }
                 })
                 .add("birthdate", DateType.class, options -> {
                     options.setLabel("Birth date");
@@ -74,12 +105,13 @@ public class UserType extends AbstractFormType<Options, Object>
 
     /**
      * Transforms the data of the form, into the representation of the data.
+     *
      * @param form form
-     * @param <T> generic class
+     * @param <T>  generic class
      * @return representation of the data
      */
     @Override
-    public <T extends FormTypeInterface<Options, Object>> Object resolveData(Form<T, Options, Object> form)
+    public <T extends FormTypeInterface<UserOptions, Object>> Object resolveData(Form<T, UserOptions, Object> form)
     {
         Map<String, Object> out = new LinkedHashMap<>();
 
