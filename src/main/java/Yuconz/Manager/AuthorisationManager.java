@@ -21,6 +21,7 @@ public class AuthorisationManager implements ServiceInterface
 
     /**
      * New Authorisation manager
+     *
      * @param logManager logManager
      */
     public AuthorisationManager(LogManager logManager)
@@ -30,6 +31,7 @@ public class AuthorisationManager implements ServiceInterface
 
     /**
      * Sets AuthorisationManager's Authentication Manager.
+     *
      * @param authenticationManager
      */
     public void setAuthenticationManager(YuconzAuthenticationManager authenticationManager)
@@ -39,8 +41,9 @@ public class AuthorisationManager implements ServiceInterface
 
     /**
      * Tests if user has the rights for the specified role.
-     * @param request current request
-     * @param user user to test on
+     *
+     * @param request      current request
+     * @param user         user to test on
      * @param expectedRole role to test for
      * @return true if has rights, else false
      */
@@ -50,6 +53,10 @@ public class AuthorisationManager implements ServiceInterface
         boolean isHr = user.getSection().getDepartment().equals(Department.HUMAN_RESOURCES);
 
         Supplier<Boolean> supplier = () -> {
+            if (userRole == null) {
+                return false;
+            }
+
             switch (userRole) {
                 case EMPLOYEE:
                     if (expectedRole == LoginRole.HR_EMPLOYEE) {
@@ -80,8 +87,9 @@ public class AuthorisationManager implements ServiceInterface
 
     /**
      * Tests if a user's session role has the rights of an expected role.
-     * @param request current request
-     * @param user user to test
+     *
+     * @param request      current request
+     * @param user         user to test
      * @param expectedRole role to test for
      * @return true if has rights, else false
      */
