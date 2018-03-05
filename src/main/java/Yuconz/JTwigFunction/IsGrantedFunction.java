@@ -44,24 +44,22 @@ public class IsGrantedFunction implements JTwigServiceFunction
         request.minimumNumberOfArguments(1);
         request.maximumNumberOfArguments(3);
 
-        RuntimeBag runtimeBag = RuntimeBagContext.get();
-
         String attribute = (String) request.get(0);
 
         if (request.getNumberOfArguments() == 1) {
-            return accessDecisionManager.vote(runtimeBag, attribute, null);
+            return accessDecisionManager.vote(attribute, null);
         }
 
         Object subject = request.get(1);
 
         if (request.getNumberOfArguments() == 2) {
-            return accessDecisionManager.vote(runtimeBag, attribute, subject);
+            return accessDecisionManager.vote(attribute, subject);
         }
 
         String strategyStr = (String) request.get(2);
 
         DecisionStrategy strategy = DecisionStrategy.valueOf(strategyStr);
 
-        return accessDecisionManager.vote(runtimeBag, attribute, subject, strategy);
+        return accessDecisionManager.vote(attribute, subject, strategy);
     }
 }
