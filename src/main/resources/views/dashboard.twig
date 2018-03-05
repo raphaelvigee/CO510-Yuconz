@@ -76,15 +76,18 @@
             </div>
 
             {% if is_granted(_, 'has_rights', 'HR_EMPLOYEE') %}
-                <div class="heading">
+                <div class="heading">git 
                     Administration
                 </div>
                 <div class="option">
                     <a class="link" href="#">Dashboard</a>
                 </div>
                 {% if is_granted(_, 'list_users') %}
-                    {% set employeeManagement = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit', 'PersonalDetailsController.list'] %}
-                    {% set activeClass = employeeManagement ? "selected" : "" %}
+                    {% set isEmpManagement = routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit', 'PersonalDetailsController.list'] %}
+                    {% if routeName in ['PersonalDetailsController.view', 'PersonalDetailsController.edit'] and getUser(_).equals(user) %}
+                        {% set isEmpManagement = false %}
+                    {% endif %}
+                    {% set activeClass = isEmpManagement ? "selected" : "" %}
 
                     <div class="option {{ activeClass }}">
                         <a class="link" href="{{ path('PersonalDetailsController.list') }}">Employee Management</a>
