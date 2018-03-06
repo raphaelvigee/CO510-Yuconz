@@ -6,7 +6,7 @@
     <h1>
         {{ user.getFullName() }}
         {% if is_granted('edit_user', user) %}
-            <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
+            <a href="{{ path('EmployeesController.edit', {'user': user.getId()}) }}">
                 <i class="fas fa-xs fa-pencil-alt"></i>
             </a>
         {% endif %}

@@ -35,8 +35,8 @@ import static com.sallyf.sallyf.Utils.MapUtils.entry;
  * Controller for personal details views.
  */
 @Security(value = "is_granted('authenticated')", handler = LoginRedirectHandler.class)
-@Route(path = "/details")
-public class PersonalDetailsController extends BaseController
+@Route(path = "/employee")
+public class EmployeesController extends BaseController
 {
     /**
      * Handles the editing and creation of personal details.
@@ -86,7 +86,7 @@ public class PersonalDetailsController extends BaseController
 
             flashManager.addFlash(new FlashMessage(message, "success", "check"));
 
-            return this.redirectToRoute("PersonalDetailsController.edit", MapUtils.createHashMap(
+            return this.redirectToRoute("EmployeesController.edit", MapUtils.createHashMap(
                     entry("user", user.getId())
             ));
         }

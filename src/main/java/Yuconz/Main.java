@@ -97,7 +97,7 @@ public class Main
         router.registerController(StaticController.class);
         router.registerController(AuthenticationController.class);
         router.registerController(DashboardController.class);
-        router.registerController(PersonalDetailsController.class);
+        router.registerController(EmployeesController.class);
 
         FormManager formManager = container.get(FormManager.class);
 

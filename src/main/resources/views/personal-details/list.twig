@@ -17,7 +17,7 @@
         <div class="spacer"></div>
 
         {% if is_granted('create_user') %}
-            <a href="{{ path('PersonalDetailsController.create') }}">
+            <a href="{{ path('EmployeesController.create') }}">
                 <button>Add Employee</button>
             </a>
         {% endif %}
@@ -44,12 +44,12 @@
                     <div class="options">
 
                         {% if is_granted('view_user', user) %}
-                            <a href="{{ path('PersonalDetailsController.view', {'user': user.getId()}) }}">
+                            <a href="{{ path('EmployeesController.view', {'user': user.getId()}) }}">
                                 View
                             </a>
                         {% endif %}
                         {% if is_granted('edit_user', user) %}
-                            <a href="{{ path('PersonalDetailsController.edit', {'user': user.getId()}) }}">
+                            <a href="{{ path('EmployeesController.edit', {'user': user.getId()}) }}">
                                 Edit
                             </a>
                         {% endif %}
@@ -61,7 +61,7 @@
 
     <div>
         {% for p in range(1, max_pages) %}
-            <a href="{{ path('PersonalDetailsController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
+            <a href="{{ path('EmployeesController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
         {% endfor %}
     </div>
 {% endblock %}
