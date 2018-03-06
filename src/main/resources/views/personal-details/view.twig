@@ -101,13 +101,27 @@
         </div>
     </div>
 
-    <div class="records-feed">
+    <h2>Records</h2>
+
+    <div class="feed">
         {% set records = service('RecordManager').getRecords(user) %}
 
         {% for record in records %}
             <div class="record">
-                <h5>{{ record.getTitle() }}</h5>
-                <a href="{{ path('RecordController.view', {'record': record.getId()}) }}">View</a>
+                <div class="header">
+                    <div class="title">
+                        <span class="icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span>{{ record.getTitle() }}</span>
+                    </div>
+                    <div class="date">{{ record.getCreatedAt() }}</div>
+                </div>
+                {% if is_granted('view_record', record) %}
+                    <div class="summary">
+                        <p>[body]</p>
+                        <a class="link" href="{{ path('RecordController.view', {'record': record.getId()}) }}">Read
+                            more</a>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>

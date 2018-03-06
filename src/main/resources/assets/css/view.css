@@ -1,25 +1,80 @@
-.table {
-    display: flex;
-    flex-direction: column;
+h2 {
+    margin-bottom: 20px;
 }
 
-.table .row {
-    display: flex;
-    flex-direction: row;
-    padding: 15px 0;
+.feed .record {
+    position: relative;
+    padding-left: 30px;
+    padding-bottom: 25px;
+    cursor: pointer;
 }
 
-.table .row:not(:last-child) {
-    border-bottom: 1px solid #eeeeef;
+.feed .record:hover {
+    background: #fafafa;
 }
 
-.table .row .cell {
-    flex: 1;
+.feed .record:before {
+    content: ' ';
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    margin-left: -20px;
+    background: #ccc;
 }
 
-.table .row .cell.heading {
-    flex: 0.3;
-    font-weight: bold;
-    padding-right: 20px;
+.feed .record:first-child:before {
+    margin-top: 5px;
+}
+
+.feed .record:last-child:before {
+    height: 10px;
+}
+
+.feed .record:after {
+    content: ' ';
+    position: absolute;
+    top: 5px;
+    margin-left: -26px;
+    border-radius: 50%;
+    background: var(--backgroundColor);
+    border: solid 2px #f36;
+    width: 10px;
+    height: 10px;
+}
+
+.feed .record .header .title {
+    font-weight: 500;
+}
+
+.feed .record .header .title .icon {
+    display: inline-block;
+    width: 20px;
+}
+
+.feed .record .header .date {
+    color: #888;
+    font-size: 13px;
+    margin-left: 23px;
+}
+
+.feed .record .summary {
+    margin-top: 5px;
+    padding-left: 23px;
+    display: none;
+    transition: 10s;
+}
+
+.feed .record .summary {
+    margin-bottom: 12px;
+}
+
+.feed .record .summary .link {
+    display: inline-block;
+    margin-top: 10px;
+    background: var(--tintColor);
+    color: var(--backgroundColor);
+    border-radius: 3px;
+    padding: 4px 10px;
+    cursor: pointer;
 }
 
