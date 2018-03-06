@@ -3,33 +3,30 @@ package Yuconz.JTwigFunction;
 import com.sallyf.sallyf.Form.FormManager;
 import com.sallyf.sallyf.Form.FormView;
 import com.sallyf.sallyf.Form.Renderer.FormRenderer;
+import com.sallyf.sallyf.JTwig.JTwigServiceFunction;
+import org.jtwig.functions.FunctionRequest;
 
 import java.util.function.BiFunction;
 
 /**
- * JTwig function for rendering a form.
+ * JTwig function for rendering a form start.
  */
-public class FormRenderFunction extends AbstractFormRenderFunction
+public class FormStartRenderFunction extends AbstractFormRenderFunction
 {
-    public FormRenderFunction(FormManager formManager)
+    public FormStartRenderFunction(FormManager formManager)
     {
         super(formManager);
     }
 
-    /**
-     * Name of function.
-     *
-     * @return name of function.
-     */
     @Override
     public String name()
     {
-        return "form";
+        return "form_start";
     }
 
     @Override
     public BiFunction<FormRenderer, FormView, Object> getRenderer()
     {
-        return FormRenderer::renderRow;
+        return FormRenderer::renderFormStart;
     }
 }

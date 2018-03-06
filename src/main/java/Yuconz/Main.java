@@ -68,6 +68,8 @@ public class Main
         container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(CurrentRoleFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(FormRenderFunction.class)).addTag("jtwig.function");
+        container.add(new ServiceDefinition<>(FormStartRenderFunction.class)).addTag("jtwig.function");
+        container.add(new ServiceDefinition<>(FormEndRenderFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(ActivePageFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(IsGrantedFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(RangeFunction.class)).addTag("jtwig.function");
