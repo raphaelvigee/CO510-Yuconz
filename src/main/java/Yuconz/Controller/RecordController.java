@@ -1,7 +1,7 @@
 package Yuconz.Controller;
 
 import Yuconz.Entity.AbstractRecord;
-import Yuconz.Main;
+import Yuconz.App;
 import Yuconz.ParameterResolver.RecordResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
 import com.sallyf.sallyf.Annotation.Requirement;
@@ -21,7 +21,7 @@ import static com.sallyf.sallyf.Utils.MapUtils.entry;
 public class RecordController extends BaseController
 {
     @Route(path = "/{record}", methods = {Method.GET, Method.POST}, requirements = {
-            @Requirement(name = "record", requirement = Main.RECORD_REGEX)
+            @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
     @Security("is_granted('view_record', record)")
     @ParameterResolver(name = "record", type = RecordResolver.class)

@@ -31,7 +31,7 @@ import com.sallyf.sallyf.Server.FrameworkServer;
  * Port must be changed by hardcoded value, no config file
  * necessary.
  */
-public class Main
+public class App
 {
     public static final String RECORD_REGEX = "([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})";
 
@@ -45,7 +45,13 @@ public class Main
      */
     public static void main(String[] args) throws FrameworkException
     {
-        start(1234); // Change port here, runs as an HTTP service.
+        int port = 1234; // Default application port
+
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        }
+
+        start(port);
     }
 
     /**
