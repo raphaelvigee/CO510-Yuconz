@@ -24,24 +24,32 @@ import com.sallyf.sallyf.Server.FrameworkServer;
  * Yuconz HR System main entry point.
  * Initialise services, managers, resolvers, voters and
  * starts application. Will run on HTTP port 1234 by default.
- *
+ * <p>
  * Port must be changed by hardcoded value, no config file
  * necessary.
  */
-public class Main
+public class App
 {
     /**
      * Main entry point method. Will start application.
+     *
      * @param args ignored, for now.
      * @throws FrameworkException
      */
     public static void main(String[] args) throws FrameworkException
     {
-        start(1234); // Change port here, runs as an HTTP service.
+        int port = 1234; // Default application port
+
+        if (args.length > 0) {
+            port = Integer.parseInt(args[0]);
+        }
+
+        start(port);
     }
 
     /**
      * Initialise system components, start application.
+     *
      * @param port
      * @return
      */
