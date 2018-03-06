@@ -1,6 +1,8 @@
 package Yuconz.Controller;
 
+import Yuconz.Entity.InitialEmploymentDetailsRecord;
 import Yuconz.Entity.User;
+import Yuconz.Form.InitialEmploymentDetailsType;
 import Yuconz.Form.UserType;
 import Yuconz.Model.FlashMessage;
 import Yuconz.ParameterResolver.UserResolver;
@@ -12,6 +14,7 @@ import com.sallyf.sallyf.Authentication.Annotation.Security;
 import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.FlashManager.FlashManager;
 import com.sallyf.sallyf.Form.Form;
+import com.sallyf.sallyf.Form.FormBuilder;
 import com.sallyf.sallyf.Form.Type.FormType;
 import com.sallyf.sallyf.Form.Type.SubmitType;
 import com.sallyf.sallyf.JTwig.JTwigResponse;
@@ -41,8 +44,8 @@ public class EmployeesController extends BaseController
     /**
      * Handles the editing and creation of personal details.
      *
-     * @param user       user to edit
-     * @param create     is new user
+     * @param user   user to edit
+     * @param create is new user
      * @return response
      */
     private Object handle(User user, boolean create)
@@ -53,14 +56,26 @@ public class EmployeesController extends BaseController
         HashMap<String, Object> in = new HashMap<>();
         in.put("user", user.toHashMap());
 
-        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
+        InitialEmploymentDetailsRecord ied = new InitialEmploymentDetailsRecord();
+
+        if (create) {
+            in.put("ied", ied.toHashMap());
+        }
+
+        FormBuilder<FormType, FormType.FormOptions, Object> builder = createFormBuilder(in)
                 .add("user", UserType.class, options -> {
                     options.setCreate(create);
-                })
-                .add("submit", SubmitType.class, options -> {
-                    options.setLabel(create ? "Create" : "Update");
-                })
-                .getForm();
+                });
+
+        if (create) {
+            builder.add("ied", InitialEmploymentDetailsType.class);
+        }
+
+        builder.add("submit", SubmitType.class, options -> {
+            options.setLabel(create ? "Create" : "Update");
+        });
+
+        Form<FormType, FormType.FormOptions, Object> form = builder.getForm();
 
         form.handleRequest();
 
@@ -78,6 +93,13 @@ public class EmployeesController extends BaseController
 
             Transaction transaction = session.beginTransaction();
             user = (User) session.merge(user);
+
+            if (create) {
+                ied.applyHashMap((Map<String, Object>) data.get("ied"));
+                ied.setUser(user);
+
+                session.merge(ied);
+            }
 
             session.flush();
             transaction.commit();
