@@ -100,6 +100,17 @@
             </div>
         </div>
     </div>
+
+    <div class="records-feed">
+        {% set records = service('RecordManager').getRecords(user) %}
+
+        {% for record in records %}
+            <div class="record">
+                <h5>{{ record.getTitle() }}</h5>
+                <a href="{{ path('RecordController.view', {'record': record.getId()}) }}">View</a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block page_head %}

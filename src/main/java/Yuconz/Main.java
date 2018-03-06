@@ -6,11 +6,14 @@ import Yuconz.FormRenderer.DateRenderer;
 import Yuconz.JTwigFunction.*;
 import Yuconz.Manager.AuthorisationManager;
 import Yuconz.Manager.LogManager;
+import Yuconz.Manager.RecordManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.ParameterResolver.RecordResolver;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.Service.Hibernate;
 import Yuconz.Voter.AuthorisationVoter;
 import Yuconz.Voter.PersonalDetailsVoter;
+import Yuconz.Voter.RecordVoter;
 import com.sallyf.sallyf.Container.*;
 import com.sallyf.sallyf.Exception.FrameworkException;
 import com.sallyf.sallyf.Form.FormManager;
@@ -24,14 +27,19 @@ import com.sallyf.sallyf.Server.FrameworkServer;
  * Yuconz HR System main entry point.
  * Initialise services, managers, resolvers, voters and
  * starts application. Will run on HTTP port 1234 by default.
- *
+ * <p>
  * Port must be changed by hardcoded value, no config file
  * necessary.
  */
 public class Main
 {
+    public static final String RECORD_REGEX = "([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})";
+
+    public static final String USER_REGEX = "([a-z]{3}[0-9]{3})";
+
     /**
      * Main entry point method. Will start application.
+     *
      * @param args ignored, for now.
      * @throws FrameworkException
      */
@@ -42,6 +50,7 @@ public class Main
 
     /**
      * Initialise system components, start application.
+     *
      * @param port
      * @return
      */
@@ -54,6 +63,7 @@ public class Main
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
         container.add(new ServiceDefinition<>(LogManager.class));
+        container.add(new ServiceDefinition<>(RecordManager.class));
         container.add(new ServiceDefinition<>(FormManager.class));
 
         container.add(new ServiceDefinition<>(AuthorisationManager.class))
@@ -64,7 +74,9 @@ public class Main
 
         // Resolvers
         container.add(new ServiceDefinition<>(UserResolver.class));
+        container.add(new ServiceDefinition<>(RecordResolver.class));
 
+        // JTwig Functions
         container.add(new ServiceDefinition<>(CurrentUserFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(CurrentRoleFunction.class)).addTag("jtwig.function");
         container.add(new ServiceDefinition<>(FormRenderFunction.class)).addTag("jtwig.function");
@@ -78,6 +90,7 @@ public class Main
 
         // Voters
         container.add(new ServiceDefinition<>(PersonalDetailsVoter.class)).addTag("authentication.voter");
+        container.add(new ServiceDefinition<>(RecordVoter.class)).addTag("authentication.voter");
         container.add(new ServiceDefinition<>(AuthorisationVoter.class)).addTag("authentication.voter");
 
         container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()
@@ -93,11 +106,13 @@ public class Main
 
         Router router = container.get(Router.class);
 
+        // Records
         router.registerController(AppController.class);
         router.registerController(StaticController.class);
         router.registerController(AuthenticationController.class);
         router.registerController(DashboardController.class);
         router.registerController(EmployeesController.class);
+        router.registerController(RecordController.class);
 
         FormManager formManager = container.get(FormManager.class);
 

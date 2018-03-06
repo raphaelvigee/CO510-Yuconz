@@ -339,4 +339,10 @@ public class AnnualReviewRecord extends AbstractRecord
     {
         this.reviewer2 = reviewer2;
     }
+
+    @Override
+    public String getTitle()
+    {
+        return String.format("Annual Review (%s - %s)", getPeriodStart(), getPeriodEnd());
+    }
 }

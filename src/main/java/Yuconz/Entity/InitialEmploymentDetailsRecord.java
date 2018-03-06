@@ -58,4 +58,10 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
         setInterviewNotes((String) map.get("interviewNotes"));
         setStartDate((LocalDate) map.get("startDate"));
     }
+
+    @Override
+    public String getTitle()
+    {
+        return "Initial Employment Details";
+    }
 }

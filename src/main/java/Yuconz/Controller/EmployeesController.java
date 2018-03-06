@@ -4,6 +4,7 @@ import Yuconz.Entity.InitialEmploymentDetailsRecord;
 import Yuconz.Entity.User;
 import Yuconz.Form.InitialEmploymentDetailsType;
 import Yuconz.Form.UserType;
+import Yuconz.Main;
 import Yuconz.Model.FlashMessage;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
@@ -214,7 +215,7 @@ public class EmployeesController extends BaseController
      * @return response
      */
     @Route(path = "/{user}/edit", methods = {Method.GET, Method.POST}, requirements = {
-            @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
+            @Requirement(name = "user", requirement = Main.USER_REGEX)
     })
     @Security("is_granted('edit_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
@@ -231,8 +232,8 @@ public class EmployeesController extends BaseController
      * @param routeParameters the route's parameters
      * @return response
      */
-    @Route(path = "/{user}", methods = {Method.GET, Method.POST}, requirements = {
-            @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
+    @Route(path = "/{user}", requirements = {
+            @Requirement(name = "user", requirement = Main.USER_REGEX)
     })
     @Security("is_granted('view_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
