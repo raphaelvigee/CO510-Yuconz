@@ -38,7 +38,7 @@ public abstract class AbstractTest
     @BeforeClass
     public static void setUpClass()
     {
-        app = Main.start(randomPort());
+        app = App.start(randomPort());
     }
 
     public static int randomPort()

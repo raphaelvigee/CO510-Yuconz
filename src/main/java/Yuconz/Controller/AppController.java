@@ -8,7 +8,7 @@ import com.sallyf.sallyf.Router.Response;
 import com.sallyf.sallyf.Server.RuntimeBag;
 
 /**
- * Main app controller, redirects to specific part of
+ * App app controller, redirects to specific part of
  * site: auth controller or dashboard index.
  */
 public class AppController extends BaseController
