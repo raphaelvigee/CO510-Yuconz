@@ -1,0 +1,9 @@
+{% extends "../dashboard.twig" %}
+
+{% block title %}{{ record.getTitle() }}{% endblock %}
+
+{% block main_content %}
+    <div>
+        <h1>{{ record.getTitle() }}</h1>
+    </div>
+{% endblock %}

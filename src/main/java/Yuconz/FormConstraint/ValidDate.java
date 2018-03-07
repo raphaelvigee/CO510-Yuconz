@@ -22,9 +22,9 @@ public class ValidDate implements ConstraintInterface
     @Override
     public void validate(Form<?, ?, ?> form, ErrorsBag errorsBag)
     {
-        Integer day = (Integer) form.getChildren("day").resolveData();
-        Month month = (Month) form.getChildren("month").resolveData();
-        Integer year = (Integer) form.getChildren("year").resolveData();
+        Integer day = (Integer) form.getChild("day").resolveData();
+        Month month = (Month) form.getChild("month").resolveData();
+        Integer year = (Integer) form.getChild("year").resolveData();
 
         try {
             LocalDate.of(year, month, day);

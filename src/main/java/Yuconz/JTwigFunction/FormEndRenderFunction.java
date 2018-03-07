@@ -7,29 +7,24 @@ import com.sallyf.sallyf.Form.Renderer.FormRenderer;
 import java.util.function.BiFunction;
 
 /**
- * JTwig function for rendering a form.
+ * JTwig function for rendering a form start.
  */
-public class FormRenderFunction extends AbstractFormRenderFunction
+public class FormEndRenderFunction extends AbstractFormRenderFunction
 {
-    public FormRenderFunction(FormManager formManager)
+    public FormEndRenderFunction(FormManager formManager)
     {
         super(formManager);
     }
 
-    /**
-     * Name of function.
-     *
-     * @return name of function.
-     */
     @Override
     public String name()
     {
-        return "form";
+        return "form_end";
     }
 
     @Override
     public BiFunction<FormRenderer, FormView, Object> getRenderer()
     {
-        return FormRenderer::renderRow;
+        return FormRenderer::renderFormEnd;
     }
 }

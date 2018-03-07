@@ -18,10 +18,11 @@
         <mapping class="Yuconz.Entity.User"/>
         <mapping class="Yuconz.Entity.Log"/>
         <mapping class="Yuconz.Entity.AbstractRecord"/>
-        <mapping class="Yuconz.Entity.InitialEmploymentDetailsRecord"/>
+        <mapping class="Yuconz.Entity.AnnualReviewRecord"/>
         <mapping class="Yuconz.Entity.AccessRequest"/>
         <mapping class="Yuconz.Entity.Signature"/>
         <mapping class="Yuconz.Entity.Department"/>
         <mapping class="Yuconz.Entity.Section"/>
+        <mapping class="Yuconz.Entity.InitialEmploymentDetailsRecord"/>
     </session-factory>
 </hibernate-configuration>

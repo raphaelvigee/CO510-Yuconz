@@ -85,9 +85,9 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
     @Override
     public <T extends FormTypeInterface<DateType.DateOptions, LocalDate>> Object resolveData(Form<T, DateOptions, LocalDate> form)
     {
-        Integer day = (Integer) form.getChildren("day").resolveData();
-        Month month = (Month) form.getChildren("month").resolveData();
-        Integer year = (Integer) form.getChildren("year").resolveData();
+        Integer day = (Integer) form.getChild("day").resolveData();
+        Month month = (Month) form.getChild("month").resolveData();
+        Integer year = (Integer) form.getChild("year").resolveData();
 
         return LocalDate.of(year, month, day);
     }

@@ -28,6 +28,6 @@ public class ListTest extends AbstractTest
         Page page = anchorClick(listAnchor);
 
         Assert.assertEquals(200, page.getWebResponse().getStatusCode());
-        Assert.assertEquals("/details", page.getUrl().getPath());
+        Assert.assertEquals("/employee", page.getUrl().getPath());
     }
 }

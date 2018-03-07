@@ -1,7 +1,10 @@
 package Yuconz.Controller;
 
+import Yuconz.Entity.InitialEmploymentDetailsRecord;
 import Yuconz.Entity.User;
+import Yuconz.Form.InitialEmploymentDetailsType;
 import Yuconz.Form.UserType;
+import Yuconz.App;
 import Yuconz.Model.FlashMessage;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
@@ -12,6 +15,7 @@ import com.sallyf.sallyf.Authentication.Annotation.Security;
 import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.FlashManager.FlashManager;
 import com.sallyf.sallyf.Form.Form;
+import com.sallyf.sallyf.Form.FormBuilder;
 import com.sallyf.sallyf.Form.Type.FormType;
 import com.sallyf.sallyf.Form.Type.SubmitType;
 import com.sallyf.sallyf.JTwig.JTwigResponse;
@@ -35,14 +39,14 @@ import static com.sallyf.sallyf.Utils.MapUtils.entry;
  * Controller for personal details views.
  */
 @Security(value = "is_granted('authenticated')", handler = LoginRedirectHandler.class)
-@Route(path = "/details")
-public class PersonalDetailsController extends BaseController
+@Route(path = "/employee")
+public class EmployeesController extends BaseController
 {
     /**
      * Handles the editing and creation of personal details.
      *
-     * @param user       user to edit
-     * @param create     is new user
+     * @param user   user to edit
+     * @param create is new user
      * @return response
      */
     private Object handle(User user, boolean create)
@@ -53,14 +57,26 @@ public class PersonalDetailsController extends BaseController
         HashMap<String, Object> in = new HashMap<>();
         in.put("user", user.toHashMap());
 
-        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
+        InitialEmploymentDetailsRecord ied = new InitialEmploymentDetailsRecord();
+
+        if (create) {
+            in.put("ied", ied.toHashMap());
+        }
+
+        FormBuilder<FormType, FormType.FormOptions, Object> builder = createFormBuilder(in)
                 .add("user", UserType.class, options -> {
                     options.setCreate(create);
-                })
-                .add("submit", SubmitType.class, options -> {
-                    options.setLabel(create ? "Create" : "Update");
-                })
-                .getForm();
+                });
+
+        if (create) {
+            builder.add("ied", InitialEmploymentDetailsType.class);
+        }
+
+        builder.add("submit", SubmitType.class, options -> {
+            options.setLabel(create ? "Create" : "Update");
+        });
+
+        Form<FormType, FormType.FormOptions, Object> form = builder.getForm();
 
         form.handleRequest();
 
@@ -79,6 +95,13 @@ public class PersonalDetailsController extends BaseController
             Transaction transaction = session.beginTransaction();
             user = (User) session.merge(user);
 
+            if (create) {
+                ied.applyHashMap((Map<String, Object>) data.get("ied"));
+                ied.setUser(user);
+
+                session.merge(ied);
+            }
+
             session.flush();
             transaction.commit();
 
@@ -86,7 +109,7 @@ public class PersonalDetailsController extends BaseController
 
             flashManager.addFlash(new FlashMessage(message, "success", "check"));
 
-            return this.redirectToRoute("PersonalDetailsController.edit", MapUtils.createHashMap(
+            return this.redirectToRoute("EmployeesController.edit", MapUtils.createHashMap(
                     entry("user", user.getId())
             ));
         }
@@ -192,7 +215,7 @@ public class PersonalDetailsController extends BaseController
      * @return response
      */
     @Route(path = "/{user}/edit", methods = {Method.GET, Method.POST}, requirements = {
-            @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
+            @Requirement(name = "user", requirement = App.USER_REGEX)
     })
     @Security("is_granted('edit_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)
@@ -209,8 +232,8 @@ public class PersonalDetailsController extends BaseController
      * @param routeParameters the route's parameters
      * @return response
      */
-    @Route(path = "/{user}", methods = {Method.GET, Method.POST}, requirements = {
-            @Requirement(name = "user", requirement = "([a-z]{3}[0-9]{3})")
+    @Route(path = "/{user}", requirements = {
+            @Requirement(name = "user", requirement = App.USER_REGEX)
     })
     @Security("is_granted('view_user', user)")
     @ParameterResolver(name = "user", type = UserResolver.class)

@@ -84,7 +84,7 @@ public class CRUTest extends AbstractTest
 
         WebClient webClient = login(UserDefinition.HR_EMPLOYEE, "HR_EMPLOYEE").getWebClient();
 
-        HtmlPage page1 = webClient.getPage(getUrl("/details/create"));
+        HtmlPage page1 = webClient.getPage(getUrl("/employee/create"));
 
         HtmlForm form1 = page1.getForms().get(0);
 
@@ -103,7 +103,7 @@ public class CRUTest extends AbstractTest
 
         String url = page2.getUrl().getPath();
 
-        Pattern pattern = Pattern.compile("^/details/([a-z]{3}[0-9]{3})/edit$");
+        Pattern pattern = Pattern.compile("^/employee/([a-z]{3}[0-9]{3})/edit$");
         Matcher matcher = pattern.matcher(url);
         Assert.assertTrue(matcher.find());
 
