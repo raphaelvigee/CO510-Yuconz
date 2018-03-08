@@ -1,13 +1,12 @@
 package Yuconz.Voter;
 
 import Yuconz.Entity.AbstractRecord;
-import Yuconz.Entity.User;
 import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
 import com.sallyf.sallyf.Authentication.UserInterface;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Voter for Records actions.
@@ -15,6 +14,8 @@ import java.util.List;
 public class RecordVoter implements VoterInterface
 {
     public static final String VIEW = "view_record";
+
+    public static final String CREATE_ANNUAL_REVIEW = "create_annual_review";
 
     private YuconzAuthenticationManager authenticationManager;
 
@@ -33,7 +34,7 @@ public class RecordVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject)
     {
-        if (!Arrays.asList(VIEW).contains(attribute)) {
+        if (!Arrays.asList(VIEW, CREATE_ANNUAL_REVIEW).contains(attribute)) {
             return false;
         }
 
@@ -43,9 +44,11 @@ public class RecordVoter implements VoterInterface
             return false;
         }
 
-        List<String> subjectFreeActions = Arrays.asList();
+        if (attribute.equals(VIEW) && !(subject instanceof AbstractRecord)) {
+            return false;
+        }
 
-        if (!(subject instanceof AbstractRecord) && !subjectFreeActions.contains(attribute)) {
+        if (attribute.equals(CREATE_ANNUAL_REVIEW) && subject != null) {
             return false;
         }
 
@@ -64,17 +67,24 @@ public class RecordVoter implements VoterInterface
     {
         AbstractRecord record = (AbstractRecord) subject;
 
-        User currentUser = (User) authenticationManager.getUser();
-
         switch (attribute) {
+            case CREATE_ANNUAL_REVIEW:
+                return canCreateAnnualReview();
             case VIEW:
-                return canView(record, currentUser);
+                return canView(record);
         }
 
         return false;
     }
 
-    private boolean canView(AbstractRecord record, User currentUser)
+    private boolean canCreateAnnualReview()
+    {
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+
+        return currentRole.equals(LoginRole.EMPLOYEE);
+    }
+
+    private boolean canView(AbstractRecord record)
     {
         return true; // TODO: Implement logic
     }

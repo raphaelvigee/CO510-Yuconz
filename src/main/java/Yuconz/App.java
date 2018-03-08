@@ -119,6 +119,7 @@ public class App
         router.registerController(DashboardController.class);
         router.registerController(EmployeesController.class);
         router.registerController(RecordController.class);
+        router.registerController(AnnualReviewController.class);
 
         FormManager formManager = container.get(FormManager.class);
 

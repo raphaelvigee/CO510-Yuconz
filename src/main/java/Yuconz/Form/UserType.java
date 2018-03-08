@@ -53,17 +53,18 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
         FormBuilder<?, UserOptions, Object> builder = form.getBuilder();
 
         builder
-                .add("firstname", TextType.class, options -> {
+                .add("firstName", TextType.class, options -> {
                     options.setLabel("First name");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("lastname", TextType.class, options -> {
+                .add("lastName", TextType.class, options -> {
                     options.setLabel("Last name");
                     options.getConstraints().add(new NotEmpty());
                 })
                 .add("email", TextType.class, options -> {
                     options.setLabel("Email address");
                     options.getConstraints().add(new NotEmpty());
+                    options.getAttributes().put("autocomplete", "off");
                 })
                 .add("password", PasswordType.class, options -> {
                     if (parentOptions.isCreate()) {
@@ -72,24 +73,27 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
                     } else {
                         options.setLabel("Password (Leave blank to leave unchanged)");
                     }
+
+                    options.put("mapped", false);
+                    options.getAttributes().put("autocomplete", "off");
                 })
                 .add("birthdate", DateType.class, options -> {
                     options.setLabel("Birth date");
                 })
                 .add("address", AddressType.class)
-                .add("phone_number", TextType.class, options -> {
+                .add("phoneNumber", TextType.class, options -> {
                     options.setLabel("Phone number");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("mobile_number", TextType.class, options -> {
+                .add("mobileNumber", TextType.class, options -> {
                     options.setLabel("Mobile phone");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("emergency_contact", TextType.class, options -> {
+                .add("emergencyContact", TextType.class, options -> {
                     options.setLabel("Emergency contact");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("emergency_contact_number", TextType.class, options -> {
+                .add("emergencyContactNumber", TextType.class, options -> {
                     options.setLabel("Emergency contact number");
                     options.getConstraints().add(new NotEmpty());
                 })
