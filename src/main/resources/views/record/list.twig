@@ -1,0 +1,34 @@
+{% extends "../dashboard.twig" %}
+
+{% block title %}Employee management{% endblock %}
+
+{% block main_content %}
+    <div class="feed">
+        {% set records = service('RecordManager').getRecords(getUser()) %}
+
+        {% for record in records %}
+            <div class="record">
+                <div class="header">
+                    <div class="title">
+                        <span class="icon"><i class="fas fa-calendar-alt"></i></span>
+                        <span>{{ record.getTitle() }}</span>
+                    </div>
+                    <div class="date">{{ record.getCreatedAt() }}</div>
+                </div>
+                {% if is_granted('view_record', record) %}
+                    <div class="summary">
+                        <p>[body]</p>
+                        <a class="link" href="{{ path('RecordController.view', {'record': record.getId()}) }}">Read
+                            more</a>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block page_head %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/assets/css/view.css">
+{% endblock %}

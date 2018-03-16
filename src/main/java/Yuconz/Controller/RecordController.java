@@ -20,6 +20,13 @@ import static com.sallyf.sallyf.Utils.MapUtils.entry;
 @Route(path = "/record")
 public class RecordController extends BaseController
 {
+    @Route(path = "", methods = {Method.GET})
+    @Security("is_granted('list_records')")
+    public Object list()
+    {
+        return new JTwigResponse("views/record/list.twig");
+    }
+
     @Route(path = "/{record}", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })

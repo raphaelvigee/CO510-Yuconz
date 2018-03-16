@@ -68,12 +68,11 @@
                 </div>
             {% endif %}
 
-            <div class="option">
-                <a class="link" href="#">Employment History</a>
-            </div>
-            <div class="option">
-                <a class="link" href="#">Annual Reviews</a>
-            </div>
+            {% if is_granted('list_records') %}
+                <div class="option">
+                    <a class="link" href="{{ path('RecordController.list') }}">Employment History</a>
+                </div>
+            {% endif %}
 
             {% if is_granted('has_rights', 'HR_EMPLOYEE') %}
                 <div class="heading">

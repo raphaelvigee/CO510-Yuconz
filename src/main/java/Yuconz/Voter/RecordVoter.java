@@ -13,6 +13,8 @@ import java.util.Arrays;
  */
 public class RecordVoter implements VoterInterface
 {
+    public static final String LIST = "list_records";
+
     public static final String VIEW = "view_record";
 
     public static final String CREATE_ANNUAL_REVIEW = "create_annual_review";
@@ -34,7 +36,7 @@ public class RecordVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject)
     {
-        if (!Arrays.asList(VIEW, CREATE_ANNUAL_REVIEW).contains(attribute)) {
+        if (!Arrays.asList(VIEW, LIST, CREATE_ANNUAL_REVIEW).contains(attribute)) {
             return false;
         }
 
@@ -49,6 +51,10 @@ public class RecordVoter implements VoterInterface
         }
 
         if (attribute.equals(CREATE_ANNUAL_REVIEW) && subject != null) {
+            return false;
+        }
+
+        if (attribute.equals(LIST) && subject != null) {
             return false;
         }
 
@@ -70,6 +76,8 @@ public class RecordVoter implements VoterInterface
         switch (attribute) {
             case CREATE_ANNUAL_REVIEW:
                 return canCreateAnnualReview();
+            case LIST:
+                return canList();
             case VIEW:
                 return canView(record);
         }
@@ -77,11 +85,21 @@ public class RecordVoter implements VoterInterface
         return false;
     }
 
-    private boolean canCreateAnnualReview()
+    private boolean isEmployee()
     {
         LoginRole currentRole = authenticationManager.getCurrentRole();
 
         return currentRole.equals(LoginRole.EMPLOYEE);
+    }
+
+    private boolean canList()
+    {
+        return isEmployee();
+    }
+
+    private boolean canCreateAnnualReview()
+    {
+        return isEmployee();
     }
 
     private boolean canView(AbstractRecord record)
