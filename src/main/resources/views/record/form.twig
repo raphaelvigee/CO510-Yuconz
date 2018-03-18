@@ -3,7 +3,7 @@
 {% block title %}Annual Review{% endblock %}
 
 {% block main_content %}
-    <h1>Annual Review</h1>
+    <h1>{{ review.getTitle() }}</h1>
 
     {{ form(form) }}
 {% endblock %}

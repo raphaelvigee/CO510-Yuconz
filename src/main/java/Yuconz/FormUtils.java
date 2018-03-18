@@ -2,10 +2,7 @@ package Yuconz;
 
 import com.sallyf.sallyf.Form.Form;
 
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -26,11 +23,12 @@ public class FormUtils
         if (children.isEmpty()) {
             return object;
         } else {
-            return children.stream()
-                    .collect(Collectors.toMap(
-                            Form::getName,
-                            child -> normalize(child, PropertyAccessor.get(object, child.getName()))
-                    ));
+            Map<String, Object> out = new LinkedHashMap<>();
+            children.forEach(child -> {
+                out.put(child.getName(), normalize(child, PropertyAccessor.get(object, child.getName())));
+            });
+
+            return out;
         }
     }
 
@@ -45,5 +43,12 @@ public class FormUtils
         } else {
             PropertyAccessor.set(object, form.getName(), data);
         }
+    }
+
+    public static void sanitize(Map<String, Object> map, String[] allowedKeys)
+    {
+        List<String> allowedKeysList = Arrays.asList(allowedKeys);
+
+        map.entrySet().removeIf(e -> !allowedKeysList.contains(e.getKey()));
     }
 }

@@ -1,7 +1,6 @@
 package Yuconz.Manager;
 
 import Yuconz.Entity.AbstractRecord;
-import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.User;
 import Yuconz.Service.Hibernate;
 import com.sallyf.sallyf.Container.ServiceInterface;
@@ -9,8 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.persistence.NoResultException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RecordManager implements ServiceInterface
 {
@@ -34,14 +33,28 @@ public class RecordManager implements ServiceInterface
 
         transaction.commit();
 
-        records = records.stream().filter(r -> {
-            if (r instanceof AnnualReviewRecord) {
-                return ((AnnualReviewRecord) r).isAccepted();
-            }
-
-            return true;
-        }).collect(Collectors.toList());
-
         return records;
+    }
+
+    public <T extends AbstractRecord> T getLastRecord(User user, Class<T> type)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("from " + type.getSimpleName() + " r where user = :user")
+                .setMaxResults(1)
+                .setParameter("user", user);
+
+        T record;
+        try {
+            record = (T) query.getSingleResult();
+        } catch (NoResultException e) {
+            record = null;
+        }
+
+        transaction.commit();
+
+        return record;
     }
 }

@@ -1,6 +1,8 @@
 package Yuconz.Voter;
 
 import Yuconz.Entity.AbstractRecord;
+import Yuconz.Entity.AnnualReviewRecord;
+import Yuconz.Entity.User;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
@@ -17,7 +19,7 @@ public class RecordVoter implements VoterInterface
 
     public static final String VIEW = "view_record";
 
-    public static final String CREATE_ANNUAL_REVIEW = "create_annual_review";
+    public static final String EDIT = "edit_record";
 
     private YuconzAuthenticationManager authenticationManager;
 
@@ -36,7 +38,7 @@ public class RecordVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject)
     {
-        if (!Arrays.asList(VIEW, LIST, CREATE_ANNUAL_REVIEW).contains(attribute)) {
+        if (!Arrays.asList(VIEW, LIST, EDIT).contains(attribute)) {
             return false;
         }
 
@@ -46,15 +48,7 @@ public class RecordVoter implements VoterInterface
             return false;
         }
 
-        if (attribute.equals(VIEW) && !(subject instanceof AbstractRecord)) {
-            return false;
-        }
-
-        if (attribute.equals(CREATE_ANNUAL_REVIEW) && subject != null) {
-            return false;
-        }
-
-        if (attribute.equals(LIST) && subject != null) {
+        if (Arrays.asList(VIEW, EDIT).contains(attribute) && !(subject instanceof AbstractRecord)) {
             return false;
         }
 
@@ -73,13 +67,15 @@ public class RecordVoter implements VoterInterface
     {
         AbstractRecord record = (AbstractRecord) subject;
 
+        User currentUser = (User) authenticationManager.getUser();
+
         switch (attribute) {
-            case CREATE_ANNUAL_REVIEW:
-                return canCreateAnnualReview();
             case LIST:
                 return canList();
+            case EDIT:
+                return canEdit(currentUser, record);
             case VIEW:
-                return canView(record);
+                return canView(currentUser, record);
         }
 
         return false;
@@ -92,17 +88,38 @@ public class RecordVoter implements VoterInterface
         return currentRole.equals(LoginRole.EMPLOYEE);
     }
 
+    private boolean isReviewer()
+    {
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+
+        return currentRole.equals(LoginRole.REVIEWER);
+    }
+
     private boolean canList()
     {
         return isEmployee();
     }
 
-    private boolean canCreateAnnualReview()
+    private boolean canEdit(User currentUser, AbstractRecord record)
     {
-        return isEmployee();
+        if (record instanceof AnnualReviewRecord) {
+            AnnualReviewRecord review = (AnnualReviewRecord) record;
+
+            if (currentUser.equals(review.getUser())) {
+                return isEmployee();
+            }
+
+            if (Arrays.asList(review.getReviewer1(), review.getReviewer2()).contains(currentUser)) {
+                return isReviewer();
+            }
+
+            return false;
+        }
+
+        return false;
     }
 
-    private boolean canView(AbstractRecord record)
+    private boolean canView(User currentUser, AbstractRecord record)
     {
         return true; // TODO: Implement logic
     }

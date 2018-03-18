@@ -11,6 +11,7 @@ import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.ParameterResolver.RecordResolver;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.Service.Hibernate;
+import Yuconz.Voter.AnnualReviewVoter;
 import Yuconz.Voter.AuthorisationVoter;
 import Yuconz.Voter.PersonalDetailsVoter;
 import Yuconz.Voter.RecordVoter;
@@ -97,6 +98,7 @@ public class App
         // Voters
         container.add(new ServiceDefinition<>(PersonalDetailsVoter.class)).addTag("authentication.voter");
         container.add(new ServiceDefinition<>(RecordVoter.class)).addTag("authentication.voter");
+        container.add(new ServiceDefinition<>(AnnualReviewVoter.class)).addTag("authentication.voter");
         container.add(new ServiceDefinition<>(AuthorisationVoter.class)).addTag("authentication.voter");
 
         container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()

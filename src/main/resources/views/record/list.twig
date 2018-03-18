@@ -4,8 +4,6 @@
 
 {% block main_content %}
     <div class="feed">
-        {% set records = service('RecordManager').getRecords(getUser()) %}
-
         {% for record in records %}
             <div class="record">
                 <div class="header">

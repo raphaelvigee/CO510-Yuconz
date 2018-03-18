@@ -4,6 +4,7 @@ import Yuconz.PropertyAccessor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +18,10 @@ public class AnnualReviewRecord extends AbstractRecord
     @ManyToMany
     private List<User> interviewers;
 
+    @Column(nullable = false)
     private LocalDate periodStart;
 
+    @Column(nullable = false)
     private LocalDate periodEnd;
 
     private String achievementOutcomesReview;
@@ -33,7 +36,8 @@ public class AnnualReviewRecord extends AbstractRecord
 
     private String trainingMentoringDevelopment;
 
-    private Boolean accepted;
+    @Column(nullable = false)
+    private Boolean accepted = false;
 
     @OneToOne
     private Signature revieweeSignature;
@@ -376,7 +380,9 @@ public class AnnualReviewRecord extends AbstractRecord
     @Override
     public String getTitle()
     {
-        return String.format("Annual Review (%s - %s)", getPeriodStart(), getPeriodEnd());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return String.format("Annual Review (%s - %s)", getPeriodStart().format(formatter), getPeriodEnd().format(formatter));
     }
 
     public void apply(Map<String, Object> map)

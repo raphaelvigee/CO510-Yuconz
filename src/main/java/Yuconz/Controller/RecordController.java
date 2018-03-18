@@ -1,7 +1,9 @@
 package Yuconz.Controller;
 
-import Yuconz.Entity.AbstractRecord;
 import Yuconz.App;
+import Yuconz.Entity.AbstractRecord;
+import Yuconz.Entity.User;
+import Yuconz.Manager.RecordManager;
 import Yuconz.ParameterResolver.RecordResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
 import com.sallyf.sallyf.Annotation.Requirement;
@@ -14,6 +16,9 @@ import com.sallyf.sallyf.Router.RouteParameters;
 import com.sallyf.sallyf.Server.Method;
 import com.sallyf.sallyf.Utils.MapUtils;
 
+import java.util.HashMap;
+import java.util.List;
+
 import static com.sallyf.sallyf.Utils.MapUtils.entry;
 
 @Security(value = "is_granted('authenticated')", handler = LoginRedirectHandler.class)
@@ -22,16 +27,21 @@ public class RecordController extends BaseController
 {
     @Route(path = "", methods = {Method.GET})
     @Security("is_granted('list_records')")
-    public Object list()
+    public Object list(RecordManager recordManager, User user)
     {
-        return new JTwigResponse("views/record/list.twig");
+        List<AbstractRecord> records = recordManager.getRecords(user);
+
+        return new JTwigResponse("views/record/list.twig", new HashMap<String, Object>()
+        {{
+            put("records", records);
+        }});
     }
 
     @Route(path = "/{record}", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
-    @Security("is_granted('view_record', record)")
     @ParameterResolver(name = "record", type = RecordResolver.class)
+    @Security("is_granted('view_record', record)")
     public Object view(RouteParameters routeParameters)
     {
         AbstractRecord record = (AbstractRecord) routeParameters.get("record");
