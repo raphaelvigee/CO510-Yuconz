@@ -312,7 +312,7 @@ public class AnnualReviewRecord extends AbstractRecord
      *
      * @param reviewer2Signature reviewer2Signature
      */
-    public void setRevieweer2ignature(Signature reviewer2Signature)
+    public void setReviewer2Signature(Signature reviewer2Signature)
     {
         this.reviewer2Signature = reviewer2Signature;
     }
@@ -375,6 +375,26 @@ public class AnnualReviewRecord extends AbstractRecord
     public void setReviewer2(User reviewer2)
     {
         this.reviewer2 = reviewer2;
+    }
+
+
+    public User getReviewee()
+    {
+        return getUser();
+    }
+
+    public void setReviewee(User user)
+    {
+        setUser(user);
+    }
+
+    public boolean isReady()
+    {
+        boolean r1 = getReviewer1() != null && getReviewer1Signature() != null;
+        boolean r2 = getReviewer2() != null && getReviewer2Signature() != null;
+        boolean re = getReviewee() != null && getRevieweeSignature() != null;
+
+        return r1 && r2 && re;
     }
 
     @Override

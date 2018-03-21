@@ -5,5 +5,7 @@
 {% block main_content %}
     <h1>{{ review.getTitle() }}</h1>
 
-    {{ form(form) }}
+    {% block record_content %}
+        {{ form(form) }}
+    {% endblock %}
 {% endblock %}

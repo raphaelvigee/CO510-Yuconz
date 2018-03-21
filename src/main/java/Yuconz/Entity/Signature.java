@@ -1,7 +1,7 @@
 package Yuconz.Entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Entity for user signatures.
@@ -11,72 +11,68 @@ import java.util.Date;
 public class Signature
 {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-    private String name;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private LocalDate date = LocalDate.now();
 
     @ManyToOne
     private User user;
 
+    public Signature()
+    {
+    }
+
+    public Signature(User user)
+    {
+        this();
+
+        this.user = user;
+    }
+
     /**
      * Gets Signature's ID
+     *
      * @return ID
      */
-    public String getId()
+    public Integer getId()
     {
         return id;
     }
 
     /**
      * Sets Signature's ID
+     *
      * @param id ID
      */
-    public void setId(String id)
+    public void setId(Integer id)
     {
         this.id = id;
     }
 
     /**
-     * Gets  Signature's name
-     * @return name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-    /**
-     * Sets Signature's name
-     * @param name full name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    /**
      * Gets Signature's date
+     *
      * @return date
      */
-    public Date getDate()
+    public LocalDate getDate()
     {
         return date;
     }
 
     /**
      * Sets Signature's date
+     *
      * @param date signing date
      */
-    public void setDate(Date date)
+    public void setDate(LocalDate date)
     {
         this.date = date;
     }
 
     /**
      * Gets Signature's user
+     *
      * @return user
      */
     public User getUser()
@@ -86,6 +82,7 @@ public class Signature
 
     /**
      * Sets Signature's user
+     *
      * @param user user
      */
     public void setUser(User user)

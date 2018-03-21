@@ -1,0 +1,16 @@
+{% extends "../record/form.twig" %}
+
+{% block title %}Annual Review{% endblock %}
+
+{% block record_content %}
+    {{ parent() }}
+
+    {% if is_granted('sign_annual_review', review) %}
+        After submitting the form, you can
+        <a href="{{ path('AnnualReviewController.sign', {'record': review.getId()}) }}">
+            Sign
+        </a>
+    {% else %}
+        You already signed this Annual Review
+    {% endif %}
+{% endblock %}

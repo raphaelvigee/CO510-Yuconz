@@ -3,6 +3,7 @@ package Yuconz.Controller;
 import Yuconz.App;
 import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.InitialEmploymentDetailsRecord;
+import Yuconz.Entity.Signature;
 import Yuconz.Entity.User;
 import Yuconz.Form.AnnualReviewType;
 import Yuconz.FormUtils;
@@ -28,12 +29,15 @@ import com.sallyf.sallyf.Router.RouteParameters;
 import com.sallyf.sallyf.Server.Method;
 import com.sallyf.sallyf.Server.RuntimeBag;
 import com.sallyf.sallyf.Utils.MapUtils;
+import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.sallyf.sallyf.Utils.MapUtils.entry;
 
@@ -94,7 +98,7 @@ public class AnnualReviewController extends BaseController
             return this.redirectToRoute("AppController.index");
         }
 
-        return new JTwigResponse("views/record/form.twig", MapUtils.createHashMap(
+        return new JTwigResponse("views/annual-review/form.twig", MapUtils.createHashMap(
                 entry("review", review),
                 entry("form", form.createView())
         ));
@@ -150,7 +154,7 @@ public class AnnualReviewController extends BaseController
 
             FormUtils.sanitize(data, allowedKeys);
 
-            review.setUser(user);
+            review.setReviewee(user);
             review.setReviewer1(user); // TODO: unfake
 
             review.apply(data);
@@ -168,8 +172,94 @@ public class AnnualReviewController extends BaseController
             return this.redirect(runtimeBag.getRequest().getRequestURI());
         }
 
-        return new JTwigResponse("views/record/form.twig", MapUtils.createHashMap(
+        return new JTwigResponse("views/annual-review/form.twig", MapUtils.createHashMap(
+                entry("review", review),
                 entry("form", form.createView())
         ));
+    }
+
+    @Route(path = "/{record}/sign", methods = {Method.GET, Method.POST}, requirements = {
+            @Requirement(name = "record", requirement = App.RECORD_REGEX)
+    })
+    @ParameterResolver(name = "record", type = RecordResolver.class)
+    @Security("is_granted('sign_annual_review', record)")
+    public Object sign(Request request, RouteParameters routeParameters, YuconzAuthenticationManager authenticationManager, User currentUser, FlashManager flashManager, Hibernate hibernate)
+    {
+        AnnualReviewRecord review = (AnnualReviewRecord) routeParameters.get("record");
+
+        Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder()
+                .add("submit", SubmitType.class, options -> {
+                    options.setLabel("Sign");
+                })
+                .getForm();
+
+        form.handleRequest();
+
+        if (form.isSubmitted() && form.isValid()) {
+            LoginRole currentRole = authenticationManager.getCurrentRole();
+
+            Supplier<Boolean> isReviewer = () -> currentRole.equals(LoginRole.REVIEWER);
+            Supplier<Boolean> isEmployee = () -> currentRole.equals(LoginRole.EMPLOYEE);
+
+            Function<AnnualReviewRecord, Signature> signer = (r) -> {
+                Signature s = new Signature(currentUser);
+
+                if (isReviewer.get()) {
+                    if (currentUser.equals(r.getReviewer1())) {
+                        r.setReviewer1Signature(s);
+                        return s;
+                    }
+
+                    if (currentUser.equals(r.getReviewer2())) {
+                        r.setReviewer2Signature(s);
+                        return s;
+                    }
+                }
+
+                if (isEmployee.get() && currentUser.equals(r.getReviewee())) {
+                    r.setRevieweeSignature(s);
+                    return s;
+                }
+
+                return null;
+            };
+
+            Signature signature = signer.apply(review);
+
+            if (signature == null) {
+                flashManager.addFlash(new FlashMessage("Unable to sign", "error", "times"));
+
+                return this.redirect(request.getRequestURI());
+            }
+
+            Session session = hibernate.getCurrentSession();
+
+            Transaction transaction = session.beginTransaction();
+            session.persist(signature);
+            review = (AnnualReviewRecord) session.merge(review);
+            session.flush();
+            transaction.commit();
+
+            flashManager.addFlash(new FlashMessage("Annual review signed", "success", "check"));
+
+            return this.redirectToRoute("DashboardController.index");
+        }
+
+        return new JTwigResponse("views/annual-review/sign.twig", MapUtils.createHashMap(
+                entry("review", review),
+                entry("form", form.createView())
+        ));
+    }
+
+    @Route(path = "/{record}", methods = {Method.GET, Method.POST}, requirements = {
+            @Requirement(name = "record", requirement = App.RECORD_REGEX)
+    })
+    @ParameterResolver(name = "record", type = RecordResolver.class)
+    @Security("is_granted('sign_annual_review', record)")
+    public Object view(RouteParameters routeParameters)
+    {
+        AnnualReviewRecord review = (AnnualReviewRecord) routeParameters.get("record");
+
+        return review.getTitle();
     }
 }
