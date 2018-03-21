@@ -88,13 +88,6 @@ public class RecordVoter implements VoterInterface
         return currentRole.equals(LoginRole.EMPLOYEE);
     }
 
-    private boolean isReviewer()
-    {
-        LoginRole currentRole = authenticationManager.getCurrentRole();
-
-        return currentRole.equals(LoginRole.REVIEWER);
-    }
-
     private boolean canList()
     {
         return isEmployee();
@@ -102,20 +95,6 @@ public class RecordVoter implements VoterInterface
 
     private boolean canEdit(User currentUser, AbstractRecord record)
     {
-        if (record instanceof AnnualReviewRecord) {
-            AnnualReviewRecord review = (AnnualReviewRecord) record;
-
-            if (currentUser.equals(review.getUser())) {
-                return isEmployee();
-            }
-
-            if (Arrays.asList(review.getReviewer1(), review.getReviewer2()).contains(currentUser)) {
-                return isReviewer();
-            }
-
-            return false;
-        }
-
         return false;
     }
 

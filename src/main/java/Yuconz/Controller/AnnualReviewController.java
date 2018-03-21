@@ -104,7 +104,7 @@ public class AnnualReviewController extends BaseController
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
     @ParameterResolver(name = "record", type = RecordResolver.class)
-    @Security("is_granted('edit_record', record)")
+    @Security("is_granted('edit_annual_review', record)")
     public Object edit(RuntimeBag runtimeBag, RouteParameters routeParameters, User user, Hibernate hibernate, FlashManager flashManager, YuconzAuthenticationManager authenticationManager)
     {
         AnnualReviewRecord review = (AnnualReviewRecord) routeParameters.get("record");
