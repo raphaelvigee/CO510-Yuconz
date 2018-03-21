@@ -1,6 +1,7 @@
 package Yuconz;
 
 import Yuconz.Controller.*;
+import Yuconz.Form.AnnualReviewType;
 import Yuconz.FormRenderer.CustomChoiceRenderer;
 import Yuconz.FormRenderer.DateRenderer;
 import Yuconz.JTwigFunction.*;
@@ -65,6 +66,9 @@ public class App
     {
         Kernel app = Kernel.newInstance();
         Container container = app.getContainer();
+
+        // Forms
+        container.add(new ServiceDefinition<>(AnnualReviewType.class));
 
         // Managers
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));

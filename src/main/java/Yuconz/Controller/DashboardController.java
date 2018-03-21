@@ -40,6 +40,13 @@ public class DashboardController extends BaseController
         User user = (User) authenticationManager.getUser();
         LoginRole currentRole = authenticationManager.getCurrentRole();
 
+        BiFunction<AnnualReviewRecord, String, String> annualReviewLinkSupplier = (review, action) -> {
+            return urlGenerator.path("AnnualReviewController." + action, new HashMap<String, String>()
+            {{
+                put("record", review.getId());
+            }});
+        };
+
         Session session = hibernate.getCurrentSession();
 
         Transaction transaction = session.beginTransaction();
@@ -52,21 +59,26 @@ public class DashboardController extends BaseController
                 .setParameter("user", user);
         List<AnnualReviewRecord> underReviewAnnualReviews = underReviewAnnualReviewQuery.getResultList();
 
-        transaction.commit();
+        if (currentRole.equals(LoginRole.HR_EMPLOYEE)) {
+            Query hrQuery = session.createQuery("from AnnualReviewRecord where reviewer1 is null or reviewer2 is null or user is null or accepted != true");
 
-        BiFunction<AnnualReviewRecord, String, String> annualReviewLinkSupplier = (review, action) -> {
-            return urlGenerator.path("AnnualReviewController." + action, new HashMap<String, String>()
-            {{
-                put("record", review.getId());
-            }});
-        };
+            List<AnnualReviewRecord> hrAnnualReviews = hrQuery.getResultList();
+
+            for (AnnualReviewRecord review : hrAnnualReviews) {
+                String reviewLink = annualReviewLinkSupplier.apply(review, "edit");
+
+                String body = "You have an annual review that requires attention <a class=\"btn\" href=\"" + reviewLink + "\">Complete</a>";
+                flashManager.getCurrentFlashes().add(new FlashMessage(body, "warning", "exclamation-triangle"));
+            }
+        }
+
+        transaction.commit();
 
         for (AnnualReviewRecord review : currentAnnualReviews) {
             String reviewLink = annualReviewLinkSupplier.apply(review, "edit");
 
             switch (currentRole) {
                 case REVIEWER:
-
                     String body = "You have an incomplete annual review <a class=\"btn\" href=\"" + reviewLink + "\">Complete</a>";
                     flashManager.getCurrentFlashes().add(new FlashMessage(body, "warning", "exclamation-triangle"));
                     break;

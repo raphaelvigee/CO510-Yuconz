@@ -139,6 +139,13 @@ public class AnnualReviewController extends BaseController
             String[] allowedKeys = new String[]{};
 
             switch (currentRole) {
+                case HR_EMPLOYEE:
+                    allowedKeys = new String[]{
+                            "reviewer1",
+                            "reviewer2",
+                            "accepted",
+                    };
+                    break;
                 case EMPLOYEE:
                     allowedKeys = new String[]{"employeeComments"};
                     break;
@@ -158,6 +165,12 @@ public class AnnualReviewController extends BaseController
             review.setReviewer1(user); // TODO: unfake
 
             review.apply(data);
+
+            if (!currentRole.equals(LoginRole.HR_EMPLOYEE)) {
+                review.setReviewer1Signature(null);
+                review.setReviewer2Signature(null);
+                review.setRevieweeSignature(null);
+            }
 
             Session session = hibernate.getCurrentSession();
 

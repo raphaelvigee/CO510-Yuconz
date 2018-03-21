@@ -14,6 +14,8 @@ import java.util.Arrays;
  */
 public class AnnualReviewVoter implements VoterInterface
 {
+    public static final String LIST = "list_annual_reviews";
+
     public static final String CREATE = "create_annual_review";
 
     public static final String EDIT = "edit_annual_review";
@@ -37,7 +39,7 @@ public class AnnualReviewVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject)
     {
-        if (!Arrays.asList(CREATE, EDIT, SIGN).contains(attribute)) {
+        if (!Arrays.asList(LIST, CREATE, EDIT, SIGN).contains(attribute)) {
             return false;
         }
 
@@ -65,6 +67,8 @@ public class AnnualReviewVoter implements VoterInterface
         User currentUser = (User) authenticationManager.getUser();
 
         switch (attribute) {
+            case LIST:
+                return canList();
             case CREATE:
                 return canCreate();
             case EDIT:
@@ -74,6 +78,11 @@ public class AnnualReviewVoter implements VoterInterface
         }
 
         return false;
+    }
+
+    private boolean canList()
+    {
+        return isHR();
     }
 
     private boolean canSign(User currentUser, AnnualReviewRecord review)
@@ -97,6 +106,10 @@ public class AnnualReviewVoter implements VoterInterface
 
     private boolean canEdit(User currentUser, AnnualReviewRecord review)
     {
+        if(isHR()) {
+            return true;
+        }
+
         if (currentUser.equals(review.getUser())) {
             if (isEmployee()) {
                 return true;
@@ -124,6 +137,13 @@ public class AnnualReviewVoter implements VoterInterface
         LoginRole currentRole = authenticationManager.getCurrentRole();
 
         return currentRole.equals(LoginRole.EMPLOYEE);
+    }
+
+    private boolean isHR()
+    {
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+
+        return currentRole.equals(LoginRole.HR_EMPLOYEE);
     }
 
     private boolean canCreate()
