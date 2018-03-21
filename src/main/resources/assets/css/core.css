@@ -176,6 +176,10 @@ input[type=submit]:active, button:active {
     background: #ffcf64;
 }
 
+.alert.info {
+    background: #b5c5ff;
+}
+
 .table {
     display: flex;
     flex-direction: column;
