@@ -61,7 +61,7 @@
 
     <div>
         {% for p in range(1, max_pages) %}
-            <a href="{{ path('EmployeesController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
+            <a class="btn"  href="{{ path('EmployeesController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
         {% endfor %}
     </div>
 {% endblock %}
