@@ -21,10 +21,20 @@ import java.util.List;
 
 import static com.sallyf.sallyf.Utils.MapUtils.entry;
 
+/**
+ * Controller for general records, handle all requests.
+ */
 @Security(value = "is_granted('authenticated')", handler = LoginRedirectHandler.class)
 @Route(path = "/record")
 public class RecordController extends BaseController
 {
+    /**
+     * Route for listing all records for a user.
+     *
+     * @param recordManager system's record manager
+     * @param user          user to fetch records for
+     * @return response
+     */
     @Route(path = "", methods = {Method.GET})
     @Security("is_granted('list_records')")
     public Object list(RecordManager recordManager, User user)
@@ -37,6 +47,12 @@ public class RecordController extends BaseController
         }});
     }
 
+    /**
+     * Route for viewing a specific record for a user
+     *
+     * @param routeParameters route's parameters
+     * @return response
+     */
     @Route(path = "/{record}", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
