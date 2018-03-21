@@ -20,7 +20,7 @@ import org.hibernate.query.Query;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * Controller for system dashboard.
@@ -43,37 +43,46 @@ public class DashboardController extends BaseController
         Session session = hibernate.getCurrentSession();
 
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from AnnualReviewRecord where (reviewer1 = :user or reviewer2 = :user) and accepted = false")
+        Query currentAnnualReviewQuery = session.createQuery("from AnnualReviewRecord where (reviewer1 = :user and reviewer1Signature is null) or (reviewer2 = :user and reviewer2Signature is null) or (user = :user and revieweeSignature is null)")
                 .setParameter("user", user);
 
-        List<AnnualReviewRecord> reviews = query.getResultList();
+        List<AnnualReviewRecord> currentAnnualReviews = currentAnnualReviewQuery.getResultList();
+
+        Query underReviewAnnualReviewQuery = session.createQuery("from AnnualReviewRecord where (reviewer1 = :user or reviewer2 = :user or user = :user) and accepted != true")
+                .setParameter("user", user);
+        List<AnnualReviewRecord> underReviewAnnualReviews = underReviewAnnualReviewQuery.getResultList();
 
         transaction.commit();
 
-        Function<AnnualReviewRecord, String> annualReviewLinkSupplier = review -> {
-            return urlGenerator.path("AnnualReviewController.edit", new HashMap<String, String>()
+        BiFunction<AnnualReviewRecord, String, String> annualReviewLinkSupplier = (review, action) -> {
+            return urlGenerator.path("AnnualReviewController." + action, new HashMap<String, String>()
             {{
                 put("record", review.getId());
             }});
         };
 
-        switch (currentRole) {
-            case REVIEWER:
-                for (AnnualReviewRecord review : reviews) {
-                    String link = annualReviewLinkSupplier.apply(review);
+        for (AnnualReviewRecord review : currentAnnualReviews) {
+            String reviewLink = annualReviewLinkSupplier.apply(review, "edit");
 
-                    String body = "You have an incompleted annual review <a class=\"btn\" href=\"" + link + "\">Complete</a>";
-                    flashManager.getCurrentFlashes().add(new FlashMessage(body, "info", "exclamation-triangle"));
-                }
-                break;
-            default:
-                for (AnnualReviewRecord review : reviews) {
-                    String reviewLink = annualReviewLinkSupplier.apply(review);
-                    String link = urlGenerator.path("AuthenticationController.login") + "?next=" + URLEncoder.encode(reviewLink, "UTF-8") + "&role=REVIEWER";
-                    String body = "You have an incompleted annual review, log in as a <a class=\"btn\" href=\"" + link + "\">Reviewer</a>";
+            switch (currentRole) {
+                case REVIEWER:
+
+                    String body = "You have an incomplete annual review <a class=\"btn\" href=\"" + reviewLink + "\">Complete</a>";
                     flashManager.getCurrentFlashes().add(new FlashMessage(body, "warning", "exclamation-triangle"));
-                }
-                break;
+                    break;
+                default:
+                    String link = urlGenerator.path("AuthenticationController.login") + "?next=" + URLEncoder.encode(reviewLink, "UTF-8") + "&role=REVIEWER";
+                    String messageBody = "You have an incomplete annual review, log in as a <a class=\"btn\" href=\"" + link + "\">Reviewer</a>";
+                    flashManager.getCurrentFlashes().add(new FlashMessage(messageBody, "warning", "exclamation-triangle"));
+                    break;
+            }
+        }
+
+        for (AnnualReviewRecord review : underReviewAnnualReviews) {
+            String reviewLink = annualReviewLinkSupplier.apply(review, "view");
+
+            String body = "You have an Annual Review under review, <a class=\"btn\" href=\"" + reviewLink + "\">View</a>";
+            flashManager.getCurrentFlashes().add(new FlashMessage(body, "info", "check"));
         }
 
         return new JTwigResponse("views/dashboard/base.twig");

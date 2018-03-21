@@ -18,6 +18,8 @@ public class AnnualReviewVoter implements VoterInterface
 
     public static final String EDIT = "edit_annual_review";
 
+    public static final String SIGN = "sign_annual_review";
+
     private YuconzAuthenticationManager authenticationManager;
 
     public AnnualReviewVoter(YuconzAuthenticationManager authenticationManager)
@@ -35,7 +37,7 @@ public class AnnualReviewVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject)
     {
-        if (!Arrays.asList(CREATE, EDIT).contains(attribute)) {
+        if (!Arrays.asList(CREATE, EDIT, SIGN).contains(attribute)) {
             return false;
         }
 
@@ -60,20 +62,41 @@ public class AnnualReviewVoter implements VoterInterface
     {
         AnnualReviewRecord annualReview = (AnnualReviewRecord) subject;
 
+        User currentUser = (User) authenticationManager.getUser();
+
         switch (attribute) {
             case CREATE:
                 return canCreate();
             case EDIT:
-                return canEdit(annualReview);
+                return canEdit(currentUser, annualReview);
+            case SIGN:
+                return canSign(currentUser, annualReview);
         }
 
         return false;
     }
 
-    private boolean canEdit(AnnualReviewRecord review)
+    private boolean canSign(User currentUser, AnnualReviewRecord review)
     {
-        User currentUser = (User) authenticationManager.getUser();
+        if (isReviewer()) {
+            if (currentUser.equals(review.getReviewer1())) {
+                return review.getReviewer1Signature() == null;
+            }
 
+            if (currentUser.equals(review.getReviewer2())) {
+                return review.getReviewer2Signature() == null;
+            }
+        }
+
+        if (isEmployee() && currentUser.equals(review.getReviewee())) {
+            return review.getRevieweeSignature() == null;
+        }
+
+        return false;
+    }
+
+    private boolean canEdit(User currentUser, AnnualReviewRecord review)
+    {
         if (currentUser.equals(review.getUser())) {
             if (isEmployee()) {
                 return true;
@@ -102,7 +125,6 @@ public class AnnualReviewVoter implements VoterInterface
 
         return currentRole.equals(LoginRole.EMPLOYEE);
     }
-
 
     private boolean canCreate()
     {
