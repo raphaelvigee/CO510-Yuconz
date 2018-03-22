@@ -28,12 +28,6 @@ public class LoginTest extends AbstractTest
     }
 
     @Test
-    public void testLoginHRManager() throws Exception
-    {
-        testLogin(UserDefinition.HR_MANAGER, "HR_MANAGER");
-    }
-
-    @Test
     public void testLoginDirector() throws Exception
     {
         testLogin(UserDefinition.DIRECTOR, "DIRECTOR");

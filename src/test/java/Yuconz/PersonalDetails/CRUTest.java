@@ -26,8 +26,8 @@ public class CRUTest extends AbstractTest
 
         Supplier<Map<String, String>> dataTextSupplier = () -> {
             Map<String, String> data = new LinkedHashMap<>();
-            data.put("user[firstname]", faker.name().firstName());
-            data.put("user[lastname]", faker.name().lastName());
+            data.put("user[firstName]", faker.name().firstName());
+            data.put("user[lastName]", faker.name().lastName());
             data.put("user[email]", faker.internet().emailAddress());
             data.put("user[address][line1]", faker.address().fullAddress());
             data.put("user[address][line2]", faker.lorem().sentence(3));
@@ -35,10 +35,10 @@ public class CRUTest extends AbstractTest
             data.put("user[address][county]", faker.address().state());
             data.put("user[address][postcode]", faker.address().zipCode());
             data.put("user[address][country]", faker.address().country());
-            data.put("user[phone_number]", faker.phoneNumber().phoneNumber());
-            data.put("user[mobile_number]", faker.phoneNumber().phoneNumber());
-            data.put("user[emergency_contact]", faker.name().fullName());
-            data.put("user[emergency_contact_number]", faker.phoneNumber().phoneNumber());
+            data.put("user[phoneNumber]", faker.phoneNumber().phoneNumber());
+            data.put("user[mobileNumber]", faker.phoneNumber().phoneNumber());
+            data.put("user[emergencyContact]", faker.name().fullName());
+            data.put("user[emergencyContactNumber]", faker.phoneNumber().phoneNumber());
 
             return data;
         };
