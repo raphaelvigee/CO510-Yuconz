@@ -411,4 +411,10 @@ public class AnnualReviewRecord extends AbstractRecord
             PropertyAccessor.set(this, name, value);
         });
     }
+
+    @Override
+    public String renderSummary()
+    {
+        return String.format("<b>Reviewer 1</b>: %s <br> <b>Reviewer 2</b>: %s", getReviewer1().getFullName(), getReviewer2().getFullName());
+    }
 }

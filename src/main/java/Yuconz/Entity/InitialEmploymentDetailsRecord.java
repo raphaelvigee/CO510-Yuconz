@@ -64,4 +64,10 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
     {
         return "Initial Employment Details";
     }
+
+    @Override
+    public String renderSummary()
+    {
+        return "";
+    }
 }

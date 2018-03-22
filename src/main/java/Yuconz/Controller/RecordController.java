@@ -2,6 +2,7 @@ package Yuconz.Controller;
 
 import Yuconz.App;
 import Yuconz.Entity.AbstractRecord;
+import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.User;
 import Yuconz.Manager.RecordManager;
 import Yuconz.ParameterResolver.RecordResolver;
@@ -61,6 +62,13 @@ public class RecordController extends BaseController
     public Object view(RouteParameters routeParameters)
     {
         AbstractRecord record = (AbstractRecord) routeParameters.get("record");
+
+        if (record instanceof AnnualReviewRecord) {
+            return this.redirectToRoute("AnnualReviewController.view", new HashMap<String, String>()
+            {{
+                put("record", record.getId());
+            }});
+        }
 
         return new JTwigResponse("views/record/view.twig", MapUtils.createHashMap(
                 entry("record", record)
