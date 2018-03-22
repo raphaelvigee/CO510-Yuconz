@@ -6,7 +6,6 @@ import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
 import com.sallyf.sallyf.Authentication.UserInterface;
-import com.sallyf.sallyf.Server.RuntimeBag;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +29,9 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Generates new PersonalDetailsVoter.
+     *
      * @param authenticationManager system AuthenticationManager
-     * @param authorisationManager system AuthorisationManager
+     * @param authorisationManager  system AuthorisationManager
      */
     public PersonalDetailsVoter(YuconzAuthenticationManager authenticationManager, AuthorisationManager authorisationManager)
     {
@@ -41,8 +41,9 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Checks if voter has authority to vote.
+     *
      * @param attribute the name of the attribute being voted on
-     * @param subject User being voted on
+     * @param subject   User being voted on
      * @return true if supports
      */
     @Override
@@ -69,8 +70,9 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Check if User has the requested rights for specified action.
+     *
      * @param attribute the name of the attribute being voted on
-     * @param subject object being voted on
+     * @param subject   object being voted on
      * @return
      */
     @Override
@@ -96,6 +98,7 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Checks if user can get list of system users.
+     *
      * @param currentUser user to test
      * @return
      */
@@ -106,32 +109,28 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Checks if user can create a system user.
+     *
      * @param currentUser user to test
      * @return
      */
     private boolean canCreate(User currentUser)
     {
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+        if (LoginRole.DIRECTOR.equals(currentRole)) {
+            return false;
+        }
+
         return isHR(currentUser);
     }
 
     /**
      * Checks if user can view a system user.
-     * @param user user to test
+     *
+     * @param user        user to test
      * @param currentUser user to view
      * @return
      */
     private boolean canView(User user, User currentUser)
-    {
-        return canEdit(user, currentUser);
-    }
-
-    /**
-     * Checks if a user can edit a system user.
-     * @param user user to test
-     * @param currentUser user to edit
-     * @return
-     */
-    private boolean canEdit(User user, User currentUser)
     {
         if (user.equals(currentUser)) {
             return true;
@@ -141,7 +140,29 @@ public class PersonalDetailsVoter implements VoterInterface
     }
 
     /**
+     * Checks if a user can edit a system user.
+     *
+     * @param user        user to test
+     * @param currentUser user to edit
+     * @return
+     */
+    private boolean canEdit(User user, User currentUser)
+    {
+        if (user.equals(currentUser)) {
+            return true;
+        }
+
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+        if (LoginRole.DIRECTOR.equals(currentRole)) {
+            return false;
+        }
+
+        return isHR(currentUser);
+    }
+
+    /**
      * Identifies if a user has the rights of an HR employee.
+     *
      * @param currentUser
      * @return
      */

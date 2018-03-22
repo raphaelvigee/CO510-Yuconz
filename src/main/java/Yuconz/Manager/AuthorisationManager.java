@@ -75,6 +75,10 @@ public class AuthorisationManager implements ServiceInterface
 
                     return expectedRole == LoginRole.MANAGER || expectedRole == LoginRole.EMPLOYEE || expectedRole == LoginRole.REVIEWER;
                 case DIRECTOR:
+                    if (expectedRole == LoginRole.HR_EMPLOYEE) {
+                        return isHr;
+                    }
+
                     return true;
             }
 
