@@ -1,9 +1,9 @@
 package Yuconz.Form;
 
+import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.User;
+import Yuconz.Manager.AnnualReviewManager;
 import Yuconz.Model.LoginRole;
-import Yuconz.Model.UserRole;
-import Yuconz.Service.Hibernate;
 import com.sallyf.sallyf.Container.ServiceInterface;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;
@@ -13,27 +13,21 @@ import com.sallyf.sallyf.Form.Type.AbstractFormType;
 import com.sallyf.sallyf.Form.Type.CheckboxType;
 import com.sallyf.sallyf.Form.Type.ChoiceType;
 import com.sallyf.sallyf.Form.Type.TextareaType;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Form type for initial employment details.
  */
 public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualReviewOptions, Object> implements ServiceInterface
 {
-    private Hibernate hibernate;
+    private AnnualReviewManager annualReviewManager;
 
     private LoginRole currentRole;
 
-    public AnnualReviewType(Hibernate hibernate)
+    public AnnualReviewType(AnnualReviewManager annualReviewManager)
     {
-        this.hibernate = hibernate;
+        this.annualReviewManager = annualReviewManager;
     }
 
     public class AnnualReviewOptions extends Options
@@ -46,6 +40,16 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
         public LoginRole getCurrentRole()
         {
             return (LoginRole) get("currentRole");
+        }
+
+        public void setAnnualReview(AnnualReviewRecord review)
+        {
+            put("annualReview", review);
+        }
+
+        public AnnualReviewRecord getAnnualReview()
+        {
+            return (AnnualReviewRecord) get("annualReview");
         }
     }
 
@@ -67,15 +71,10 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
 
         currentRole = form.getOptions().getCurrentRole();
 
-        Session session = hibernate.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+        AnnualReviewRecord annualReview = form.getOptions().getAnnualReview();
 
-        Query reviewersQuery = session.createQuery("from User where role in (:roles)")
-                .setParameter("roles", Arrays.asList(UserRole.MANAGER, UserRole.DIRECTOR));
-
-        LinkedHashSet<User> reviewers = new LinkedHashSet<>(reviewersQuery.getResultList());
-
-        transaction.commit();
+        List<User> reviewers1 = annualReviewManager.getCandidateReviewer1(annualReview.getReviewee());
+        List<User> reviewers2 = annualReviewManager.getCandidateReviewer2(annualReview);
 
         builder
                 .add("employeeComments", TextareaType.class, options -> {
@@ -108,7 +107,7 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                     options.setExpanded(false);
                     options.setMultiple(false);
                     options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
-                    options.setChoices(reviewers);
+                    options.setChoices(new LinkedHashSet<>(reviewers1));
 
                     options.setChoiceValueResolver(u -> ((User) u).getId());
                     options.setChoiceLabelResolver(u -> ((User) u).getFullName());
@@ -118,14 +117,14 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                     options.setExpanded(false);
                     options.setMultiple(false);
                     options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
-                    options.setChoices(reviewers);
+                    options.setChoices(new LinkedHashSet<>(reviewers2));
 
                     options.setChoiceValueResolver(u -> ((User) u).getId());
                     options.setChoiceLabelResolver(u -> ((User) u).getFullName());
                 })
                 .add("accepted", CheckboxType.class, options -> {
                     options.setLabel("Accepted");
-                    options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
+                    options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE) || !annualReview.isReady());
                 });
     }
 

@@ -7,6 +7,7 @@ import Yuconz.Entity.Signature;
 import Yuconz.Entity.User;
 import Yuconz.Form.AnnualReviewType;
 import Yuconz.FormUtils;
+import Yuconz.Manager.AnnualReviewManager;
 import Yuconz.Manager.RecordManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Model.FlashMessage;
@@ -35,7 +36,9 @@ import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -47,11 +50,12 @@ public class AnnualReviewController extends BaseController
 {
     @Route(path = "/create", methods = {Method.GET, Method.POST})
     @Security("is_granted('create_annual_review')")
-    public Object create(User user, Hibernate hibernate, FlashManager flashManager, YuconzAuthenticationManager authenticationManager, RecordManager recordManager)
+    public Object create(User user, Hibernate hibernate, FlashManager flashManager, YuconzAuthenticationManager authenticationManager, RecordManager recordManager, AnnualReviewManager annualReviewManager)
     {
         AnnualReviewRecord lastAnnualReview = recordManager.getLastRecord(user, AnnualReviewRecord.class);
 
         AnnualReviewRecord review = new AnnualReviewRecord();
+        review.setReviewee(user);
 
         if (lastAnnualReview != null) {
             LocalDate start = lastAnnualReview.getPeriodEnd().plusDays(1);
@@ -65,9 +69,11 @@ public class AnnualReviewController extends BaseController
             review.setPeriodEnd(start.plusYears(1));
         }
 
+        AnnualReviewRecord finalReview = review;
         Form<FormType, FormType.FormOptions, Object> form = createFormBuilder()
                 .add("review", AnnualReviewType.class, options -> {
                     options.setCurrentRole(authenticationManager.getCurrentRole());
+                    options.setAnnualReview(finalReview);
                 })
                 .add("submit", SubmitType.class, options -> {
                     options.setLabel("Submit");
@@ -80,8 +86,10 @@ public class AnnualReviewController extends BaseController
             Map<String, Object> data = (Map<String, Object>) form.getChild("review").resolveData();
             FormUtils.sanitize(data, new String[]{"employeeComments"});
 
-            review.setUser(user);
-            review.setReviewer1(user); // TODO: unfake
+            List<User> candidateReviewers = annualReviewManager.getCandidateReviewer1(user);
+            Random rand = new Random();
+            User reviewer1 = candidateReviewers.get(rand.nextInt(candidateReviewers.size()));
+            review.setReviewer1(reviewer1);
 
             review.apply(data);
 
@@ -115,9 +123,11 @@ public class AnnualReviewController extends BaseController
 
         LoginRole currentRole = authenticationManager.getCurrentRole();
 
+        AnnualReviewRecord finalReview = review;
         FormBuilder<FormType, FormType.FormOptions, Object> builder = createFormBuilder()
                 .add("review", AnnualReviewType.class, options -> {
                     options.setCurrentRole(currentRole);
+                    options.setAnnualReview(finalReview);
                 })
                 .add("submit", SubmitType.class, options -> {
                     options.setLabel("Submit");
@@ -160,9 +170,6 @@ public class AnnualReviewController extends BaseController
             }
 
             FormUtils.sanitize(data, allowedKeys);
-
-            review.setReviewee(user);
-            review.setReviewer1(user); // TODO: unfake
 
             review.apply(data);
 
@@ -276,8 +283,15 @@ public class AnnualReviewController extends BaseController
         Form<FormType, FormType.FormOptions, Object> form = createFormBuilder()
                 .add("review", AnnualReviewType.class, options -> {
                     options.setCurrentRole(null);
+                    options.setAnnualReview(review);
                 })
                 .getForm();
+
+        HashMap<String, Object> in = new HashMap<>();
+        in.put("review", FormUtils.normalize(form.getChild("review"), review));
+
+        form.setData(in);
+        form.propagateChildData();
 
         return new JTwigResponse("views/annual-review/view.twig", MapUtils.createHashMap(
                 entry("review", review),

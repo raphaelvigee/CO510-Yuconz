@@ -64,11 +64,15 @@ public class DashboardController extends BaseController
         for (AnnualReviewRecord review : incompleteAnnualReviews) {
             String reviewLink = annualReviewLinkSupplier.apply(review, "edit");
 
-            if (user.equals(review.getReviewer1()) || user.equals(review.getReviewer2())) {
+            if ((user.equals(review.getReviewer1()) || user.equals(review.getReviewer2())) && !currentRole.equals(LoginRole.REVIEWER)) {
                 String link = urlGenerator.path("AuthenticationController.login") + "?next=" + URLEncoder.encode(reviewLink, "UTF-8") + "&role=REVIEWER";
                 String messageBody = "You have an incomplete annual review, log in as a <a class=\"btn\" href=\"" + link + "\">Reviewer</a>";
                 flashManager.getCurrentFlashes().add(new FlashMessage(messageBody, "warning", "exclamation-triangle"));
-            } else if (user.equals(review.getReviewee())) {
+            } else if (user.equals(review.getReviewee()) && !currentRole.equals(LoginRole.EMPLOYEE)) {
+                String link = urlGenerator.path("AuthenticationController.login") + "?next=" + URLEncoder.encode(reviewLink, "UTF-8") + "&role=EMPLOYEE";
+                String messageBody = "You have an incomplete annual review, log in as a <a class=\"btn\" href=\"" + link + "\">Employee</a>";
+                flashManager.getCurrentFlashes().add(new FlashMessage(messageBody, "warning", "exclamation-triangle"));
+            } else {
                 String body = "You have an incomplete annual review <a class=\"btn\" href=\"" + reviewLink + "\">Complete</a>";
                 flashManager.getCurrentFlashes().add(new FlashMessage(body, "warning", "exclamation-triangle"));
             }

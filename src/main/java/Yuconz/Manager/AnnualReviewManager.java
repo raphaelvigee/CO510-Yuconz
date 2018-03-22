@@ -11,10 +11,16 @@ import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
+
+@FunctionalInterface
+interface TriFunction<A, B, C, R>
+{
+    R apply(A a, B b, C c);
+}
 
 public class AnnualReviewManager implements ServiceInterface
 {
@@ -30,6 +36,10 @@ public class AnnualReviewManager implements ServiceInterface
 
     public boolean requiresSignature(AnnualReviewRecord review, User user)
     {
+        if (review.getId() == null) {
+            return false;
+        }
+
         return Arrays.asList(review.getReviewer1(), review.getReviewer2(), review.getReviewee()).contains(user);
     }
 
@@ -46,11 +56,15 @@ public class AnnualReviewManager implements ServiceInterface
         LocalDate startReviewPeriod = ied.getStartDate().withYear(now.getYear());
         LocalDate endReviewPeriod = startReviewPeriod.plusDays(14);
 
-        BiFunction<LocalDate, LocalDate, Boolean> between = (startDate, endDate) -> now.toEpochDay() >= startDate.toEpochDay() && now.toEpochDay() <= endDate.toEpochDay();
+        TriFunction<LocalDate, LocalDate, LocalDate, Boolean> between = (d, startDate, endDate) -> d.toEpochDay() >= startDate.toEpochDay() && d.toEpochDay() <= endDate.toEpochDay();
 
         AnnualReviewRecord lastReview = getLast(user, null);
 
-        return between.apply(startReviewPeriod, endReviewPeriod) && lastReview.isAccepted();
+        if (lastReview != null) {
+            return between.apply(now, startReviewPeriod, endReviewPeriod) && !between.apply(lastReview.getCreatedAt(), startReviewPeriod, endReviewPeriod);
+        }
+
+        return between.apply(now, startReviewPeriod, endReviewPeriod);
     }
 
     public List<AnnualReviewRecord> getList(Supplier<Query> query)
@@ -131,5 +145,42 @@ public class AnnualReviewManager implements ServiceInterface
         transaction.commit();
 
         return record;
+    }
+
+    public List<User> getCandidateReviewer1(User user)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("from User where (role = 'DIRECTOR' or role = 'MANAGER') and section = :userSection")
+                .setParameter("userSection", user.getSection());
+
+        List<User> records = query.getResultList();
+
+        transaction.commit();
+
+        return records;
+    }
+
+    public List<User> getCandidateReviewer2(AnnualReviewRecord review)
+    {
+        if (review == null || review.getReviewer1() == null) {
+            return new ArrayList<>();
+        }
+
+        Session session = hibernate.getCurrentSession();
+
+        Transaction transaction = session.beginTransaction();
+
+        Query query = session.createQuery("from User r where role = :reviewer1Role and r <> :reviewer1")
+                .setParameter("reviewer1", review.getReviewer1())
+                .setParameter("reviewer1Role", review.getReviewer1().getRole());
+
+        List<User> records = query.getResultList();
+
+        transaction.commit();
+
+        return records;
     }
 }
