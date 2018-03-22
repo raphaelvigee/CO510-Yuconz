@@ -268,11 +268,20 @@ public class AnnualReviewController extends BaseController
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
     @ParameterResolver(name = "record", type = RecordResolver.class)
-    @Security("is_granted('sign_annual_review', record)")
+    @Security("is_granted('view_annual_review', record)")
     public Object view(RouteParameters routeParameters)
     {
         AnnualReviewRecord review = (AnnualReviewRecord) routeParameters.get("record");
 
-        return review.getTitle();
+        Form<FormType, FormType.FormOptions, Object> form = createFormBuilder()
+                .add("review", AnnualReviewType.class, options -> {
+                    options.setCurrentRole(null);
+                })
+                .getForm();
+
+        return new JTwigResponse("views/annual-review/view.twig", MapUtils.createHashMap(
+                entry("review", review),
+                entry("form", form.createView())
+        ));
     }
 }

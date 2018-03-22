@@ -73,7 +73,7 @@ public class AuthorisationManager implements ServiceInterface
                         return isHr;
                     }
 
-                    return expectedRole == LoginRole.MANAGER || expectedRole == LoginRole.EMPLOYEE;
+                    return expectedRole == LoginRole.MANAGER || expectedRole == LoginRole.EMPLOYEE || expectedRole == LoginRole.REVIEWER;
                 case DIRECTOR:
                     return true;
             }

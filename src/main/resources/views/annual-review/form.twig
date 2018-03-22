@@ -5,12 +5,55 @@
 {% block record_content %}
     {{ parent() }}
 
-    {% if is_granted('sign_annual_review', review) %}
-        After submitting the form, you can
-        <a href="{{ path('AnnualReviewController.sign', {'record': review.getId()}) }}">
-            Sign
-        </a>
-    {% else %}
-        You already signed this Annual Review
-    {% endif %}
+    {% block signature_reminder %}
+        {% if service('AnnualReviewManager').requiresSignature(review, getUser()) %}
+            {% if is_granted('sign_annual_review', review) %}
+                <div class="alert warning">
+                    After submitting the form, you need to
+                    <a href="{{ path('AnnualReviewController.sign', {'record': review.getId()}) }}">
+                        Sign
+                    </a>
+                </div>
+            {% else %}
+                You already signed this Annual Review
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+
+    <br>
+
+    <h3>Signatures</h3>
+    {% set signers = [
+        {
+            'title': 'Reviewee',
+            'user': review.getReviewee(),
+            'signature': review.getRevieweeSignature()
+        },
+        {
+            'title': 'Reviewer 1',
+            'user': review.getReviewer1(),
+            'signature': review.getReviewer1Signature()
+        },
+        {
+            'title': 'Reviewer 2',
+            'user': review.getReviewer2(),
+            'signature': review.getReviewer2Signature()
+        }
+    ] %}
+
+    {% for signer in signers %}
+        <div>
+            {% if signer.user %}
+                <p>
+                    <b>{{ signer.title }}</b>
+                </p>
+                {{ signer.user.getFullName() }} :
+                {% if signer.signature %}
+                    Signed
+                {% else %}
+                    Not signed
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
 {% endblock %}

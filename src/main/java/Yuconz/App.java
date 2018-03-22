@@ -5,10 +5,7 @@ import Yuconz.Form.AnnualReviewType;
 import Yuconz.FormRenderer.CustomChoiceRenderer;
 import Yuconz.FormRenderer.DateRenderer;
 import Yuconz.JTwigFunction.*;
-import Yuconz.Manager.AuthorisationManager;
-import Yuconz.Manager.LogManager;
-import Yuconz.Manager.RecordManager;
-import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.Manager.*;
 import Yuconz.ParameterResolver.RecordResolver;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.Service.Hibernate;
@@ -75,6 +72,7 @@ public class App
         container.add(new ServiceDefinition<>(Hibernate.class));
         container.add(new ServiceDefinition<>(LogManager.class));
         container.add(new ServiceDefinition<>(RecordManager.class));
+        container.add(new ServiceDefinition<>(AnnualReviewManager.class));
         container.add(new ServiceDefinition<>(FormManager.class));
 
         container.add(new ServiceDefinition<>(AuthorisationManager.class))

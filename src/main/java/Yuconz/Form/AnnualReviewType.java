@@ -29,6 +29,8 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
 {
     private Hibernate hibernate;
 
+    private LoginRole currentRole;
+
     public AnnualReviewType(Hibernate hibernate)
     {
         this.hibernate = hibernate;
@@ -38,12 +40,12 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
     {
         public void setCurrentRole(LoginRole role)
         {
-            put("role", role);
+            put("currentRole", role);
         }
 
         public LoginRole getCurrentRole()
         {
-            return (LoginRole) get("role");
+            return (LoginRole) get("currentRole");
         }
     }
 
@@ -63,11 +65,7 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
     {
         FormBuilder<?, AnnualReviewOptions, Object> builder = form.getBuilder();
 
-        LoginRole role = form.getOptions().getCurrentRole();
-
-        boolean isHR = role.equals(LoginRole.HR_EMPLOYEE);
-        boolean isEmployee = role.equals(LoginRole.EMPLOYEE);
-        boolean isReviewer = role.equals(LoginRole.REVIEWER);
+        currentRole = form.getOptions().getCurrentRole();
 
         Session session = hibernate.getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -82,34 +80,34 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
         builder
                 .add("employeeComments", TextareaType.class, options -> {
                     options.setLabel("Employee Comments");
-                    options.setDisabled(isHR || isReviewer);
+                    options.setDisabled(disableExcept(LoginRole.EMPLOYEE));
 
                 })
                 .add("futureObjectivePlans", TextareaType.class, options -> {
                     options.setLabel("Future Objectives Plans");
-                    options.setDisabled(isHR || isEmployee);
+                    options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("trainingMentoringReview", TextareaType.class, options -> {
                     options.setLabel("Training Mentoring Review");
-                    options.setDisabled(isHR || isEmployee);
+                    options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("reviewerSummary", TextareaType.class, options -> {
                     options.setLabel("Reviewer Summary");
-                    options.setDisabled(isHR || isEmployee);
+                    options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("trainingMentoringDevelopment", TextareaType.class, options -> {
                     options.setLabel("Training Mentoring Development");
-                    options.setDisabled(isHR || isEmployee);
+                    options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("reviewer1", ChoiceType.class, options -> {
                     options.setLabel("Reviewer 1");
                     options.setExpanded(false);
                     options.setMultiple(false);
-                    options.setDisabled(!isHR);
+                    options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
                     options.setChoices(reviewers);
 
                     options.setChoiceValueResolver(u -> ((User) u).getId());
@@ -119,7 +117,7 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                     options.setLabel("Reviewer 2");
                     options.setExpanded(false);
                     options.setMultiple(false);
-                    options.setDisabled(!isHR);
+                    options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
                     options.setChoices(reviewers);
 
                     options.setChoiceValueResolver(u -> ((User) u).getId());
@@ -127,8 +125,17 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                 })
                 .add("accepted", CheckboxType.class, options -> {
                     options.setLabel("Accepted");
-                    options.setDisabled(!isHR);
+                    options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
                 });
+    }
+
+    private boolean disableExcept(LoginRole... allowedRoles)
+    {
+        if (currentRole == null) {
+            return true;
+        }
+
+        return !Arrays.asList(allowedRoles).contains(currentRole);
     }
 
     /**

@@ -1,0 +1,135 @@
+package Yuconz.Manager;
+
+import Yuconz.Entity.AnnualReviewRecord;
+import Yuconz.Entity.InitialEmploymentDetailsRecord;
+import Yuconz.Entity.User;
+import Yuconz.Service.Hibernate;
+import com.sallyf.sallyf.Container.ServiceInterface;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import javax.persistence.NoResultException;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
+public class AnnualReviewManager implements ServiceInterface
+{
+    private Hibernate hibernate;
+
+    private RecordManager recordManager;
+
+    public AnnualReviewManager(Hibernate hibernate, RecordManager recordManager)
+    {
+        this.hibernate = hibernate;
+        this.recordManager = recordManager;
+    }
+
+    public boolean requiresSignature(AnnualReviewRecord review, User user)
+    {
+        return Arrays.asList(review.getReviewer1(), review.getReviewer2(), review.getReviewee()).contains(user);
+    }
+
+    public boolean needsNew(User user)
+    {
+        InitialEmploymentDetailsRecord ied = recordManager.getLastRecord(user, InitialEmploymentDetailsRecord.class);
+
+        if (ied == null) {
+            return false;
+        }
+
+        LocalDate now = LocalDate.now();
+
+        LocalDate startReviewPeriod = ied.getStartDate().withYear(now.getYear());
+        LocalDate endReviewPeriod = startReviewPeriod.plusDays(14);
+
+        BiFunction<LocalDate, LocalDate, Boolean> between = (startDate, endDate) -> now.toEpochDay() >= startDate.toEpochDay() && now.toEpochDay() <= endDate.toEpochDay();
+
+        AnnualReviewRecord lastReview = getLast(user, null);
+
+        return between.apply(startReviewPeriod, endReviewPeriod) && lastReview.isAccepted();
+    }
+
+    public List<AnnualReviewRecord> getList(Supplier<Query> query)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        Transaction transaction = session.beginTransaction();
+
+        List<AnnualReviewRecord> records = query.get().getResultList();
+
+        transaction.commit();
+
+        return records;
+    }
+
+    public List<AnnualReviewRecord> getIncomplete(User user)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        return getList(() -> session.createQuery("from AnnualReviewRecord where (reviewer1 = :user and reviewer1Signature is null) or (reviewer2 = :user and reviewer2Signature is null) or (user = :user and revieweeSignature is null)")
+                .setParameter("user", user));
+    }
+
+    public List<AnnualReviewRecord> getUnderReview(User user)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        return getList(() -> session.createQuery("from AnnualReviewRecord where (reviewer1 = :user or reviewer2 = :user or user = :user) and accepted != true")
+                .setParameter("user", user));
+    }
+
+    public List<AnnualReviewRecord> getRequiresAttentionAsHR()
+    {
+        Session session = hibernate.getCurrentSession();
+
+        return getList(() -> session.createQuery("from AnnualReviewRecord where reviewer1 is null or reviewer2 is null or user is null or accepted != true"));
+    }
+
+    /**
+     * @param user
+     * @param accepted true: only accepted, false: only not accepted, null: ignore
+     * @return
+     */
+    public List<AnnualReviewRecord> getRecords(User user, Boolean accepted)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        String acceptedQuery = accepted == null ? "" : " and accepted = " + String.valueOf(accepted);
+
+        return getList(() -> session.createQuery("from AnnualReviewRecord where user = :user" + acceptedQuery)
+                .setParameter("user", user));
+    }
+
+    /**
+     * @param user
+     * @param accepted true: only accepted, false: only not accepted, null: ignore
+     * @return
+     */
+    public AnnualReviewRecord getLast(User user, Boolean accepted)
+    {
+        Session session = hibernate.getCurrentSession();
+
+        Transaction transaction = session.beginTransaction();
+
+        String acceptedQuery = accepted == null ? "" : " and accepted = " + String.valueOf(accepted);
+
+        Query query = session.createQuery("from AnnualReviewRecord r where user = :user" + acceptedQuery)
+                .setMaxResults(1)
+                .setParameter("user", user);
+
+        AnnualReviewRecord record;
+        try {
+            record = (AnnualReviewRecord) query.getSingleResult();
+        } catch (NoResultException e) {
+            record = null;
+        }
+
+        transaction.commit();
+
+        return record;
+    }
+}

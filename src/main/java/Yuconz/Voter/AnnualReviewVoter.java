@@ -2,6 +2,7 @@ package Yuconz.Voter;
 
 import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.User;
+import Yuconz.Manager.AnnualReviewManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
@@ -24,9 +25,12 @@ public class AnnualReviewVoter implements VoterInterface
 
     private YuconzAuthenticationManager authenticationManager;
 
-    public AnnualReviewVoter(YuconzAuthenticationManager authenticationManager)
+    private AnnualReviewManager annualReviewManager;
+
+    public AnnualReviewVoter(YuconzAuthenticationManager authenticationManager, AnnualReviewManager annualReviewManager)
     {
         this.authenticationManager = authenticationManager;
+        this.annualReviewManager = annualReviewManager;
     }
 
     /**
@@ -106,7 +110,11 @@ public class AnnualReviewVoter implements VoterInterface
 
     private boolean canEdit(User currentUser, AnnualReviewRecord review)
     {
-        if(isHR()) {
+        if (review.isAccepted()) {
+            return false;
+        }
+
+        if (isHR()) {
             return true;
         }
 
@@ -148,6 +156,8 @@ public class AnnualReviewVoter implements VoterInterface
 
     private boolean canCreate()
     {
-        return isEmployee();
+        User user = (User) authenticationManager.getUser();
+
+        return isEmployee() && annualReviewManager.needsNew(user);
     }
 }
