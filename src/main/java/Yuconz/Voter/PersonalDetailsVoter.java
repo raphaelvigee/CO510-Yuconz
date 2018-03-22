@@ -132,6 +132,11 @@ public class PersonalDetailsVoter implements VoterInterface
      */
     private boolean canView(User user, User currentUser)
     {
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+        if (currentRole.equals(LoginRole.REVIEWER)) {
+            return false;
+        }
+
         if (user.equals(currentUser)) {
             return true;
         }
