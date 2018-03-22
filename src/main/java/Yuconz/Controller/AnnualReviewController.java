@@ -60,14 +60,12 @@ public class AnnualReviewController extends BaseController
         if (lastAnnualReview != null) {
             LocalDate start = lastAnnualReview.getPeriodEnd().plusDays(1);
             review.setPeriodStart(start);
-            review.setPeriodEnd(start.plusYears(1));
         } else {
             InitialEmploymentDetailsRecord lastIED = recordManager.getLastRecord(user, InitialEmploymentDetailsRecord.class);
-
-            LocalDate start = lastIED.getStartDate();
-            review.setPeriodStart(start);
-            review.setPeriodEnd(start.plusYears(1));
+            review.setPeriodStart(lastIED.getStartDate());
         }
+
+        review.setPeriodEnd(LocalDate.now());
 
         AnnualReviewRecord finalReview = review;
         Form<FormType, FormType.FormOptions, Object> form = createFormBuilder()

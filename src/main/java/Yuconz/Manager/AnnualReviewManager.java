@@ -56,6 +56,10 @@ public class AnnualReviewManager implements ServiceInterface
         LocalDate startReviewPeriod = ied.getStartDate().withYear(now.getYear());
         LocalDate endReviewPeriod = startReviewPeriod.plusDays(14);
 
+        if (now.toEpochDay() < ied.getStartDate().plusMonths(1).toEpochDay()) {
+            return false;
+        }
+
         TriFunction<LocalDate, LocalDate, LocalDate, Boolean> between = (d, startDate, endDate) -> d.toEpochDay() >= startDate.toEpochDay() && d.toEpochDay() <= endDate.toEpochDay();
 
         AnnualReviewRecord lastReview = getLast(user, null);
