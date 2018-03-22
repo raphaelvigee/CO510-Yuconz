@@ -83,6 +83,16 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                     options.setDisabled(disableExcept(LoginRole.EMPLOYEE));
 
                 })
+                .add("previousYearReview", TextareaType.class, options -> {
+                    options.setLabel("Previous year review");
+                    options.setDisabled(disableExcept(LoginRole.REVIEWER));
+
+                })
+                .add("previousYearTrainingMentoring", TextareaType.class, options -> {
+                    options.setLabel("Previous year training & mentoring");
+                    options.setDisabled(disableExcept(LoginRole.REVIEWER));
+
+                })
                 .add("futureObjectivePlans", TextareaType.class, options -> {
                     options.setLabel("Future Objectives Plans");
                     options.setDisabled(disableExcept(LoginRole.REVIEWER));

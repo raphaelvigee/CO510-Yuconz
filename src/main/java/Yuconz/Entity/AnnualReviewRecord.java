@@ -24,6 +24,10 @@ public class AnnualReviewRecord extends AbstractRecord
     @Column(nullable = false)
     private LocalDate periodEnd;
 
+    private String previousYearReview;
+
+    private String previousYearTrainingMentoring;
+
     private String achievementOutcomesReview;
 
     private String futureObjectivePlans;
@@ -115,6 +119,26 @@ public class AnnualReviewRecord extends AbstractRecord
     public void setPeriodEnd(LocalDate periodEnd)
     {
         this.periodEnd = periodEnd;
+    }
+
+    public String getPreviousYearReview()
+    {
+        return previousYearReview;
+    }
+
+    public void setPreviousYearReview(String previousYearReview)
+    {
+        this.previousYearReview = previousYearReview;
+    }
+
+    public String getPreviousYearTrainingMentoring()
+    {
+        return previousYearTrainingMentoring;
+    }
+
+    public void setPreviousYearTrainingMentoring(String previousYearTrainingMentoring)
+    {
+        this.previousYearTrainingMentoring = previousYearTrainingMentoring;
     }
 
     /**
