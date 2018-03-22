@@ -47,7 +47,7 @@ public enum LoginRole
             case HR_EMPLOYEE:
                 return Arrays.asList(LoginRole.EMPLOYEE, LoginRole.HR_EMPLOYEE);
             case MANAGER:
-                return Arrays.asList(LoginRole.EMPLOYEE, LoginRole.HR_EMPLOYEE, LoginRole.MANAGER);
+                return Arrays.asList(LoginRole.EMPLOYEE, LoginRole.MANAGER);
             case DIRECTOR:
                 return Arrays.asList(LoginRole.values());
         }
