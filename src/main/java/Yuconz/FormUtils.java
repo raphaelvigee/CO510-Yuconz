@@ -17,6 +17,11 @@ public class FormUtils
 
         if (form.getOptions().containsKey("normalizer")) {
             BiFunction<Form<?, ?, ?>, Object, Object> normalizer = (BiFunction<Form<?, ?, ?>, Object, Object>) form.getOptions().get("normalizer");
+
+            if (object == null) {
+                return null;
+            }
+
             return normalizer.apply(form, object);
         }
 
