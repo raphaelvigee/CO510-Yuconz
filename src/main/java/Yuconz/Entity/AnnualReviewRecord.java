@@ -38,8 +38,6 @@ public class AnnualReviewRecord extends AbstractRecord
 
     private String employeeComments;
 
-    private String trainingMentoringDevelopment;
-
     @Column(nullable = false)
     private Boolean accepted = false;
 
@@ -239,26 +237,6 @@ public class AnnualReviewRecord extends AbstractRecord
     public void setEmployeeComments(String employeeComments)
     {
         this.employeeComments = employeeComments;
-    }
-
-    /**
-     * Get the training mentoring development.
-     *
-     * @return trainingMentoringDevelopment
-     */
-    public String getTrainingMentoringDevelopment()
-    {
-        return trainingMentoringDevelopment;
-    }
-
-    /**
-     * Set the training mentoring development.
-     *
-     * @param trainingMentoringDevelopment trainingMentoringDevelopment
-     */
-    public void setTrainingMentoringDevelopment(String trainingMentoringDevelopment)
-    {
-        this.trainingMentoringDevelopment = trainingMentoringDevelopment;
     }
 
     /**

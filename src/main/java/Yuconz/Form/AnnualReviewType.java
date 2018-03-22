@@ -84,32 +84,27 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
 
                 })
                 .add("previousYearReview", TextareaType.class, options -> {
-                    options.setLabel("Previous year review");
+                    options.setLabel("A review of the previous year’s achievements and outcomes.");
                     options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("previousYearTrainingMentoring", TextareaType.class, options -> {
-                    options.setLabel("Previous year training & mentoring");
+                    options.setLabel("A review of the previous year’s training and mentoring and their outcomes.");
                     options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("futureObjectivePlans", TextareaType.class, options -> {
-                    options.setLabel("Future Objectives Plans");
+                    options.setLabel("Future objectives and plans: a preview of planned future performance: achievements/outcomes.");
                     options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("trainingMentoringReview", TextareaType.class, options -> {
-                    options.setLabel("Training Mentoring Review");
+                    options.setLabel("Training, mentoring, etc., required to enhance performance and to realize development potential.");
                     options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
                 .add("reviewerSummary", TextareaType.class, options -> {
                     options.setLabel("Reviewer Summary");
-                    options.setDisabled(disableExcept(LoginRole.REVIEWER));
-
-                })
-                .add("trainingMentoringDevelopment", TextareaType.class, options -> {
-                    options.setLabel("Training Mentoring Development");
                     options.setDisabled(disableExcept(LoginRole.REVIEWER));
 
                 })
