@@ -348,49 +348,20 @@ public class User implements UserInterface<String>, Serializable
     }
 
     /**
-     * Generates a hashmap of all the User's data.
-     * @return User data hashmap
-     */
-    public Map<String, Object> toHashMap()
-    {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("firstname", getFirstName());
-        map.put("lastname", getLastName());
-        map.put("email", getEmail());
-
-        if (getBirthdate() != null) {
-            Map<String, Object> birthdate = new LinkedHashMap<>();
-            birthdate.put("day", getBirthdate().getDayOfMonth());
-            birthdate.put("month", getBirthdate().getMonth());
-            birthdate.put("year", getBirthdate().getYear());
-            map.put("birthdate", birthdate);
-        }
-
-        map.put("address", getAddress().toHashMap());
-        map.put("phone_number", getPhoneNumber());
-        map.put("mobile_number", getMobileNumber());
-        map.put("emergency_contact", getEmergencyContact());
-        map.put("emergency_contact_number", getEmergencyContactNumber());
-        map.put("section", getSection());
-
-        return map;
-    }
-
-    /**
      * Updates User properties to those from provided hashmap.
      * @param map Hashmap of User properties
      */
     public void applyHashMap(Map<String, Object> map)
     {
-        setFirstName((String) map.get("firstname"));
-        setLastName((String) map.get("lastname"));
+        setFirstName((String) map.get("firstName"));
+        setLastName((String) map.get("lastName"));
         setEmail((String) map.get("email"));
         setBirthdate((LocalDate) map.get("birthdate"));
         getAddress().applyHashMap((Map<String, Object>) map.get("address"));
-        setPhoneNumber((String) map.get("phone_number"));
-        setMobileNumber((String) map.get("mobile_number"));
-        setEmergencyContact((String) map.get("emergency_contact"));
-        setEmergencyContactNumber((String) map.get("emergency_contact_number"));
+        setPhoneNumber((String) map.get("phoneNumber"));
+        setMobileNumber((String) map.get("mobileNumber"));
+        setEmergencyContact((String) map.get("emergencyContact"));
+        setEmergencyContactNumber((String) map.get("emergencyContactNumber"));
         setSection((Section) map.get("section"));
     }
 
