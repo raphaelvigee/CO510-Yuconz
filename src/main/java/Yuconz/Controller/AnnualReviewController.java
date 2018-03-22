@@ -159,6 +159,8 @@ public class AnnualReviewController extends BaseController
                     break;
                 case REVIEWER:
                     allowedKeys = new String[]{
+                            "previousYearReview",
+                            "previousYearTrainingMentoring",
                             "futureObjectivePlans",
                             "trainingMentoringReview",
                             "reviewerSummary",
