@@ -75,6 +75,7 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
 
         List<User> reviewers1 = annualReviewManager.getCandidateReviewer1(annualReview.getReviewee());
         List<User> reviewers2 = annualReviewManager.getCandidateReviewer2(annualReview);
+        reviewers2.add(0, null);
 
         builder
                 .add("employeeComments", TextareaType.class, options -> {
@@ -109,8 +110,8 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                     options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
                     options.setChoices(new LinkedHashSet<>(reviewers1));
 
-                    options.setChoiceValueResolver(u -> ((User) u).getId());
-                    options.setChoiceLabelResolver(u -> ((User) u).getFullName());
+                    options.setChoiceValueResolver(u -> u == null ? null : ((User) u).getId());
+                    options.setChoiceLabelResolver(u -> u == null ? "None" : ((User) u).getFullName());
                 })
                 .add("reviewer2", ChoiceType.class, options -> {
                     options.setLabel("Reviewer 2");
@@ -119,8 +120,8 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                     options.setDisabled(disableExcept(LoginRole.HR_EMPLOYEE));
                     options.setChoices(new LinkedHashSet<>(reviewers2));
 
-                    options.setChoiceValueResolver(u -> ((User) u).getId());
-                    options.setChoiceLabelResolver(u -> ((User) u).getFullName());
+                    options.setChoiceValueResolver(u -> u == null ? null : ((User) u).getId());
+                    options.setChoiceLabelResolver(u -> u == null ? "None" : ((User) u).getFullName());
                 })
                 .add("accepted", CheckboxType.class, options -> {
                     options.setLabel("Accepted");
