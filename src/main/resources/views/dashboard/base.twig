@@ -78,9 +78,6 @@
                 <div class="heading">
                     Administration
                 </div>
-                <div class="option">
-                    <a class="link" href="#">Dashboard</a>
-                </div>
                 {% if is_granted('list_users') %}
                     {% set isEmpManagement = routeName in ['EmployeesController.view', 'EmployeesController.edit', 'EmployeesController.list'] %}
                     {% if routeName in ['EmployeesController.view', 'EmployeesController.edit'] and getUser().equals(user) %}
