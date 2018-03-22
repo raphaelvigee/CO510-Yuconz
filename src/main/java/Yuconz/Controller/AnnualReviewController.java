@@ -187,6 +187,14 @@ public class AnnualReviewController extends BaseController
 
             flashManager.addFlash(new FlashMessage("Annual review amended", "success", "check"));
 
+            if (review.isAccepted()) {
+                AnnualReviewRecord finalReview1 = review;
+                return redirectToRoute("AnnualReviewController.view", new HashMap<String, String>()
+                {{
+                    put("record", finalReview1.getId());
+                }});
+            }
+
             return this.redirect(runtimeBag.getRequest().getRequestURI());
         }
 
