@@ -19,7 +19,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +111,7 @@ public class Hibernate implements ServiceInterface
             employee.setFirstName("John");
             employee.setLastName("Doe");
             employee.setRole(UserRole.EMPLOYEE);
-            employee.setSection(Section.RECRUITMENT);
+            employee.setSection(Section.FRONT_END);
             users.add(employee);
 
             User hr_employee = User.bulk();
@@ -157,7 +157,7 @@ public class Hibernate implements ServiceInterface
             for (User user : users) {
                 InitialEmploymentDetailsRecord ied = new InitialEmploymentDetailsRecord();
                 ied.setUser(user);
-                ied.setStartDate(faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                ied.setStartDate(LocalDate.now().minusYears(1));
                 ied.setInterviewNotes(faker.lorem().sentence());
 
                 session.persist(user);

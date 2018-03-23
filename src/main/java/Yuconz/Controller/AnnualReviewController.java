@@ -22,6 +22,7 @@ import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.FlashManager.FlashManager;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;
+import com.sallyf.sallyf.Form.Type.ChoiceType;
 import com.sallyf.sallyf.Form.Type.FormType;
 import com.sallyf.sallyf.Form.Type.SubmitType;
 import com.sallyf.sallyf.JTwig.JTwigResponse;
@@ -35,10 +36,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -48,6 +46,8 @@ import static com.sallyf.sallyf.Utils.MapUtils.entry;
 @Route(path = "/annual-review")
 public class AnnualReviewController extends BaseController
 {
+    private Random rand = new Random();
+
     @Route(path = "/create", methods = {Method.GET, Method.POST})
     @Security("is_granted('create_annual_review')")
     public Object create(User user, Hibernate hibernate, FlashManager flashManager, YuconzAuthenticationManager authenticationManager, RecordManager recordManager, AnnualReviewManager annualReviewManager)
