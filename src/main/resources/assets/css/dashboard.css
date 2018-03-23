@@ -227,3 +227,36 @@ form .row.date .row {
     flex-grow: 0.2;
 }
 
+
+#dashboard .mm {
+    display:none;
+    line-height:50px;
+    color:#fff;
+    margin-left:10px;
+}
+#dashboard .mm:hover, #dashboard .mm:active {
+    opacity:0.8;
+}
+
+
+#dashboard #sidePanel {
+    transition: margin-left 0.4s;
+    display:block;
+    margin-left:-200px;
+}
+#dashboard #mainContent {
+    transition: margin-left 0.4s;
+    width:100%;
+    margin-left:0px;
+}
+@media (max-width:600px) {
+    #dashboard.mm #mainContent {
+        margin-left:200px;
+    }
+    #dashboard.mm #sidePanel {
+        margin-left:0px;
+    }
+    #dashboard .mm {
+        display:block;
+    }
+}
