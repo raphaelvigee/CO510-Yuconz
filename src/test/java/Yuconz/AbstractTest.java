@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Random;
+import java.util.logging.Level;
 
 public abstract class AbstractTest
 {
@@ -76,6 +77,7 @@ public abstract class AbstractTest
     public HtmlPage login(String email, String password, String role) throws IOException
     {
         WebClient webClient = new WebClient();
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
 
         HtmlPage page1 = webClient.getPage(getUrl("/auth/login"));
 
