@@ -242,14 +242,18 @@ form .row.date .row {
 #dashboard #sidePanel {
     transition: margin-left 0.4s;
     display:block;
-    margin-left:-200px;
 }
 #dashboard #mainContent {
     transition: margin-left 0.4s;
-    width:100%;
-    margin-left:0px;
 }
 @media (max-width:600px) {
+    #dashboard #mainContent {
+        margin-left:0px;
+        width:100%;
+    }
+    #dashboard #sidePanel {
+        margin-left:-200px;
+    }
     #dashboard.mm #mainContent {
         margin-left:200px;
     }
