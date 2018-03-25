@@ -12,21 +12,33 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 {
     private String interviewNotes;
 
+
     private LocalDate startDate;
 
+    /**
+     * get interview notes
+     *
+     * @return interviewNotes the interview notes
+     */
     public String getInterviewNotes()
     {
         return interviewNotes;
     }
 
+    /**
+     * set the interview notes
+     *
+     * @param interviewNotes the notes made in the interview
+     */
     public void setInterviewNotes(String interviewNotes)
     {
         this.interviewNotes = interviewNotes;
     }
 
     /**
-     * 
-     * @return
+     * get employment start date
+     *
+     * @return startDate start date
      */
     public LocalDate getStartDate()
     {
@@ -35,6 +47,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * set employment start date
+     *
      * @param startDate start date
      */
     public void setStartDate(LocalDate startDate)
@@ -69,6 +82,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * get title
+     *
      * @return string initial employment details
      */
     @Override
@@ -79,6 +93,7 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
 
     /**
      * get summary
+     *
      * @return string ""
      */
     @Override
