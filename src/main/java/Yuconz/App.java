@@ -9,10 +9,12 @@ import Yuconz.Manager.*;
 import Yuconz.ParameterResolver.RecordResolver;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.Service.Hibernate;
+import Yuconz.Service.YuconzAccessDecisionManager;
 import Yuconz.Voter.AnnualReviewVoter;
 import Yuconz.Voter.AuthorisationVoter;
 import Yuconz.Voter.PersonalDetailsVoter;
 import Yuconz.Voter.RecordVoter;
+import com.sallyf.sallyf.AccessDecisionManager.AccessDecisionManager;
 import com.sallyf.sallyf.Container.*;
 import com.sallyf.sallyf.Exception.FrameworkException;
 import com.sallyf.sallyf.Form.FormManager;
@@ -68,6 +70,7 @@ public class App
         container.add(new ServiceDefinition<>(AnnualReviewType.class));
 
         // Managers
+        container.add(new ServiceDefinition<>(AccessDecisionManager.class, YuconzAccessDecisionManager.class));
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
         container.add(new ServiceDefinition<>(LogManager.class))

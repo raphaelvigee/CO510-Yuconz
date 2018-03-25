@@ -129,7 +129,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         httpSession.setAttribute("user", user);
         httpSession.setAttribute("role", loginRole);
 
-        logManager.log(user, request.getRemoteAddr(), user == null ? LogType.AUTHENTICATION_LOGIN_FAIL : LogType.AUTHENTICATION_LOGIN_SUCCESS, logDetails);
+        logManager.log(user, user == null ? LogType.AUTHENTICATION_LOGIN_FAIL : LogType.AUTHENTICATION_LOGIN_SUCCESS, logDetails);
 
         return user;
     }
