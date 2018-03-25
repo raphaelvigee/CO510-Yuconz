@@ -16,5 +16,11 @@ $(function () {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
     }
+
+    if (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
+        $(".account .chevron").click(function(e) {
+            $(".account .dropdown").toggle()
+        });
+    }
 });
 

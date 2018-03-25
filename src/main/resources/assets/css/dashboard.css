@@ -161,6 +161,7 @@
 }
 
 #mainContent {
+    box-sizing: border-box;
     padding: 20px;
     margin-left: 200px;
     margin-top: 50px;
@@ -262,5 +263,13 @@ form .row.date .row {
     }
     #dashboard .mm {
         display:block;
+    }
+}
+
+
+
+@media (max-width:350px) {
+    #nav .account .main .icon .profilePicture {
+        display:none;
     }
 }

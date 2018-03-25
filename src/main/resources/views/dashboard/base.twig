@@ -82,7 +82,7 @@
                     Administration
                 </div>
                 {% if is_granted('list_users') %}
-                    {% set isEmpManagement = routeName in ['EmployeesController.view', 'EmployeesController.edit', 'EmployeesController.list'] %}
+                    {% set isEmpManagement = routeName in ['EmployeesController.view', 'EmployeesController.edit', 'EmployeesController.list', 'EmployeesController.create'] %}
                     {% if routeName in ['EmployeesController.view', 'EmployeesController.edit'] and getUser().equals(user) %}
                         {% set isEmpManagement = false %}
                     {% endif %}
