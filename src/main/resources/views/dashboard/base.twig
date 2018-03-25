@@ -72,7 +72,10 @@
             {% endif %}
 
             {% if is_granted('list_records', getUser()) %}
-                <div class="option">
+                {% set currentUserDetails = routeName in ['RecordController.list', 'RecordController.view', 'AnnualReviewController.view', 'AnnualReviewController.edit'] %}
+                {% set activeClass = currentUserDetails ? "selected" : "" %}
+
+                <div class="option {{ activeClass }}">
                     <a class="link" href="{{ path('RecordController.list', {'user': getUser().getId()}) }}">
                         Employment History
                     </a>
