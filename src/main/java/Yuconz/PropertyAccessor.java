@@ -8,11 +8,24 @@ import java.lang.reflect.Method;
 
 public class PropertyAccessor
 {
+    /**
+     * Capitalise a string
+     *
+     * @param line string
+     * @return string capitalised string
+     */
     private static String capitalize(final String line)
     {
         return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
 
+    /**
+     * Set object
+     *
+     * @param instance object
+     * @param name     string
+     * @param value    object
+     */
     public static void set(Object instance, String name, Object value)
     {
         Statement stmt = new Statement(instance, "set" + capitalize(name), new Object[]{value});
@@ -24,6 +37,13 @@ public class PropertyAccessor
         }
     }
 
+    /**
+     * Get object
+     *
+     * @param instance object
+     * @param name     string
+     * @return object
+     */
     public static Object get(Object instance, String name)
     {
         name = capitalize(name);

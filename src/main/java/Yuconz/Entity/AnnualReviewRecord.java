@@ -355,17 +355,31 @@ public class AnnualReviewRecord extends AbstractRecord
         this.reviewer2 = reviewer2;
     }
 
-
+    /**
+     * Get the reviewee
+     *
+     * @return user the reviewee
+     */
     public User getReviewee()
     {
         return getUser();
     }
 
+    /**
+     * Set the reviewee
+     *
+     * @param user user
+     */
     public void setReviewee(User user)
     {
         setUser(user);
     }
 
+    /**
+     * Checks for signatures
+     *
+     * @return boolean if it is signed by everyone
+     */
     public boolean isReady()
     {
         boolean r1 = getReviewer1() != null && getReviewer1Signature() != null;
@@ -375,6 +389,11 @@ public class AnnualReviewRecord extends AbstractRecord
         return r1 && r2 && re;
     }
 
+    /**
+     * Get record title
+     *
+     * @return string the title
+     */
     @Override
     public String getTitle()
     {
@@ -383,6 +402,11 @@ public class AnnualReviewRecord extends AbstractRecord
         return String.format("Annual Review (%s - %s)", getPeriodStart().format(formatter), getPeriodEnd().format(formatter));
     }
 
+    /**
+     * Applies output from form handling
+     *
+     * @param map output from form handling
+     */
     public void apply(Map<String, Object> map)
     {
         map.forEach((name, value) -> {
@@ -390,6 +414,11 @@ public class AnnualReviewRecord extends AbstractRecord
         });
     }
 
+    /**
+     * Gets the summary
+     *
+     * @return string the summary
+     */
     @Override
     public String renderSummary()
     {

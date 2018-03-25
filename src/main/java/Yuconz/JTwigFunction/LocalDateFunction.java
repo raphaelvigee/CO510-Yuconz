@@ -11,21 +11,12 @@ import java.time.format.DateTimeFormatter;
  */
 public class LocalDateFunction implements JTwigServiceFunction
 {
-    /**
-     * Name of function.
-     * @return name of function.
-     */
     @Override
     public String name()
     {
         return "localdate";
     }
 
-    /**
-     * Execute function.
-     * @param request page request
-     * @return the requested date formatted
-     */
     @Override
     public Object execute(FunctionRequest request)
     {

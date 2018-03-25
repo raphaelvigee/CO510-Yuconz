@@ -36,6 +36,7 @@ public class Log
 
     /**
      * Get Log's ID.
+     *
      * @return ID
      */
     public Integer getId()
@@ -45,6 +46,7 @@ public class Log
 
     /**
      * Set a Log's ID.
+     *
      * @param id ID
      */
     public void setId(Integer id)
@@ -54,6 +56,7 @@ public class Log
 
     /**
      * Get a User.
+     *
      * @return user
      */
     public User getUser()
@@ -63,6 +66,7 @@ public class Log
 
     /**
      * Set a User.
+     *
      * @param user user
      */
     public void setUser(User user)
@@ -72,6 +76,7 @@ public class Log
 
     /**
      * Get the time.
+     *
      * @return timestamp
      */
     public Date getTime()
@@ -81,6 +86,7 @@ public class Log
 
     /**
      * Set the time.
+     *
      * @param time time
      */
     public void setTime(Date time)
@@ -90,6 +96,7 @@ public class Log
 
     /**
      * Get the IP Address.
+     *
      * @return IP Address
      */
     public String getIp()
@@ -99,6 +106,7 @@ public class Log
 
     /**
      * Set the IP Address.
+     *
      * @param ip IP Address
      */
     public void setIp(String ip)
@@ -108,6 +116,7 @@ public class Log
 
     /**
      * Get the Log type.
+     *
      * @return logType
      */
     public LogType getLogType()
@@ -117,6 +126,7 @@ public class Log
 
     /**
      * Set the Log type.
+     *
      * @param logType logType
      */
     public void setLogType(LogType logType)
@@ -126,6 +136,7 @@ public class Log
 
     /**
      * Get details about a Log.
+     *
      * @return details
      */
     public String getDetails()
@@ -135,6 +146,7 @@ public class Log
 
     /**
      * Sets details about a Log.
+     *
      * @param details details
      */
     public void setDetails(String details)
@@ -142,11 +154,21 @@ public class Log
         this.details = details;
     }
 
+    /**
+     * Get the login role
+     *
+     * @return loginrole
+     */
     public LoginRole getLoginRole()
     {
         return loginRole;
     }
 
+    /**
+     * Set the login role
+     *
+     * @param loginRole
+     */
     public void setLoginRole(LoginRole loginRole)
     {
         this.loginRole = loginRole;

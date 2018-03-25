@@ -6,9 +6,6 @@ import Yuconz.Model.LogType;
 import Yuconz.Model.LoginRole;
 import Yuconz.Model.UserRole;
 import com.sallyf.sallyf.Container.ServiceInterface;
-import com.sallyf.sallyf.Server.RuntimeBag;
-import com.sallyf.sallyf.Server.RuntimeBagContext;
-import org.eclipse.jetty.server.Request;
 
 import java.util.function.Supplier;
 
@@ -22,7 +19,7 @@ public class AuthorisationManager implements ServiceInterface
     private YuconzAuthenticationManager authenticationManager;
 
     /**
-     * New Authorisation manager
+     * New Authorisation manager.
      *
      * @param logManager logManager
      */
@@ -34,7 +31,7 @@ public class AuthorisationManager implements ServiceInterface
     /**
      * Sets AuthorisationManager's Authentication Manager.
      *
-     * @param authenticationManager
+     * @param authenticationManager authentication manager
      */
     public void setAuthenticationManager(YuconzAuthenticationManager authenticationManager)
     {

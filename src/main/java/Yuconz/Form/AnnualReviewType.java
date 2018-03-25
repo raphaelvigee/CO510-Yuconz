@@ -30,29 +30,11 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
         this.annualReviewManager = annualReviewManager;
     }
 
-    public class AnnualReviewOptions extends Options
-    {
-        public void setCurrentRole(LoginRole role)
-        {
-            put("currentRole", role);
-        }
-
-        public LoginRole getCurrentRole()
-        {
-            return (LoginRole) get("currentRole");
-        }
-
-        public void setAnnualReview(AnnualReviewRecord review)
-        {
-            put("annualReview", review);
-        }
-
-        public AnnualReviewRecord getAnnualReview()
-        {
-            return (AnnualReviewRecord) get("annualReview");
-        }
-    }
-
+    /**
+     * Creates a new Annual Review option.
+     *
+     * @return annual review option object
+     */
     @Override
     public AnnualReviewOptions createOptions()
     {
@@ -136,6 +118,12 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                 });
     }
 
+    /**
+     * Helper for disabling fields.
+     *
+     * @param allowedRoles allowed roles
+     * @return true or false
+     */
     private boolean disableExcept(LoginRole... allowedRoles)
     {
         if (currentRole == null) {
@@ -162,5 +150,28 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
         }
 
         return out;
+    }
+
+    public class AnnualReviewOptions extends Options
+    {
+        public LoginRole getCurrentRole()
+        {
+            return (LoginRole) get("currentRole");
+        }
+
+        public void setCurrentRole(LoginRole role)
+        {
+            put("currentRole", role);
+        }
+
+        public AnnualReviewRecord getAnnualReview()
+        {
+            return (AnnualReviewRecord) get("annualReview");
+        }
+
+        public void setAnnualReview(AnnualReviewRecord review)
+        {
+            put("annualReview", review);
+        }
     }
 }

@@ -1,10 +1,10 @@
 package Yuconz.Controller;
 
+import Yuconz.App;
 import Yuconz.Entity.InitialEmploymentDetailsRecord;
 import Yuconz.Entity.User;
 import Yuconz.Form.InitialEmploymentDetailsType;
 import Yuconz.Form.UserType;
-import Yuconz.App;
 import Yuconz.FormUtils;
 import Yuconz.Model.FlashMessage;
 import Yuconz.ParameterResolver.UserResolver;

@@ -63,6 +63,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's employee ID
+     *
      * @return yuconz employee ID
      */
     public String getId()
@@ -72,6 +73,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's Employee ID.
+     *
      * @param yid Yuconz employee ID
      */
     public void setId(String yid)
@@ -81,6 +83,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's username.
+     *
      * @return username string
      */
     public String getUsername()
@@ -90,6 +93,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's username.
+     *
      * @param username username
      */
     public void setUsername(String username)
@@ -99,6 +103,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's email address.
+     *
      * @return email address
      */
     public String getEmail()
@@ -108,6 +113,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's email.
+     *
      * @param username employee email address
      */
     public void setEmail(String username)
@@ -117,6 +123,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's password (hashed).
+     *
      * @return hashed password
      */
     @Override
@@ -127,6 +134,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's password (prehashed).
+     *
      * @param password password string (hashed)
      */
     @Override
@@ -137,6 +145,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's current role.
+     *
      * @return current role
      */
     @Enumerated(EnumType.STRING)
@@ -147,6 +156,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's current role.
+     *
      * @param roles role
      */
     public void setRole(UserRole roles)
@@ -156,6 +166,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's first name.
+     *
      * @return first name
      */
     public String getFirstName()
@@ -165,6 +176,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's first name.
+     *
      * @param firstName first name
      */
     public void setFirstName(String firstName)
@@ -174,6 +186,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's last name.
+     *
      * @return last name
      */
     public String getLastName()
@@ -183,6 +196,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's last name.
+     *
      * @param lastName last name
      */
     public void setLastName(String lastName)
@@ -192,6 +206,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's full name ([firstname] [lastname]).
+     *
      * @return full name
      */
     public String getFullName()
@@ -201,6 +216,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's address, if none set then set an empty one and return it.
+     *
      * @return address
      */
     public Address getAddress()
@@ -214,6 +230,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's address
+     *
      * @param address address
      */
     public void setAddress(Address address)
@@ -223,6 +240,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's birthdate.
+     *
      * @return birthdate
      */
     public LocalDate getBirthdate()
@@ -232,6 +250,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's birthdate.
+     *
      * @param birthdate birthdate
      */
     public void setBirthdate(LocalDate birthdate)
@@ -241,6 +260,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's phone number
+     *
      * @return phone number.
      */
     public String getPhoneNumber()
@@ -250,6 +270,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's phone number.
+     *
      * @param phoneNumber phone number
      */
     public void setPhoneNumber(String phoneNumber)
@@ -259,6 +280,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's mobile number.
+     *
      * @return mobile number
      */
     public String getMobileNumber()
@@ -268,6 +290,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's mobile number.
+     *
      * @param mobileNumber mobile number
      */
     public void setMobileNumber(String mobileNumber)
@@ -277,6 +300,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's emergency contact name.
+     *
      * @return emergency contact name
      */
     public String getEmergencyContact()
@@ -286,6 +310,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's emergency contact.
+     *
      * @param emergencyContact emergency contact name
      */
     public void setEmergencyContact(String emergencyContact)
@@ -295,6 +320,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Gets User's emergency contact number.
+     *
      * @return Emergency contact number
      */
     public String getEmergencyContactNumber()
@@ -304,6 +330,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Sets User's emergency contact number.
+     *
      * @param emergencyContactNumber emergency contact number to set to
      */
     public void setEmergencyContactNumber(String emergencyContactNumber)
@@ -313,6 +340,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Returns list of all Employee records.
+     *
      * @return Set of Employee records
      */
     public Set<AbstractRecord> getRecords()
@@ -322,6 +350,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Replaces all the Employee's records with those passed in as a parameter.
+     *
      * @param records Set of new user Records
      */
     public void setRecords(Set<AbstractRecord> records)
@@ -331,6 +360,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Returns user's section.
+     *
      * @return user's section
      */
     public Section getSection()
@@ -340,6 +370,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Updates user's section.
+     *
      * @param section Section to set to
      */
     public void setSection(Section section)
@@ -349,6 +380,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Updates User properties to those from provided hashmap.
+     *
      * @param map Hashmap of User properties
      */
     public void applyHashMap(Map<String, Object> map)
@@ -368,6 +400,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Returns a hashed String of input text using SHA-256.
+     *
      * @param password input String
      * @return hashed String
      */
@@ -384,8 +417,9 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Generates a new randomised string of a specific length from a provided set of characters (strictly, a string).
+     *
      * @param chars Characters to use as the input source for randomisation
-     * @param l Length of generated string
+     * @param l     Length of generated string
      * @return Generated string
      */
     private static String random(String chars, int l)
@@ -403,6 +437,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Generates new Yuconz-styled Employee ID.
+     *
      * @return Employee identifier string
      */
     public static String generateYuconzId()
@@ -415,6 +450,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Custom toString method.
+     *
      * @return The String to be returned.
      */
     @Override
@@ -429,6 +465,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Custom equals method.
+     *
      * @param o The object to be tested.
      * @return True or false.
      */
@@ -445,6 +482,7 @@ public class User implements UserInterface<String>, Serializable
 
     /**
      * Generates a User.
+     *
      * @return New Random User.
      */
     public static User bulk()

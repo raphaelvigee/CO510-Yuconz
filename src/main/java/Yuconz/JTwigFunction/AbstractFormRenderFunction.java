@@ -58,5 +58,10 @@ public abstract class AbstractFormRenderFunction implements JTwigServiceFunction
         throw new FrameworkException("Unable to render form start");
     }
 
+    /**
+     * Rendering the form view.
+     *
+     * @return html string
+     */
     abstract public BiFunction<FormRenderer, FormView, Object> getRenderer();
 }

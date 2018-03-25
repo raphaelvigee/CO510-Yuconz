@@ -20,9 +20,9 @@ public class LoginRedirectHandler implements SecurityDeniedHandler
 {
     /**
      * Execute a login redirection.
+     *
      * @param container the current container
-     * @param runtimeBag The runtimeBag itself.
-     * @return
+     * @return object
      */
     @Override
     public Object apply(Container container)

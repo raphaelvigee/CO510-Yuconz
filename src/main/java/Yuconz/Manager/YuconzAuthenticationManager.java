@@ -39,13 +39,14 @@ public class YuconzAuthenticationManager extends AuthenticationManager
     private final AuthorisationManager authorisationManager;
 
     /**
-     * New Authentication Manager
-     * @param container the container
-     * @param router the router
-     * @param eventDispatcher the eventDispatcher
-     * @param expressionLanguage the expressionLanguage handler
-     * @param hibernate The Hibernate itself.
-     * @param logManager the logManager
+     * New Authentication Manager.
+     *
+     * @param container            the container
+     * @param router               the router
+     * @param eventDispatcher      the eventDispatcher
+     * @param expressionLanguage   the expressionLanguage handler
+     * @param hibernate            The Hibernate itself.
+     * @param logManager           the logManager
      * @param authorisationManager the authorisationManager
      */
     public YuconzAuthenticationManager(Container container, Router router, EventDispatcher eventDispatcher, ExpressionLanguage expressionLanguage, Hibernate hibernate, LogManager logManager, AuthorisationManager authorisationManager)
@@ -56,10 +57,6 @@ public class YuconzAuthenticationManager extends AuthenticationManager
         this.authorisationManager = authorisationManager;
     }
 
-    /**
-     * Initialise authentication manager container
-     * @param container
-     */
     @Override
     public void initialize(Container container)
     {
@@ -73,11 +70,12 @@ public class YuconzAuthenticationManager extends AuthenticationManager
     }
 
     /**
-     * Attempt to authenticate a user given a provided password and role
-     * @param request the request
+     * Attempt to authenticate a user given a provided password and role.
+     *
+     * @param request  the request
      * @param username user's username
      * @param password user's password
-     * @param roleStr requested role
+     * @param roleStr  requested role
      * @return new UserInterface for provided input
      */
     public UserInterface authenticate(Request request, String username, String password, String roleStr)
@@ -136,6 +134,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     /**
      * Log out a user, invalidating the session.
+     *
      * @param request the request
      */
     public void logout(Request request)
@@ -148,6 +147,7 @@ public class YuconzAuthenticationManager extends AuthenticationManager
 
     /**
      * Gets the current role for a session's request.
+     *
      * @return LoginRole for request
      */
     public LoginRole getCurrentRole()
