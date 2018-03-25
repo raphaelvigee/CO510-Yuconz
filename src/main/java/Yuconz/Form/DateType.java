@@ -25,11 +25,6 @@ import java.util.stream.IntStream;
  */
 public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
 {
-    public class DateOptions extends Options
-    {
-
-    }
-
     /**
      * Creates the options container.
      *
@@ -107,5 +102,10 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
         Integer year = (Integer) form.getChild("year").resolveData();
 
         return LocalDate.of(year, month, day);
+    }
+
+    public class DateOptions extends Options
+    {
+
     }
 }

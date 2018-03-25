@@ -18,6 +18,7 @@ public class AddressType extends AbstractFormType<Options, Object>
 {
     /**
      * Builds a form structure.
+     *
      * @param form form
      */
     @Override
@@ -53,8 +54,9 @@ public class AddressType extends AbstractFormType<Options, Object>
 
     /**
      * Transforms the data of the form, into the representation of the data.
+     *
      * @param form form
-     * @param <T> generic class
+     * @param <T>  generic class
      * @return representation of the data
      */
     @Override
