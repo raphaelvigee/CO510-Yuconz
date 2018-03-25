@@ -116,7 +116,7 @@ public class PersonalDetailsVoter implements VoterInterface
                 return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
