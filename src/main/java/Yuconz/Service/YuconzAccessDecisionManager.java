@@ -11,6 +11,9 @@ import com.sallyf.sallyf.ExpressionLanguage.ExpressionLanguage;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Decides on access rights
+ */
 public class YuconzAccessDecisionManager extends AccessDecisionManager
 {
     private final LogManager logManager;
@@ -24,6 +27,15 @@ public class YuconzAccessDecisionManager extends AccessDecisionManager
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * Vote on access
+     *
+     * @param attribute string
+     * @param subject
+     * @param strategy
+     * @param <O>
+     * @return boolean
+     */
     @Override
     public <O> boolean vote(String attribute, O subject, DecisionStrategy strategy)
     {
