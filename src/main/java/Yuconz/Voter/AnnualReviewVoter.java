@@ -9,6 +9,8 @@ import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
 import com.sallyf.sallyf.Authentication.UserInterface;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Voter for Records actions.
@@ -16,6 +18,8 @@ import java.util.Arrays;
 public class AnnualReviewVoter implements VoterInterface
 {
     public static final String LIST = "list_annual_reviews";
+
+    public static final String VIEW = "view_annual_review";
 
     public static final String CREATE = "create_annual_review";
 
@@ -43,7 +47,7 @@ public class AnnualReviewVoter implements VoterInterface
     @Override
     public boolean supports(String attribute, Object subject)
     {
-        if (!Arrays.asList(LIST, CREATE, EDIT, SIGN).contains(attribute)) {
+        if (!Arrays.asList(LIST, CREATE, VIEW, EDIT, SIGN).contains(attribute)) {
             return false;
         }
 
@@ -75,10 +79,35 @@ public class AnnualReviewVoter implements VoterInterface
                 return canList();
             case CREATE:
                 return canCreate();
+            case VIEW:
+                return canView(currentUser, annualReview);
             case EDIT:
                 return canEdit(currentUser, annualReview);
             case SIGN:
                 return canSign(currentUser, annualReview);
+        }
+
+        return false;
+    }
+
+    private boolean canView(User currentUser, AnnualReviewRecord review)
+    {
+        if (currentUser.equals(review.getReviewee())) {
+            return true;
+        }
+
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+        switch (currentRole) {
+            case DIRECTOR:
+            case HR_EMPLOYEE:
+                return true;
+        }
+
+        if (currentRole.equals(LoginRole.REVIEWER)) {
+            List<AnnualReviewRecord> incomplete = annualReviewManager.getIncomplete(currentUser);
+            List<User> reviewedUsers = incomplete.stream().map(AnnualReviewRecord::getReviewee).collect(Collectors.toList());
+
+            return reviewedUsers.contains(review.getReviewee());
         }
 
         return false;

@@ -103,13 +103,9 @@
         </div>
     </div>
 
-    <h2>Records</h2>
-
-    <div class="feed">
-        {% set records = service('RecordManager').getRecords(user) %}
-
-        {{ recordUtils.renderList(records) }}
-    </div>
+    {% if is_granted('list_records', user) %}
+        <a href="{{ path('RecordControlller.list', {'user': user.getId()}) }}">Employment history</a>
+    {% endif %}
 {% endblock %}
 
 {% block page_head %}

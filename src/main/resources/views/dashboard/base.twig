@@ -71,27 +71,27 @@
                 </div>
             {% endif %}
 
-            {% if is_granted('list_records') %}
+            {% if is_granted('list_records', getUser()) %}
                 <div class="option">
-                    <a class="link" href="{{ path('RecordController.list') }}">Employment History</a>
+                    <a class="link" href="{{ path('RecordController.list', {'user': getUser().getId()}) }}">
+                        Employment History
+                    </a>
                 </div>
             {% endif %}
 
-            {% if is_granted('has_rights', 'HR_EMPLOYEE') %}
+            {% if is_granted('list_users') %}
                 <div class="heading">
                     Administration
                 </div>
-                {% if is_granted('list_users') %}
-                    {% set isEmpManagement = routeName in ['EmployeesController.view', 'EmployeesController.edit', 'EmployeesController.list', 'EmployeesController.create'] %}
-                    {% if routeName in ['EmployeesController.view', 'EmployeesController.edit'] and getUser().equals(user) %}
-                        {% set isEmpManagement = false %}
-                    {% endif %}
-                    {% set activeClass = isEmpManagement ? "selected" : "" %}
-
-                    <div class="option {{ activeClass }}">
-                        <a class="link" href="{{ path('EmployeesController.list') }}">Employee Management</a>
-                    </div>
+                {% set isEmpManagement = routeName in ['EmployeesController.view', 'EmployeesController.edit', 'EmployeesController.list', 'EmployeesController.create'] %}
+                {% if routeName in ['EmployeesController.view', 'EmployeesController.edit'] and getUser().equals(user) %}
+                    {% set isEmpManagement = false %}
                 {% endif %}
+                {% set activeClass = isEmpManagement ? "selected" : "" %}
+
+                <div class="option {{ activeClass }}">
+                    <a class="link" href="{{ path('EmployeesController.list') }}">Employee Management</a>
+                </div>
             {% endif %}
         </div>
 

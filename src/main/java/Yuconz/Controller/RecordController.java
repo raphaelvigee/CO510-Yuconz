@@ -6,6 +6,7 @@ import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.User;
 import Yuconz.Manager.RecordManager;
 import Yuconz.ParameterResolver.RecordResolver;
+import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
 import com.sallyf.sallyf.Annotation.Requirement;
 import com.sallyf.sallyf.Annotation.Route;
@@ -33,13 +34,17 @@ public class RecordController extends BaseController
      * Route for listing all records for a user.
      *
      * @param recordManager system's record manager
-     * @param user          user to fetch records for
      * @return response
      */
-    @Route(path = "", methods = {Method.GET})
-    @Security("is_granted('list_records')")
-    public Object list(RecordManager recordManager, User user)
+    @Route(path = "/{user}", methods = {Method.GET}, requirements = {
+            @Requirement(name = "user", requirement = App.USER_REGEX)
+    })
+    @ParameterResolver(name = "user", type = UserResolver.class)
+    @Security("is_granted('list_records', user)")
+    public Object list(RecordManager recordManager, RouteParameters routeParameters)
     {
+        User user = (User) routeParameters.get("user");
+
         List<AbstractRecord> records = recordManager.getRecords(user);
 
         return new JTwigResponse("views/record/list.twig", new HashMap<String, Object>()

@@ -3,12 +3,15 @@ package Yuconz.Voter;
 import Yuconz.Entity.AbstractRecord;
 import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.User;
+import Yuconz.Manager.AnnualReviewManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
 import com.sallyf.sallyf.Authentication.UserInterface;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Voter for Records actions.
@@ -23,9 +26,15 @@ public class RecordVoter implements VoterInterface
 
     private YuconzAuthenticationManager authenticationManager;
 
-    public RecordVoter(YuconzAuthenticationManager authenticationManager)
+    private AnnualReviewVoter annualReviewVoter;
+
+    private AnnualReviewManager annualReviewManager;
+
+    public RecordVoter(YuconzAuthenticationManager authenticationManager, AnnualReviewVoter annualReviewVoter, AnnualReviewManager annualReviewManager)
     {
         this.authenticationManager = authenticationManager;
+        this.annualReviewVoter = annualReviewVoter;
+        this.annualReviewManager = annualReviewManager;
     }
 
     /**
@@ -48,10 +57,6 @@ public class RecordVoter implements VoterInterface
             return false;
         }
 
-        if (Arrays.asList(VIEW, EDIT).contains(attribute) && !(subject instanceof AbstractRecord)) {
-            return false;
-        }
-
         return true;
     }
 
@@ -65,17 +70,50 @@ public class RecordVoter implements VoterInterface
     @Override
     public boolean vote(String attribute, Object subject)
     {
-        AbstractRecord record = (AbstractRecord) subject;
-
         User currentUser = (User) authenticationManager.getUser();
 
-        switch (attribute) {
-            case LIST:
-                return canList();
-            case EDIT:
-                return canEdit(currentUser, record);
-            case VIEW:
-                return canView(currentUser, record);
+        if (subject instanceof User) {
+            User user = (User) subject;
+
+            switch (attribute) {
+                case LIST:
+                    return canList(currentUser, user);
+            }
+        }
+
+        if (subject instanceof AbstractRecord) {
+            AbstractRecord record = (AbstractRecord) subject;
+
+            switch (attribute) {
+                case EDIT:
+                    return canEdit(currentUser, record);
+                case VIEW:
+                    return canView(currentUser, record);
+            }
+        }
+
+        return false;
+    }
+
+    private boolean canList(User currentUser, User user)
+    {
+        if (currentUser.equals(user)) {
+            return true;
+        }
+
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+
+        switch (currentRole) {
+            case DIRECTOR:
+            case HR_EMPLOYEE:
+                return true;
+        }
+
+        if (currentRole.equals(LoginRole.REVIEWER)) {
+            List<AnnualReviewRecord> incomplete = annualReviewManager.getIncomplete(currentUser);
+            List<User> reviewedUsers = incomplete.stream().map(AnnualReviewRecord::getReviewee).collect(Collectors.toList());
+
+            return reviewedUsers.contains(user);
         }
 
         return false;
@@ -88,18 +126,28 @@ public class RecordVoter implements VoterInterface
         return currentRole.equals(LoginRole.EMPLOYEE);
     }
 
-    private boolean canList()
-    {
-        return isEmployee();
-    }
-
     private boolean canEdit(User currentUser, AbstractRecord record)
     {
+        if (record instanceof AnnualReviewRecord) {
+            return annualReviewVoter.vote(AnnualReviewVoter.EDIT, record);
+        }
+
         return false;
     }
 
     private boolean canView(User currentUser, AbstractRecord record)
     {
-        return true; // TODO: Implement logic
+        if (record instanceof AnnualReviewRecord) {
+            return annualReviewVoter.vote(AnnualReviewVoter.VIEW, record);
+        }
+
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+        switch (currentRole) {
+            case DIRECTOR:
+            case HR_EMPLOYEE:
+                return true;
+        }
+
+        return record.getUser().equals(currentUser);
     }
 }
