@@ -13,6 +13,7 @@ public class ServiceFunction implements JTwigServiceFunction
 
     /**
      * New service function.
+     *
      * @param container the container
      */
     public ServiceFunction(Container container)
@@ -20,21 +21,12 @@ public class ServiceFunction implements JTwigServiceFunction
         this.container = container;
     }
 
-    /**
-     * Name of function.
-     * @return name of function.
-     */
     @Override
     public String name()
     {
         return "service";
     }
 
-    /**
-     * Execute function.
-     * @param request page request
-     * @return the requested service
-     */
     @Override
     public Object execute(FunctionRequest request)
     {

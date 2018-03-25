@@ -15,6 +15,7 @@ public class DateRenderer extends BaseFormRenderer<DateType, DateType.DateOption
 
     /**
      * Constructor.
+     *
      * @param manager manager
      */
     public DateRenderer(FormManager manager)
@@ -24,6 +25,7 @@ public class DateRenderer extends BaseFormRenderer<DateType, DateType.DateOption
 
     /**
      * Check if supported.
+     *
      * @param form form
      * @return True or false
      */
@@ -35,6 +37,7 @@ public class DateRenderer extends BaseFormRenderer<DateType, DateType.DateOption
 
     /**
      * Renders the widget.
+     *
      * @param formView formView
      * @return rendered widget
      */

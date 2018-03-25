@@ -16,11 +16,6 @@ public class FormRenderFunction extends AbstractFormRenderFunction
         super(formManager);
     }
 
-    /**
-     * Name of function.
-     *
-     * @return name of function.
-     */
     @Override
     public String name()
     {

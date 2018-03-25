@@ -12,6 +12,7 @@ public class CustomChoiceRenderer extends ChoiceRenderer
 {
     /**
      * Constructor for CustomChoiceRenderer.
+     *
      * @param manager manager
      */
     public CustomChoiceRenderer(FormManager manager)
@@ -21,6 +22,7 @@ public class CustomChoiceRenderer extends ChoiceRenderer
 
     /**
      * Renders the select.
+     *
      * @param form form
      * @return rendered select
      */

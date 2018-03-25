@@ -27,19 +27,6 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object> imp
 {
     private YuconzAuthenticationManager authenticationManager;
 
-    public class UserOptions extends Options
-    {
-        public void setCreate(boolean c)
-        {
-            put("create", c);
-        }
-
-        public boolean isCreate()
-        {
-            return (boolean) get("create");
-        }
-    }
-
     public UserType(YuconzAuthenticationManager authenticationManager)
     {
         this.authenticationManager = authenticationManager;
@@ -133,6 +120,7 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object> imp
 
     /**
      * Transforms the data of the form, into the representation of the data.
+     *
      * @param form form
      * @param <T>  generic class
      * @return representation of the data
@@ -147,5 +135,18 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object> imp
         }
 
         return out;
+    }
+
+    public class UserOptions extends Options
+    {
+        public boolean isCreate()
+        {
+            return (boolean) get("create");
+        }
+
+        public void setCreate(boolean c)
+        {
+            put("create", c);
+        }
     }
 }

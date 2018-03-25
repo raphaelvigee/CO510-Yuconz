@@ -2,8 +2,6 @@ package Yuconz.JTwigFunction;
 
 import Yuconz.Manager.YuconzAuthenticationManager;
 import com.sallyf.sallyf.JTwig.JTwigServiceFunction;
-import com.sallyf.sallyf.Server.RuntimeBag;
-import com.sallyf.sallyf.Server.RuntimeBagContext;
 import org.jtwig.functions.FunctionRequest;
 
 /**
@@ -15,6 +13,7 @@ public class CurrentUserFunction implements JTwigServiceFunction
 
     /**
      * New CurrentUserFunction.
+     *
      * @param authenticationManager the system's authentication manager
      */
     public CurrentUserFunction(YuconzAuthenticationManager authenticationManager)
@@ -24,6 +23,7 @@ public class CurrentUserFunction implements JTwigServiceFunction
 
     /**
      * Name of function.
+     *
      * @return name of function.
      */
     @Override
@@ -34,6 +34,7 @@ public class CurrentUserFunction implements JTwigServiceFunction
 
     /**
      * Execute function.
+     *
      * @param request page request
      * @return the current user
      */
