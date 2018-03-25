@@ -70,7 +70,11 @@ public class App
         // Managers
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
-        container.add(new ServiceDefinition<>(LogManager.class));
+        container.add(new ServiceDefinition<>(LogManager.class))
+                .addMethodCallDefinitions(new MethodCallDefinition(
+                        "setAuthenticationManager",
+                        new ServiceReference<>(YuconzAuthenticationManager.class)
+                ));
         container.add(new ServiceDefinition<>(RecordManager.class));
         container.add(new ServiceDefinition<>(AnnualReviewManager.class));
         container.add(new ServiceDefinition<>(FormManager.class));

@@ -4,6 +4,7 @@ import Yuconz.Entity.Log;
 import Yuconz.Entity.User;
 import Yuconz.Model.LogType;
 import Yuconz.Service.Hibernate;
+import com.sallyf.sallyf.Authentication.AuthenticationManager;
 import com.sallyf.sallyf.Container.ServiceInterface;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -16,6 +17,7 @@ import java.util.Date;
 public class LogManager implements ServiceInterface
 {
     private Hibernate hibernate;
+    private YuconzAuthenticationManager authenticationManager;
 
     /**
      * New LogManager
@@ -24,6 +26,11 @@ public class LogManager implements ServiceInterface
     public LogManager(Hibernate hibernate)
     {
         this.hibernate = hibernate;
+    }
+
+    public void setAuthenticationManager(YuconzAuthenticationManager authenticationManager)
+    {
+        this.authenticationManager = authenticationManager;
     }
 
     /**
@@ -36,6 +43,12 @@ public class LogManager implements ServiceInterface
     public void log(User user, String ip, LogType type, String details)
     {
         Session session = hibernate.getCurrentSession();
+
+        details = details != null ? details : "";
+        if (authenticationManager.getCurrentRole() != null) {
+            details += details.equals("") ? "" : "; ";
+            details += "current_role=" + authenticationManager.getCurrentRole().getName();
+        }
 
         Log log = new Log();
         log.setUser(user);
