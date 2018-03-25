@@ -2,6 +2,7 @@ package Yuconz;
 
 import Yuconz.Controller.*;
 import Yuconz.Form.AnnualReviewType;
+import Yuconz.Form.UserType;
 import Yuconz.FormRenderer.CustomChoiceRenderer;
 import Yuconz.FormRenderer.DateRenderer;
 import Yuconz.JTwigFunction.*;
@@ -68,6 +69,7 @@ public class App
 
         // Forms
         container.add(new ServiceDefinition<>(AnnualReviewType.class));
+        container.add(new ServiceDefinition<>(UserType.class));
 
         // Managers
         container.add(new ServiceDefinition<>(AccessDecisionManager.class, YuconzAccessDecisionManager.class));

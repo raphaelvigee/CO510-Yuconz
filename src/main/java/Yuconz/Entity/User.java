@@ -363,6 +363,7 @@ public class User implements UserInterface<String>, Serializable
         setEmergencyContact((String) map.get("emergencyContact"));
         setEmergencyContactNumber((String) map.get("emergencyContactNumber"));
         setSection((Section) map.get("section"));
+        setRole((UserRole) map.get("role"));
     }
 
     /**

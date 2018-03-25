@@ -1,6 +1,10 @@
 package Yuconz.Form;
 
 import Yuconz.Entity.Section;
+import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.Model.LoginRole;
+import Yuconz.Model.UserRole;
+import com.sallyf.sallyf.Container.ServiceInterface;
 import com.sallyf.sallyf.Form.Constraint.NotEmpty;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;
@@ -19,8 +23,10 @@ import java.util.Map;
 /**
  * Form type for user details.
  */
-public class UserType extends AbstractFormType<UserType.UserOptions, Object>
+public class UserType extends AbstractFormType<UserType.UserOptions, Object> implements ServiceInterface
 {
+    private YuconzAuthenticationManager authenticationManager;
+
     public class UserOptions extends Options
     {
         public void setCreate(boolean c)
@@ -32,6 +38,11 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
         {
             return (boolean) get("create");
         }
+    }
+
+    public UserType(YuconzAuthenticationManager authenticationManager)
+    {
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -105,6 +116,19 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
                     options.setChoices(new LinkedHashSet<>(Arrays.asList(Section.values())));
                     options.setChoiceLabelResolver(Object::toString);
                 });
+
+        if (authenticationManager.getCurrentRole().equals(LoginRole.HR_EMPLOYEE)) {
+            builder
+                    .add("role", ChoiceType.class, options -> {
+                        options.setLabel("Role");
+                        options.setExpanded(false);
+                        options.setMultiple(false);
+
+                        options.setChoices(new LinkedHashSet<>(Arrays.asList(UserRole.values())));
+                        options.setChoiceLabelResolver(r -> ((UserRole) r).getName());
+                        options.setChoiceValueResolver(r -> ((UserRole) r).getName());
+                    });
+        }
     }
 
     /**
