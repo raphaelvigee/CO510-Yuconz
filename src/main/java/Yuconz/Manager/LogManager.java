@@ -13,7 +13,7 @@ import org.hibernate.Transaction;
 import java.util.Date;
 
 /**
- * Service for log management
+ * Service for log management.
  */
 public class LogManager implements ServiceInterface
 {
@@ -22,7 +22,7 @@ public class LogManager implements ServiceInterface
     private YuconzAuthenticationManager authenticationManager;
 
     /**
-     * New LogManager
+     * New LogManager.
      *
      * @param hibernate The Hibernate itself.
      */
