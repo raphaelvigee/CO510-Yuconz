@@ -24,11 +24,19 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
         this.interviewNotes = interviewNotes;
     }
 
+    /**
+     * 
+     * @return
+     */
     public LocalDate getStartDate()
     {
         return startDate;
     }
 
+    /**
+     * set employment start date
+     * @param startDate start date
+     */
     public void setStartDate(LocalDate startDate)
     {
         this.startDate = startDate;
@@ -59,12 +67,20 @@ public class InitialEmploymentDetailsRecord extends AbstractRecord
         setStartDate((LocalDate) map.get("startDate"));
     }
 
+    /**
+     * get title
+     * @return string initial employment details
+     */
     @Override
     public String getTitle()
     {
         return "Initial Employment Details";
     }
 
+    /**
+     * get summary
+     * @return string ""
+     */
     @Override
     public String renderSummary()
     {
