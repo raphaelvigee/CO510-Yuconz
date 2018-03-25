@@ -20,6 +20,12 @@ public class RecordManager implements ServiceInterface
         this.hibernate = hibernate;
     }
 
+    /**
+     * Get the records of a user.
+     *
+     * @param user the user
+     * @return list of records
+     */
     public List<AbstractRecord> getRecords(User user)
     {
         Session session = hibernate.getCurrentSession();
@@ -36,6 +42,14 @@ public class RecordManager implements ServiceInterface
         return records;
     }
 
+    /**
+     * Gets the last record of a user.
+     *
+     * @param user the user
+     * @param type type of record
+     * @param <T>  generic type
+     * @return the record
+     */
     public <T extends AbstractRecord> T getLastRecord(User user, Class<T> type)
     {
         Session session = hibernate.getCurrentSession();
