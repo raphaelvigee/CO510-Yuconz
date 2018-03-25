@@ -44,7 +44,7 @@
                     <div class="options">
                         {% if is_granted('list_records', user) %}
                             <a href="{{ path('RecordController.list', {'user': user.getId()}) }}">
-                                Record
+                                Records
                             </a>
                         {% endif %}
                         {% if is_granted('view_user', user) %}
