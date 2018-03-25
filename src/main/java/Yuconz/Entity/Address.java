@@ -26,6 +26,7 @@ public class Address
 
     /**
      * Get line 1.
+     *
      * @return line1
      */
     public String getLine1()
@@ -35,6 +36,7 @@ public class Address
 
     /**
      * Set line 1.
+     *
      * @param line1 line1
      */
     public void setLine1(String line1)
@@ -44,6 +46,7 @@ public class Address
 
     /**
      * Get line 2.
+     *
      * @return line2
      */
     public String getLine2()
@@ -53,6 +56,7 @@ public class Address
 
     /**
      * Set line 2.
+     *
      * @param line2 line2
      */
     public void setLine2(String line2)
@@ -62,6 +66,7 @@ public class Address
 
     /**
      * Get the postcode.
+     *
      * @return postcode
      */
     public String getPostcode()
@@ -71,6 +76,7 @@ public class Address
 
     /**
      * Set the postcode.
+     *
      * @param postcode postcode
      */
     public void setPostcode(String postcode)
@@ -80,6 +86,7 @@ public class Address
 
     /**
      * get the city.
+     *
      * @return city
      */
     public String getCity()
@@ -89,6 +96,7 @@ public class Address
 
     /**
      * Set the city.
+     *
      * @param city city
      */
     public void setCity(String city)
@@ -98,6 +106,7 @@ public class Address
 
     /**
      * Get the county.
+     *
      * @return county
      */
     public String getCounty()
@@ -107,6 +116,7 @@ public class Address
 
     /**
      * Set the county.
+     *
      * @param county county
      */
     public void setCounty(String county)
@@ -116,6 +126,7 @@ public class Address
 
     /**
      * Get the country.
+     *
      * @return country
      */
     public String getCountry()
@@ -125,6 +136,7 @@ public class Address
 
     /**
      * Set the country.
+     *
      * @param country country
      */
     public void setCountry(String country)
@@ -134,6 +146,7 @@ public class Address
 
     /**
      * Converts to a hashmap.
+     *
      * @return hashmap
      */
     public Map<String, Object> toHashMap()
@@ -151,6 +164,7 @@ public class Address
 
     /**
      * Applies the data in the hashmap.
+     *
      * @param map map.
      */
     public void applyHashMap(Map<String, Object> map)

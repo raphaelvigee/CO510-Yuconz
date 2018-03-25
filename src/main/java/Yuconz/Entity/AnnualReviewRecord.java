@@ -356,7 +356,7 @@ public class AnnualReviewRecord extends AbstractRecord
     }
 
     /**
-     * get the reviewee
+     * Get the reviewee
      *
      * @return user the reviewee
      */
@@ -366,7 +366,7 @@ public class AnnualReviewRecord extends AbstractRecord
     }
 
     /**
-     * set the reviewee
+     * Set the reviewee
      *
      * @param user user
      */
@@ -376,7 +376,7 @@ public class AnnualReviewRecord extends AbstractRecord
     }
 
     /**
-     * checks for signatures
+     * Checks for signatures
      *
      * @return boolean if it is signed by everyone
      */
@@ -390,7 +390,7 @@ public class AnnualReviewRecord extends AbstractRecord
     }
 
     /**
-     * get record title
+     * Get record title
      *
      * @return string the title
      */
@@ -403,7 +403,7 @@ public class AnnualReviewRecord extends AbstractRecord
     }
 
     /**
-     * applies output from form handling
+     * Applies output from form handling
      *
      * @param map output from form handling
      */
@@ -415,7 +415,7 @@ public class AnnualReviewRecord extends AbstractRecord
     }
 
     /**
-     * gets the summary
+     * Gets the summary
      *
      * @return string the summary
      */

@@ -29,6 +29,7 @@ public class AccessRequest
 
     /**
      * Get the ID.
+     *
      * @return ID
      */
     public String getId()
@@ -38,6 +39,7 @@ public class AccessRequest
 
     /**
      * Set the ID.
+     *
      * @param id ID
      */
     public void setId(String id)
@@ -47,6 +49,7 @@ public class AccessRequest
 
     /**
      * Get the record.
+     *
      * @return record.
      */
     public AbstractRecord getRecord()
@@ -56,6 +59,7 @@ public class AccessRequest
 
     /**
      * Set the record.
+     *
      * @param record record.
      */
     public void setRecord(AbstractRecord record)
@@ -65,6 +69,7 @@ public class AccessRequest
 
     /**
      * Get the requestor.
+     *
      * @return requestor.
      */
     public User getRequestor()
@@ -74,6 +79,7 @@ public class AccessRequest
 
     /**
      * Set the requestor.
+     *
      * @param requestor requestor
      */
     public void setRequestor(User requestor)
@@ -82,7 +88,8 @@ public class AccessRequest
     }
 
     /**
-     * get the moderator.
+     * Get the moderator.
+     *
      * @return moderator
      */
     public User getModerator()
@@ -91,7 +98,8 @@ public class AccessRequest
     }
 
     /**
-     *  Set the moderator.
+     * Set the moderator.
+     *
      * @param moderator moderator
      */
     public void setModerator(User moderator)
@@ -101,6 +109,7 @@ public class AccessRequest
 
     /**
      * Is the user authorised to view a document.
+     *
      * @return True or false
      */
     public boolean isAccepted()
@@ -110,6 +119,7 @@ public class AccessRequest
 
     /**
      * Set whether the user is authorised to view a document.
+     *
      * @param accepted
      */
     public void setAccepted(boolean accepted)
@@ -119,6 +129,7 @@ public class AccessRequest
 
     /**
      * Get the date it was created at.
+     *
      * @return createdAt
      */
     public Date getCreatedAt()
@@ -128,6 +139,7 @@ public class AccessRequest
 
     /**
      * Set the created at date.
+     *
      * @param createdAt createdAt
      */
     public void setCreatedAt(Date createdAt)
