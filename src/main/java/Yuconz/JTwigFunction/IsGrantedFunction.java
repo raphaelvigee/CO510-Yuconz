@@ -3,8 +3,6 @@ package Yuconz.JTwigFunction;
 import com.sallyf.sallyf.AccessDecisionManager.AccessDecisionManager;
 import com.sallyf.sallyf.AccessDecisionManager.DecisionStrategy;
 import com.sallyf.sallyf.JTwig.JTwigServiceFunction;
-import com.sallyf.sallyf.Server.RuntimeBag;
-import com.sallyf.sallyf.Server.RuntimeBagContext;
 import org.jtwig.functions.FunctionRequest;
 
 /**
@@ -16,6 +14,7 @@ public class IsGrantedFunction implements JTwigServiceFunction
 
     /**
      * New IsGrantedFunction
+     *
      * @param accessDecisionManager the accessDeciscionManager
      */
     public IsGrantedFunction(AccessDecisionManager accessDecisionManager)
@@ -23,21 +22,12 @@ public class IsGrantedFunction implements JTwigServiceFunction
         this.accessDecisionManager = accessDecisionManager;
     }
 
-    /**
-     * Name of function.
-     * @return name of function.
-     */
     @Override
     public String name()
     {
         return "is_granted";
     }
 
-    /**
-     * Execute function.
-     * @param request page request
-     * @return true if has privilege, else false
-     */
     @Override
     public Object execute(FunctionRequest request)
     {

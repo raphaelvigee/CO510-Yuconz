@@ -10,21 +10,12 @@ import java.util.stream.IntStream;
  */
 public class RangeFunction implements JTwigServiceFunction
 {
-    /**
-     * Name of function.
-     * @return name of function.
-     */
     @Override
     public String name()
     {
         return "range";
     }
 
-    /**
-     * Execute function.
-     * @param request page request
-     * @return the requested range array
-     */
     @Override
     public Object execute(FunctionRequest request)
     {
