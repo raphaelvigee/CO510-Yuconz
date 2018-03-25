@@ -50,9 +50,6 @@ public class AuthorisationManager implements ServiceInterface
      */
     public boolean hasUserRights(User user, LoginRole expectedRole)
     {
-        RuntimeBag runtimeBag = RuntimeBagContext.get();
-        Request request = runtimeBag.getRequest();
-
         UserRole userRole = user.getRole();
         boolean isHr = user.getSection().getDepartment().equals(Department.HUMAN_RESOURCES);
 
@@ -87,7 +84,7 @@ public class AuthorisationManager implements ServiceInterface
 
         boolean r = supplier.get();
 
-        logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString() + ", res:" + r);
+        logManager.log(user, LogType.AUTHORISATION_CHECK, expectedRole.toString() + ", res:" + r);
 
         return r;
 
@@ -102,14 +99,11 @@ public class AuthorisationManager implements ServiceInterface
      */
     public boolean hasSessionRights(User user, LoginRole expectedRole)
     {
-        RuntimeBag runtimeBag = RuntimeBagContext.get();
-        Request request = runtimeBag.getRequest();
-
         LoginRole loginRole = authenticationManager.getCurrentRole();
 
         boolean r = loginRole.getContainedRoles().contains(expectedRole);
 
-        logManager.log(user, request.getRemoteAddr(), LogType.AUTHORISATION_CHECK, expectedRole.toString() + ", res: " + r);
+        logManager.log(user, LogType.AUTHORISATION_CHECK, expectedRole.toString() + ", res: " + r);
 
         return r;
     }

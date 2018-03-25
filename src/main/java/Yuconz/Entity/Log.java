@@ -1,6 +1,7 @@
 package Yuconz.Entity;
 
 import Yuconz.Model.LogType;
+import Yuconz.Model.LoginRole;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -28,6 +29,10 @@ public class Log
     private LogType logType;
 
     private String details;
+
+    @Enumerated(EnumType.STRING)
+    private LoginRole loginRole;
+
 
     /**
      * Get Log's ID.
@@ -135,5 +140,15 @@ public class Log
     public void setDetails(String details)
     {
         this.details = details;
+    }
+
+    public LoginRole getLoginRole()
+    {
+        return loginRole;
+    }
+
+    public void setLoginRole(LoginRole loginRole)
+    {
+        this.loginRole = loginRole;
     }
 }
