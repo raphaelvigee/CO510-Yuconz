@@ -5,7 +5,6 @@ import Yuconz.PropertyAccessor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,9 +14,6 @@ import java.util.Map;
 @Table
 public class AnnualReviewRecord extends AbstractRecord
 {
-    @ManyToMany
-    private List<User> interviewers;
-
     @Column(nullable = false)
     private LocalDate periodStart;
 
@@ -58,26 +54,6 @@ public class AnnualReviewRecord extends AbstractRecord
 
     @ManyToOne
     private User reviewer2;
-
-    /**
-     * Get the Interviewers.
-     *
-     * @return interviewers
-     */
-    public List<User> getInterviewers()
-    {
-        return interviewers;
-    }
-
-    /**
-     * Set the Interviewers.
-     *
-     * @param interviewers interviewers
-     */
-    public void setInterviewers(List<User> interviewers)
-    {
-        this.interviewers = interviewers;
-    }
 
     /**
      * Get period start.
