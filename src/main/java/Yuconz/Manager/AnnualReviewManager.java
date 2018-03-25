@@ -158,7 +158,7 @@ public class AnnualReviewManager implements ServiceInterface
         return record;
     }
 
-    public List<User> getCandidateReviewer1(User user)
+    public List<User> getCandidatesReviewer1(User user)
     {
         Session session = hibernate.getCurrentSession();
 
@@ -174,9 +174,28 @@ public class AnnualReviewManager implements ServiceInterface
         return records;
     }
 
-    public List<User> getCandidateReviewer2(AnnualReviewRecord review)
+    public List<User> getAllCandidatesReviewer2(User reviewee)
     {
-        if (review == null || review.getReviewer1() == null) {
+        List<User> candidates = new ArrayList<>();
+        for (User reviewer1 : getCandidatesReviewer1(reviewee)) {
+            candidates.addAll(getCandidatesReviewer2(reviewer1));
+        }
+
+        return candidates;
+    }
+
+    public List<User> getCandidatesReviewer2(AnnualReviewRecord review)
+    {
+        if (review == null) {
+            return new ArrayList<>();
+        }
+
+        return getCandidatesReviewer2(review.getReviewer1());
+    }
+
+    public List<User> getCandidatesReviewer2(User reviewer1)
+    {
+        if (reviewer1 == null) {
             return new ArrayList<>();
         }
 
@@ -185,8 +204,8 @@ public class AnnualReviewManager implements ServiceInterface
         Transaction transaction = session.beginTransaction();
 
         Query query = session.createQuery("from User r where role = :reviewer1Role and r <> :reviewer1")
-                .setParameter("reviewer1", review.getReviewer1())
-                .setParameter("reviewer1Role", review.getReviewer1().getRole());
+                .setParameter("reviewer1", reviewer1)
+                .setParameter("reviewer1Role", reviewer1.getRole());
 
         List<User> records = query.getResultList();
 

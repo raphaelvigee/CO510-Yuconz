@@ -5,7 +5,6 @@ import Yuconz.Entity.User;
 import Yuconz.Manager.AnnualReviewManager;
 import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.Container.ServiceInterface;
-import com.sallyf.sallyf.Form.Constraint.NotEmpty;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;
 import com.sallyf.sallyf.Form.FormTypeInterface;
@@ -74,9 +73,10 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
 
         AnnualReviewRecord annualReview = form.getOptions().getAnnualReview();
 
-        List<User> reviewers1 = annualReviewManager.getCandidateReviewer1(annualReview.getReviewee());
-        reviewers1.add(0, null);
-        List<User> reviewers2 = annualReviewManager.getCandidateReviewer2(annualReview);
+        User reviewee = annualReview.getReviewee();
+
+        List<User> reviewers1 = annualReviewManager.getCandidatesReviewer1(reviewee);
+        List<User> reviewers2 = annualReviewManager.getAllCandidatesReviewer2(reviewee);
         reviewers2.add(0, null);
 
         builder

@@ -22,7 +22,6 @@ import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.FlashManager.FlashManager;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;
-import com.sallyf.sallyf.Form.Type.ChoiceType;
 import com.sallyf.sallyf.Form.Type.FormType;
 import com.sallyf.sallyf.Form.Type.SubmitType;
 import com.sallyf.sallyf.JTwig.JTwigResponse;
@@ -34,6 +33,7 @@ import com.sallyf.sallyf.Utils.MapUtils;
 import org.eclipse.jetty.server.Request;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.json.simple.JSONObject;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -84,7 +84,7 @@ public class AnnualReviewController extends BaseController
             Map<String, Object> data = (Map<String, Object>) form.getChild("review").resolveData();
             FormUtils.sanitize(data, new String[]{"employeeComments"});
 
-            List<User> candidateReviewers = annualReviewManager.getCandidateReviewer1(user);
+            List<User> candidateReviewers = annualReviewManager.getCandidatesReviewer1(user);
             Random rand = new Random();
             User reviewer1 = candidateReviewers.get(rand.nextInt(candidateReviewers.size()));
             review.setReviewer1(reviewer1);
@@ -115,7 +115,7 @@ public class AnnualReviewController extends BaseController
     })
     @ParameterResolver(name = "record", type = RecordResolver.class)
     @Security("is_granted('edit_annual_review', record)")
-    public Object edit(RuntimeBag runtimeBag, RouteParameters routeParameters, User user, Hibernate hibernate, FlashManager flashManager, YuconzAuthenticationManager authenticationManager)
+    public Object edit(RuntimeBag runtimeBag, RouteParameters routeParameters, User user, Hibernate hibernate, FlashManager flashManager, YuconzAuthenticationManager authenticationManager, AnnualReviewManager annualReviewManager)
     {
         AnnualReviewRecord review = (AnnualReviewRecord) routeParameters.get("record");
 
@@ -173,6 +173,11 @@ public class AnnualReviewController extends BaseController
 
             review.apply(data);
 
+            List<User> candidatesReviewer2 = annualReviewManager.getCandidatesReviewer2(review);
+            if (!candidatesReviewer2.contains(review.getReviewer2())) {
+                review.setReviewer2(null);
+            }
+
             if (!currentRole.equals(LoginRole.HR_EMPLOYEE)) {
                 review.setReviewer1Signature(null);
                 review.setReviewer2Signature(null);
@@ -200,7 +205,23 @@ public class AnnualReviewController extends BaseController
             return this.redirect(runtimeBag.getRequest().getRequestURI());
         }
 
+        JSONObject reviewersMap = new JSONObject();
+        for (User reviewer1 : annualReviewManager.getCandidatesReviewer1(review.getReviewee())) {
+            List<Map<String, String>> candidateReviewers = new ArrayList<>();
+
+            for (User reviewer2 : annualReviewManager.getCandidatesReviewer2(reviewer1)) {
+                candidateReviewers.add(new HashMap<String, String>()
+                {{
+                    put("id", reviewer2.getId());
+                    put("fullname", reviewer2.getFullName());
+                }});
+            }
+
+            reviewersMap.put(reviewer1.getId(), candidateReviewers);
+        }
+
         return new JTwigResponse("views/annual-review/form.twig", MapUtils.createHashMap(
+                entry("reviewersMap", reviewersMap),
                 entry("review", review),
                 entry("form", form.createView())
         ));

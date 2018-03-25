@@ -57,3 +57,41 @@
         </div>
     {% endfor %}
 {% endblock %}
+
+{% block page_post_body %}
+    {{ parent() }}
+    {% if reviewersMap %}
+        <script type="text/javascript">
+            $(function () {
+                var reviewers = {{ reviewersMap.toString()|raw }};
+
+                var reviewer1El = $('[name="review[reviewer1]"]');
+                var reviewer2El = $('[name="review[reviewer2]"]');
+                var reviewer2OriginalVal = reviewer2El.val();
+
+                function applyReviewer2() {
+                    var candidates = reviewers[reviewer1El.val()];
+
+                    reviewer2El.html('<option value="">None</option>');
+
+                    if (typeof candidates === 'undefined') {
+                        return;
+                    }
+
+                    candidates.forEach(function (c) {
+                        var s = reviewer2OriginalVal === c.id ? "selected" : "";
+                        reviewer2El.append('<option value="' + c.id + '" >' + c.fullname + '</option>')
+                    });
+
+                    if (reviewer2El.find('option[value="' + reviewer2OriginalVal + '"]').length) {
+                        reviewer2El.val(reviewer2OriginalVal);
+                    }
+                }
+
+                applyReviewer2();
+
+                reviewer1El.on('change', applyReviewer2);
+            });
+        </script>
+    {% endif %}
+{% endblock %}
