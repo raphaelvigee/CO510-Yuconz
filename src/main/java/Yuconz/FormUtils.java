@@ -37,6 +37,12 @@ public class FormUtils
         }
     }
 
+    /**
+     * Applying form handling data to object
+     *
+     * @param form
+     * @param object
+     */
     public static void apply(Form<?, ?, ?> form, Object object)
     {
         Object data = form.resolveData();
@@ -50,6 +56,12 @@ public class FormUtils
         }
     }
 
+    /**
+     * Prevents form hijacking
+     *
+     * @param map
+     * @param allowedKeys
+     */
     public static void sanitize(Map<String, Object> map, String[] allowedKeys)
     {
         List<String> allowedKeysList = Arrays.asList(allowedKeys);
