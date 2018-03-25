@@ -133,7 +133,6 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object> imp
 
     /**
      * Transforms the data of the form, into the representation of the data.
-     *
      * @param form form
      * @param <T>  generic class
      * @return representation of the data

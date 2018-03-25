@@ -51,8 +51,8 @@ public class StaticController extends BaseController
 
     /**
      * Get content string for a file's InputStream.
-     * @param stream
-     * @return
+     * @param stream the input stream
+     * @return String
      */
     private String getContent(InputStream stream)
     {

@@ -42,12 +42,24 @@ import java.util.function.Supplier;
 
 import static com.sallyf.sallyf.Utils.MapUtils.entry;
 
+
+/**
+ * Annual Review controller.
+ */
 @Security(value = "is_granted('authenticated')", handler = LoginRedirectHandler.class)
 @Route(path = "/annual-review")
 public class AnnualReviewController extends BaseController
 {
-    private Random rand = new Random();
-
+    /**
+     * Creates an Annual Review.
+     * @param user current user
+     * @param hibernate hibernate
+     * @param flashManager the flash manager itself
+     * @param authenticationManager authentication manager itself
+     * @param recordManager record manager itself
+     * @param annualReviewManager annual review manager itself
+     * @return response
+     */
     @Route(path = "/create", methods = {Method.GET, Method.POST})
     @Security("is_granted('create_annual_review')")
     public Object create(User user, Hibernate hibernate, FlashManager flashManager, YuconzAuthenticationManager authenticationManager, RecordManager recordManager, AnnualReviewManager annualReviewManager)
@@ -110,6 +122,17 @@ public class AnnualReviewController extends BaseController
         ));
     }
 
+    /**
+     * Edits an already existing Annual Review
+     * @param runtimeBag runtime bag
+     * @param routeParameters route parameters
+     * @param user the user
+     * @param hibernate hibernate
+     * @param flashManager the flash manager
+     * @param authenticationManager the authentication manager
+     * @param annualReviewManager the annual review manager
+     * @return response
+     */
     @Route(path = "/{record}/edit", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
@@ -227,6 +250,16 @@ public class AnnualReviewController extends BaseController
         ));
     }
 
+    /**
+     * Signs an Annual Review
+     * @param request the request
+     * @param routeParameters route parameters
+     * @param authenticationManager the authentication manager
+     * @param currentUser the current user
+     * @param flashManager the flash manager
+     * @param hibernate hibernate
+     * @return response
+     */
     @Route(path = "/{record}/sign", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
@@ -300,6 +333,11 @@ public class AnnualReviewController extends BaseController
         ));
     }
 
+    /**
+     * View an Annual Review
+     * @param routeParameters route parameters
+     * @return response
+     */
     @Route(path = "/{record}", methods = {Method.GET, Method.POST}, requirements = {
             @Requirement(name = "record", requirement = App.RECORD_REGEX)
     })
