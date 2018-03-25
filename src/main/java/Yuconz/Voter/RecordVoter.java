@@ -95,6 +95,13 @@ public class RecordVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Can the user list this record
+     *
+     * @param currentUser
+     * @param user
+     * @return boolean
+     */
     private boolean canList(User currentUser, User user)
     {
         if (currentUser.equals(user)) {
@@ -119,6 +126,11 @@ public class RecordVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Are they an employee
+     *
+     * @return boolean
+     */
     private boolean isEmployee()
     {
         LoginRole currentRole = authenticationManager.getCurrentRole();
@@ -126,6 +138,13 @@ public class RecordVoter implements VoterInterface
         return currentRole.equals(LoginRole.EMPLOYEE);
     }
 
+    /**
+     * Can the user edit this record
+     *
+     * @param currentUser
+     * @param record
+     * @return
+     */
     private boolean canEdit(User currentUser, AbstractRecord record)
     {
         if (record instanceof AnnualReviewRecord) {
@@ -135,6 +154,13 @@ public class RecordVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Can the user view this record
+     *
+     * @param currentUser
+     * @param record
+     * @return boolean
+     */
     private boolean canView(User currentUser, AbstractRecord record)
     {
         if (record instanceof AnnualReviewRecord) {

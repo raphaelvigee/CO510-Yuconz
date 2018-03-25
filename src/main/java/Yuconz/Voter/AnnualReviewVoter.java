@@ -90,6 +90,13 @@ public class AnnualReviewVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Can the current user view this document
+     *
+     * @param currentUser
+     * @param review
+     * @return boolean
+     */
     private boolean canView(User currentUser, AnnualReviewRecord review)
     {
         if (currentUser.equals(review.getReviewee())) {
@@ -113,11 +120,23 @@ public class AnnualReviewVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Can user list annual review
+     *
+     * @return boolean
+     */
     private boolean canList()
     {
         return isHR();
     }
 
+    /**
+     * Can the current user sign this document
+     *
+     * @param currentUser
+     * @param review
+     * @return boolean
+     */
     private boolean canSign(User currentUser, AnnualReviewRecord review)
     {
         if (isReviewer()) {
@@ -137,6 +156,13 @@ public class AnnualReviewVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Can the current user edit this annual review record
+     *
+     * @param currentUser
+     * @param review
+     * @return boolean
+     */
     private boolean canEdit(User currentUser, AnnualReviewRecord review)
     {
         if (review.isAccepted()) {
@@ -162,6 +188,11 @@ public class AnnualReviewVoter implements VoterInterface
         return false;
     }
 
+    /**
+     * Is the user a reviewer
+     *
+     * @return boolean
+     */
     private boolean isReviewer()
     {
         LoginRole currentRole = authenticationManager.getCurrentRole();
@@ -169,6 +200,11 @@ public class AnnualReviewVoter implements VoterInterface
         return currentRole.equals(LoginRole.REVIEWER);
     }
 
+    /**
+     * Is the user an employee
+     *
+     * @return boolean
+     */
     private boolean isEmployee()
     {
         LoginRole currentRole = authenticationManager.getCurrentRole();
@@ -176,6 +212,11 @@ public class AnnualReviewVoter implements VoterInterface
         return currentRole.equals(LoginRole.EMPLOYEE);
     }
 
+    /**
+     * Is the user HR
+     *
+     * @return boolean
+     */
     private boolean isHR()
     {
         LoginRole currentRole = authenticationManager.getCurrentRole();
@@ -183,6 +224,11 @@ public class AnnualReviewVoter implements VoterInterface
         return currentRole.equals(LoginRole.HR_EMPLOYEE);
     }
 
+    /**
+     * Can a use create an annual review
+     *
+     * @return boolean
+     */
     private boolean canCreate()
     {
         User user = (User) authenticationManager.getUser();
