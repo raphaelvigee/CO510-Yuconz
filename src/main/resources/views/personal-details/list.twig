@@ -42,11 +42,6 @@
                     <div class="spacer"></div>
 
                     <div class="options">
-                        {% if is_granted('list_records', user) %}
-                            <a href="{{ path('RecordController.list', {'user': user.getId()}) }}">
-                                Records
-                            </a>
-                        {% endif %}
                         {% if is_granted('view_user', user) %}
                             <a href="{{ path('EmployeesController.view', {'user': user.getId()}) }}">
                                 View
@@ -55,6 +50,11 @@
                         {% if is_granted('edit_user', user) %}
                             <a href="{{ path('EmployeesController.edit', {'user': user.getId()}) }}">
                                 Edit
+                            </a>
+                        {% endif %}
+                        {% if is_granted('list_records', user) %}
+                            <a href="{{ path('RecordController.list', {'user': user.getId()}) }}">
+                                Records
                             </a>
                         {% endif %}
                     </div>
