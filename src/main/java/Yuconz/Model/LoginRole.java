@@ -19,6 +19,7 @@ public enum LoginRole
 
     /**
      * New LoginRole.
+     *
      * @param name name of login role.
      */
     LoginRole(String name)
@@ -27,8 +28,9 @@ public enum LoginRole
     }
 
     /**
-     * Gets LoginRole's name
-     * @return
+     * Gets LoginRole's name.
+     *
+     * @return name
      */
     public String getName()
     {
@@ -37,6 +39,7 @@ public enum LoginRole
 
     /**
      * Returns list of all contained LoginRoles for current role.
+     *
      * @return List of contained roles.
      */
     public List<LoginRole> getContainedRoles()

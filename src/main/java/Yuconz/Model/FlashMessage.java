@@ -15,6 +15,7 @@ public class FlashMessage extends FlashEntry<String>
 
     /**
      * New FlashMessage.
+     *
      * @param body details
      * @param type message type
      * @param icon message icon
@@ -29,7 +30,8 @@ public class FlashMessage extends FlashEntry<String>
     }
 
     /**
-     * Gets FlashMessage's body (detail)
+     * Gets FlashMessage's body (detail).
+     *
      * @return body text (details)
      */
     public String getBody()
@@ -38,7 +40,8 @@ public class FlashMessage extends FlashEntry<String>
     }
 
     /**
-     * Sets FlashMessage's body (detail)
+     * Sets FlashMessage's body (detail).
+     *
      * @param body body text (details)
      */
     public void setBody(String body)
@@ -47,7 +50,8 @@ public class FlashMessage extends FlashEntry<String>
     }
 
     /**
-     * Gets FlashMessage's Type
+     * Gets FlashMessage's Type.
+     *
      * @return type
      */
     public String getType()
@@ -56,7 +60,8 @@ public class FlashMessage extends FlashEntry<String>
     }
 
     /**
-     * Sets FlashMessage's Type
+     * Sets FlashMessage's Type.
+     *
      * @param type type
      */
     public void setType(String type)
@@ -65,7 +70,8 @@ public class FlashMessage extends FlashEntry<String>
     }
 
     /**
-     * Gets FlashMessage's Icon
+     * Gets FlashMessage's Icon.
+     *
      * @return icon
      */
     public String getIcon()
@@ -74,8 +80,9 @@ public class FlashMessage extends FlashEntry<String>
     }
 
     /**
-     * Sets FlashMessage's Icon
-     * @return Micon to set
+     * Sets FlashMessage's Icon.
+     *
+     * @param icon the icon to set
      */
     public void setIcon(String icon)
     {
