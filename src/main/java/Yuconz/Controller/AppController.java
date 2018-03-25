@@ -5,7 +5,6 @@ import com.sallyf.sallyf.Annotation.Route;
 import com.sallyf.sallyf.Authentication.UserInterface;
 import com.sallyf.sallyf.Controller.BaseController;
 import com.sallyf.sallyf.Router.Response;
-import com.sallyf.sallyf.Server.RuntimeBag;
 
 /**
  * App app controller, redirects to specific part of
@@ -16,6 +15,7 @@ public class AppController extends BaseController
     /**
      * If user is logged, redirect to log in screen,
      * if not redirect to dashboard index.
+     *
      * @param authenticationManager system authentication manager
      * @return response
      */

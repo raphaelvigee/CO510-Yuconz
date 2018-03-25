@@ -13,7 +13,8 @@ import java.io.Serializable;
 public class YuconzIdGenerator implements IdentifierGenerator
 {
     /**
-     * generates and ID.
+     * Generates an ID.
+     *
      * @param session session
      * @param o object
      * @return ID

@@ -53,6 +53,10 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
         }
     }
 
+    /**
+     * Creates a new Annual Review option
+     * @return annual review option object
+     */
     @Override
     public AnnualReviewOptions createOptions()
     {
@@ -136,6 +140,11 @@ public class AnnualReviewType extends AbstractFormType<AnnualReviewType.AnnualRe
                 });
     }
 
+    /**
+     * Helper for disabling fields
+     * @param allowedRoles allowed roles
+     * @return true or false
+     */
     private boolean disableExcept(LoginRole... allowedRoles)
     {
         if (currentRole == null) {

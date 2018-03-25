@@ -54,7 +54,7 @@ public class RecordController extends BaseController
     }
 
     /**
-     * Route for viewing a specific record for a user
+     * Route for viewing a specific record for a user.
      *
      * @param routeParameters route's parameters
      * @return response
