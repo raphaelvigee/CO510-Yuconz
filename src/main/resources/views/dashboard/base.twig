@@ -1,4 +1,4 @@
-{% extends 'base.twig' %}
+{% extends '../base.twig' %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -8,6 +8,9 @@
     <div id="dashboard">
 
         <div id="nav">
+            <div class="mm" onclick="$('#dashboard').toggleClass('mm')">
+                <i class="fas fa-bars"></i>
+            </div>
             <div class="branding">
                 <h1>Yuconz</h1>
                 <h5>HR Portal</h5>
@@ -68,31 +71,30 @@
                 </div>
             {% endif %}
 
-            <div class="option">
-                <a class="link" href="#">Employment History</a>
-            </div>
-            <div class="option">
-                <a class="link" href="#">Annual Reviews</a>
-            </div>
+            {% if is_granted('list_records', getUser()) %}
+                {% set currentUserDetails = routeName in ['RecordController.list', 'RecordController.view', 'AnnualReviewController.view', 'AnnualReviewController.edit'] %}
+                {% set activeClass = currentUserDetails ? "selected" : "" %}
 
-            {% if is_granted('has_rights', 'HR_EMPLOYEE') %}
+                <div class="option {{ activeClass }}">
+                    <a class="link" href="{{ path('RecordController.list', {'user': getUser().getId()}) }}">
+                        Employment History
+                    </a>
+                </div>
+            {% endif %}
+
+            {% if is_granted('list_users') %}
                 <div class="heading">
                     Administration
                 </div>
-                <div class="option">
-                    <a class="link" href="#">Dashboard</a>
-                </div>
-                {% if is_granted('list_users') %}
-                    {% set isEmpManagement = routeName in ['EmployeesController.view', 'EmployeesController.edit', 'EmployeesController.list'] %}
-                    {% if routeName in ['EmployeesController.view', 'EmployeesController.edit'] and getUser().equals(user) %}
-                        {% set isEmpManagement = false %}
-                    {% endif %}
-                    {% set activeClass = isEmpManagement ? "selected" : "" %}
-
-                    <div class="option {{ activeClass }}">
-                        <a class="link" href="{{ path('EmployeesController.list') }}">Employee Management</a>
-                    </div>
+                {% set isEmpManagement = routeName in ['EmployeesController.view', 'EmployeesController.edit', 'EmployeesController.list', 'EmployeesController.create'] %}
+                {% if routeName in ['EmployeesController.view', 'EmployeesController.edit'] and getUser().equals(user) %}
+                    {% set isEmpManagement = false %}
                 {% endif %}
+                {% set activeClass = isEmpManagement ? "selected" : "" %}
+
+                <div class="option {{ activeClass }}">
+                    <a class="link" href="{{ path('EmployeesController.list') }}">Employee Management</a>
+                </div>
             {% endif %}
         </div>
 

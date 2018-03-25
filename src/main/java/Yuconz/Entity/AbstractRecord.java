@@ -110,4 +110,6 @@ public abstract class AbstractRecord
     }
 
     abstract public String getTitle();
+
+    abstract public String renderSummary();
 }

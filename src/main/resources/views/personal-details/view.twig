@@ -1,4 +1,6 @@
-{% extends "../dashboard.twig" %}
+{% extends "../dashboard/base.twig" %}
+
+{% import '../record/utils.twig' as recordUtils %}
 
 {% block title %}{{ user.getFullName() }}{% endblock %}
 
@@ -101,30 +103,9 @@
         </div>
     </div>
 
-    <h2>Records</h2>
-
-    <div class="feed">
-        {% set records = service('RecordManager').getRecords(user) %}
-
-        {% for record in records %}
-            <div class="record">
-                <div class="header">
-                    <div class="title">
-                        <span class="icon"><i class="fas fa-calendar-alt"></i></span>
-                        <span>{{ record.getTitle() }}</span>
-                    </div>
-                    <div class="date">{{ record.getCreatedAt() }}</div>
-                </div>
-                {% if is_granted('view_record', record) %}
-                    <div class="summary">
-                        <p>[body]</p>
-                        <a class="link" href="{{ path('RecordController.view', {'record': record.getId()}) }}">Read
-                            more</a>
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
+    {% if is_granted('list_records', user) %}
+        <a href="{{ path('RecordController.list', {'user': user.getId()}) }}" class="btn">Employment history</a>
+    {% endif %}
 {% endblock %}
 
 {% block page_head %}

@@ -1,12 +1,12 @@
 package Yuconz.Voter;
 
 import Yuconz.Entity.User;
+import Yuconz.Manager.AnnualReviewManager;
 import Yuconz.Manager.AuthorisationManager;
 import Yuconz.Manager.YuconzAuthenticationManager;
 import Yuconz.Model.LoginRole;
 import com.sallyf.sallyf.AccessDecisionManager.Voter.VoterInterface;
 import com.sallyf.sallyf.Authentication.UserInterface;
-import com.sallyf.sallyf.Server.RuntimeBag;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,21 +28,26 @@ public class PersonalDetailsVoter implements VoterInterface
 
     private AuthorisationManager authorisationManager;
 
+    private AnnualReviewManager annualReviewManager;
+
     /**
      * Generates new PersonalDetailsVoter.
+     *
      * @param authenticationManager system AuthenticationManager
-     * @param authorisationManager system AuthorisationManager
+     * @param authorisationManager  system AuthorisationManager
      */
-    public PersonalDetailsVoter(YuconzAuthenticationManager authenticationManager, AuthorisationManager authorisationManager)
+    public PersonalDetailsVoter(YuconzAuthenticationManager authenticationManager, AuthorisationManager authorisationManager, AnnualReviewManager annualReviewManager)
     {
         this.authenticationManager = authenticationManager;
         this.authorisationManager = authorisationManager;
+        this.annualReviewManager = annualReviewManager;
     }
 
     /**
      * Checks if voter has authority to vote.
+     *
      * @param attribute the name of the attribute being voted on
-     * @param subject User being voted on
+     * @param subject   User being voted on
      * @return true if supports
      */
     @Override
@@ -69,8 +74,9 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Check if User has the requested rights for specified action.
+     *
      * @param attribute the name of the attribute being voted on
-     * @param subject object being voted on
+     * @param subject   object being voted on
      * @return
      */
     @Override
@@ -86,9 +92,9 @@ public class PersonalDetailsVoter implements VoterInterface
             case VIEW:
                 return canView(user, currentUser);
             case CREATE:
-                return canCreate(currentUser);
+                return canCreate();
             case LIST:
-                return canList(currentUser);
+                return canList();
         }
 
         return false;
@@ -96,27 +102,42 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Checks if user can get list of system users.
-     * @param currentUser user to test
+     *
      * @return
      */
-    private boolean canList(User currentUser)
+    private boolean canList()
     {
-        return isHR(currentUser);
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+
+        switch (currentRole) {
+            case REVIEWER:
+            case DIRECTOR:
+            case HR_EMPLOYEE:
+                return true;
+        }
+
+        return false;
     }
 
     /**
      * Checks if user can create a system user.
-     * @param currentUser user to test
+     *
      * @return
      */
-    private boolean canCreate(User currentUser)
+    private boolean canCreate()
     {
-        return isHR(currentUser);
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+        if (LoginRole.HR_EMPLOYEE.equals(currentRole)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Checks if user can view a system user.
-     * @param user user to test
+     *
+     * @param user        user to test
      * @param currentUser user to view
      * @return
      */
@@ -127,26 +148,39 @@ public class PersonalDetailsVoter implements VoterInterface
 
     /**
      * Checks if a user can edit a system user.
-     * @param user user to test
+     *
+     * @param user        user to test
      * @param currentUser user to edit
      * @return
      */
     private boolean canEdit(User user, User currentUser)
     {
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+
         if (user.equals(currentUser)) {
-            return true;
+            switch (currentRole) {
+                case EMPLOYEE:
+                case MANAGER:
+                case DIRECTOR:
+                case HR_EMPLOYEE:
+                    return true;
+            }
+
+            return false;
         }
 
-        return isHR(currentUser);
+        return isHR();
     }
 
     /**
      * Identifies if a user has the rights of an HR employee.
-     * @param currentUser
+     *
      * @return
      */
-    private boolean isHR(User currentUser)
+    private boolean isHR()
     {
-        return authorisationManager.hasSessionRights(currentUser, LoginRole.HR_EMPLOYEE);
+        LoginRole currentRole = authenticationManager.getCurrentRole();
+
+        return currentRole.equals(LoginRole.HR_EMPLOYEE);
     }
 }

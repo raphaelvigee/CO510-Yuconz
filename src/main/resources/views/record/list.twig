@@ -1,0 +1,16 @@
+{% extends "../dashboard/base.twig" %}
+
+{% import 'utils.twig' as utils %}
+
+{% block title %}Employee management{% endblock %}
+
+{% block main_content %}
+    <div class="feed">
+        {{ utils.renderList(records) }}
+    </div>
+{% endblock %}
+
+{% block page_head %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/assets/css/view.css">
+{% endblock %}

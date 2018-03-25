@@ -161,6 +161,7 @@
 }
 
 #mainContent {
+    box-sizing: border-box;
     padding: 20px;
     margin-left: 200px;
     margin-top: 50px;
@@ -225,4 +226,50 @@ form .row.date {
 form .row.date .row {
     margin: 0;
     flex-grow: 0.2;
+}
+
+
+#dashboard .mm {
+    display:none;
+    line-height:50px;
+    color:#fff;
+    margin-left:10px;
+}
+#dashboard .mm:hover, #dashboard .mm:active {
+    opacity:0.8;
+}
+
+
+#dashboard #sidePanel {
+    transition: margin-left 0.4s;
+    display:block;
+}
+#dashboard #mainContent {
+    transition: margin-left 0.4s;
+}
+@media (max-width:600px) {
+    #dashboard #mainContent {
+        margin-left:0px;
+        width:100%;
+    }
+    #dashboard #sidePanel {
+        margin-left:-200px;
+    }
+    #dashboard.mm #mainContent {
+        margin-left:200px;
+    }
+    #dashboard.mm #sidePanel {
+        margin-left:0px;
+    }
+    #dashboard .mm {
+        display:block;
+    }
+}
+
+
+
+@media (max-width:350px) {
+    #nav .account .main .icon .profilePicture {
+        display:none;
+    }
 }

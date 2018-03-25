@@ -1,0 +1,97 @@
+{% extends "../record/form.twig" %}
+
+{% block title %}Annual Review{% endblock %}
+
+{% block record_content %}
+    {{ parent() }}
+
+    {% block signature_reminder %}
+        {% if service('AnnualReviewManager').requiresSignature(review, getUser()) %}
+            {% if is_granted('sign_annual_review', review) %}
+                <div class="alert warning">
+                    After submitting the form, you need to
+                    <a href="{{ path('AnnualReviewController.sign', {'record': review.getId()}) }}">
+                        Sign
+                    </a>
+                </div>
+            {% else %}
+                You already signed this Annual Review
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+
+    <br>
+
+    <h3>Signatures</h3>
+    {% set signers = [
+        {
+            'title': 'Reviewee',
+            'user': review.getReviewee(),
+            'signature': review.getRevieweeSignature()
+        },
+        {
+            'title': 'Reviewer 1',
+            'user': review.getReviewer1(),
+            'signature': review.getReviewer1Signature()
+        },
+        {
+            'title': 'Reviewer 2',
+            'user': review.getReviewer2(),
+            'signature': review.getReviewer2Signature()
+        }
+    ] %}
+
+    {% for signer in signers %}
+        <div>
+            {% if signer.user %}
+                <p>
+                    <b>{{ signer.title }}</b>
+                </p>
+                {{ signer.user.getFullName() }} :
+                {% if signer.signature %}
+                    Signed
+                {% else %}
+                    Not signed
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block page_post_body %}
+    {{ parent() }}
+    {% if reviewersMap %}
+        <script type="text/javascript">
+            $(function () {
+                var reviewers = {{ reviewersMap.toString()|raw }};
+
+                var reviewer1El = $('[name="review[reviewer1]"]');
+                var reviewer2El = $('[name="review[reviewer2]"]');
+                var reviewer2OriginalVal = reviewer2El.val();
+
+                function applyReviewer2() {
+                    var candidates = reviewers[reviewer1El.val()];
+
+                    reviewer2El.html('<option value="">None</option>');
+
+                    if (typeof candidates === 'undefined') {
+                        return;
+                    }
+
+                    candidates.forEach(function (c) {
+                        var s = reviewer2OriginalVal === c.id ? "selected" : "";
+                        reviewer2El.append('<option value="' + c.id + '" >' + c.fullname + '</option>')
+                    });
+
+                    if (reviewer2El.find('option[value="' + reviewer2OriginalVal + '"]').length) {
+                        reviewer2El.val(reviewer2OriginalVal);
+                    }
+                }
+
+                applyReviewer2();
+
+                reviewer1El.on('change', applyReviewer2);
+            });
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,19 +1,21 @@
 package Yuconz;
 
 import Yuconz.Controller.*;
+import Yuconz.Form.AnnualReviewType;
+import Yuconz.Form.UserType;
 import Yuconz.FormRenderer.CustomChoiceRenderer;
 import Yuconz.FormRenderer.DateRenderer;
 import Yuconz.JTwigFunction.*;
-import Yuconz.Manager.AuthorisationManager;
-import Yuconz.Manager.LogManager;
-import Yuconz.Manager.RecordManager;
-import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.Manager.*;
 import Yuconz.ParameterResolver.RecordResolver;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.Service.Hibernate;
+import Yuconz.Service.YuconzAccessDecisionManager;
+import Yuconz.Voter.AnnualReviewVoter;
 import Yuconz.Voter.AuthorisationVoter;
 import Yuconz.Voter.PersonalDetailsVoter;
 import Yuconz.Voter.RecordVoter;
+import com.sallyf.sallyf.AccessDecisionManager.AccessDecisionManager;
 import com.sallyf.sallyf.Container.*;
 import com.sallyf.sallyf.Exception.FrameworkException;
 import com.sallyf.sallyf.Form.FormManager;
@@ -65,11 +67,21 @@ public class App
         Kernel app = Kernel.newInstance();
         Container container = app.getContainer();
 
+        // Forms
+        container.add(new ServiceDefinition<>(AnnualReviewType.class));
+        container.add(new ServiceDefinition<>(UserType.class));
+
         // Managers
+        container.add(new ServiceDefinition<>(AccessDecisionManager.class, YuconzAccessDecisionManager.class));
         container.add(new ServiceDefinition<>(YuconzAuthenticationManager.class));
         container.add(new ServiceDefinition<>(Hibernate.class));
-        container.add(new ServiceDefinition<>(LogManager.class));
+        container.add(new ServiceDefinition<>(LogManager.class))
+                .addMethodCallDefinitions(new MethodCallDefinition(
+                        "setAuthenticationManager",
+                        new ServiceReference<>(YuconzAuthenticationManager.class)
+                ));
         container.add(new ServiceDefinition<>(RecordManager.class));
+        container.add(new ServiceDefinition<>(AnnualReviewManager.class));
         container.add(new ServiceDefinition<>(FormManager.class));
 
         container.add(new ServiceDefinition<>(AuthorisationManager.class))
@@ -97,6 +109,7 @@ public class App
         // Voters
         container.add(new ServiceDefinition<>(PersonalDetailsVoter.class)).addTag("authentication.voter");
         container.add(new ServiceDefinition<>(RecordVoter.class)).addTag("authentication.voter");
+        container.add(new ServiceDefinition<>(AnnualReviewVoter.class)).addTag("authentication.voter");
         container.add(new ServiceDefinition<>(AuthorisationVoter.class)).addTag("authentication.voter");
 
         container.getServiceDefinition(FrameworkServer.class).setConfigurationReference(new PlainReference<>(new Configuration()
@@ -119,6 +132,7 @@ public class App
         router.registerController(DashboardController.class);
         router.registerController(EmployeesController.class);
         router.registerController(RecordController.class);
+        router.registerController(AnnualReviewController.class);
 
         FormManager formManager = container.get(FormManager.class);
 

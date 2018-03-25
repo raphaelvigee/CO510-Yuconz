@@ -1,8 +1,11 @@
 package Yuconz.Entity;
 
+import Yuconz.PropertyAccessor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
  * Entity for an initial employment details record.
@@ -11,14 +14,15 @@ import java.util.*;
 @Table
 public class AnnualReviewRecord extends AbstractRecord
 {
-    @ManyToMany
-    private List<User> interviewers;
+    @Column(nullable = false)
+    private LocalDate periodStart;
 
-    @Temporal(TemporalType.DATE)
-    private Date periodStart;
+    @Column(nullable = false)
+    private LocalDate periodEnd;
 
-    @Temporal(TemporalType.DATE)
-    private Date periodEnd;
+    private String previousYearReview;
+
+    private String previousYearTrainingMentoring;
 
     private String achievementOutcomesReview;
 
@@ -30,9 +34,8 @@ public class AnnualReviewRecord extends AbstractRecord
 
     private String employeeComments;
 
-    private String trainingMentoringDevelopment;
-
-    private Boolean accepted;
+    @Column(nullable = false)
+    private Boolean accepted = false;
 
     @OneToOne
     private Signature revieweeSignature;
@@ -53,61 +56,68 @@ public class AnnualReviewRecord extends AbstractRecord
     private User reviewer2;
 
     /**
-     * Get the Interviewers.
-     * @return interviewers
-     */
-    public List<User> getInterviewers()
-    {
-        return interviewers;
-    }
-
-    /**
-     * Set the Interviewers.
-     * @param interviewers interviewers
-     */
-    public void setInterviewers(List<User> interviewers)
-    {
-        this.interviewers = interviewers;
-    }
-
-    /**
      * Get period start.
+     *
      * @return periodStart
      */
-    public Date getPeriodStart()
+    public LocalDate getPeriodStart()
     {
         return periodStart;
     }
 
     /**
      * Set the period start.
+     *
      * @param periodStart periodStart
      */
-    public void setPeriodStart(Date periodStart)
+    public void setPeriodStart(LocalDate periodStart)
     {
         this.periodStart = periodStart;
     }
 
     /**
      * Get period end.
+     *
      * @return periodEnd
      */
-    public Date getPeriodEnd()
+    public LocalDate getPeriodEnd()
     {
         return periodEnd;
     }
 
     /**
      * Set the period end.
+     *
      * @param periodEnd periodEnd
      */
-    public void setPeriodEnd(Date periodEnd)
+    public void setPeriodEnd(LocalDate periodEnd)
     {
         this.periodEnd = periodEnd;
     }
 
+    public String getPreviousYearReview()
+    {
+        return previousYearReview;
+    }
+
+    public void setPreviousYearReview(String previousYearReview)
+    {
+        this.previousYearReview = previousYearReview;
+    }
+
+    public String getPreviousYearTrainingMentoring()
+    {
+        return previousYearTrainingMentoring;
+    }
+
+    public void setPreviousYearTrainingMentoring(String previousYearTrainingMentoring)
+    {
+        this.previousYearTrainingMentoring = previousYearTrainingMentoring;
+    }
+
     /**
      * Get the achievement outcomes review.
+     *
      * @return achievementOutcomesReview
      */
     public String getAchievementOutcomesReview()
@@ -117,6 +127,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the achievement outcomes review.
+     *
      * @param achievementOutcomesReview achievementOutcomesReview
      */
     public void setAchievementOutcomesReview(String achievementOutcomesReview)
@@ -126,6 +137,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the future objective plans.
+     *
      * @return futureObjectivePlans
      */
     public String getFutureObjectivePlans()
@@ -135,6 +147,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the future objective plans.
+     *
      * @param futureObjectivePlans futureObjectivePlans
      */
     public void setFutureObjectivePlans(String futureObjectivePlans)
@@ -144,6 +157,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the training mentoring review.
+     *
      * @return trainingMentoringReview
      */
     public String getTrainingMentoringReview()
@@ -153,6 +167,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the training mentoring review.
+     *
      * @param trainingMentoringReview trainingMentoringReview
      */
     public void setTrainingMentoringReview(String trainingMentoringReview)
@@ -162,6 +177,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the reviewer summary.
+     *
      * @return reviewerSummary
      */
     public String getReviewerSummary()
@@ -171,6 +187,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the reviewer summary.
+     *
      * @param reviewerSummary
      */
     public void setReviewerSummary(String reviewerSummary)
@@ -180,6 +197,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get employee comments.
+     *
      * @return employeeComments
      */
     public String getEmployeeComments()
@@ -189,6 +207,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the employee comments.
+     *
      * @param employeeComments employeeComments
      */
     public void setEmployeeComments(String employeeComments)
@@ -197,25 +216,8 @@ public class AnnualReviewRecord extends AbstractRecord
     }
 
     /**
-     * Get the training mentoring development.
-     * @return trainingMentoringDevelopment
-     */
-    public String getTrainingMentoringDevelopment()
-    {
-        return trainingMentoringDevelopment;
-    }
-
-    /**
-     * Set the training mentoring development.
-     * @param trainingMentoringDevelopment trainingMentoringDevelopment
-     */
-    public void setTrainingMentoringDevelopment(String trainingMentoringDevelopment)
-    {
-        this.trainingMentoringDevelopment = trainingMentoringDevelopment;
-    }
-
-    /**
      * If has been reviewed by HR.
+     *
      * @return True or false
      */
     public Boolean isAccepted()
@@ -225,6 +227,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set if HR has reviewed.
+     *
      * @param accepted True or false
      */
     public void setAccepted(Boolean accepted)
@@ -234,6 +237,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the reviewee signature.
+     *
      * @return revieweeSignature
      */
     public Signature getRevieweeSignature()
@@ -243,6 +247,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the reviewee signature.
+     *
      * @param revieweeSignature revieweeSignature
      */
     public void setRevieweeSignature(Signature revieweeSignature)
@@ -252,6 +257,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the first reviewer signature.
+     *
      * @return reviewer1Signature
      */
     public Signature getReviewer1Signature()
@@ -261,6 +267,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the first reviewer signature.
+     *
      * @param reviewer1Signature reviewer1Signature
      */
     public void setReviewer1Signature(Signature reviewer1Signature)
@@ -270,6 +277,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the second reviewer signature.
+     *
      * @return reviewer2Signature
      */
     public Signature getReviewer2Signature()
@@ -279,15 +287,17 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the second reviewer signature.
+     *
      * @param reviewer2Signature reviewer2Signature
      */
-    public void setRevieweer2ignature(Signature reviewer2Signature)
+    public void setReviewer2Signature(Signature reviewer2Signature)
     {
         this.reviewer2Signature = reviewer2Signature;
     }
 
     /**
      * Get the moderator.
+     *
      * @return moderator
      */
     public User getModerator()
@@ -297,6 +307,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the moderator.
+     *
      * @param moderator moderator
      */
     public void setModerator(User moderator)
@@ -306,6 +317,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the first reviewer.
+     *
      * @return reviewer1
      */
     public User getReviewer1()
@@ -315,6 +327,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the first reviewer.
+     *
      * @param reviewer1 reviewer1
      */
     public void setReviewer1(User reviewer1)
@@ -324,6 +337,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Get the second reviewer.
+     *
      * @return reviewer2
      */
     public User getReviewer2()
@@ -333,6 +347,7 @@ public class AnnualReviewRecord extends AbstractRecord
 
     /**
      * Set the second reviewer.
+     *
      * @param reviewer2 reviewer2
      */
     public void setReviewer2(User reviewer2)
@@ -340,9 +355,44 @@ public class AnnualReviewRecord extends AbstractRecord
         this.reviewer2 = reviewer2;
     }
 
+
+    public User getReviewee()
+    {
+        return getUser();
+    }
+
+    public void setReviewee(User user)
+    {
+        setUser(user);
+    }
+
+    public boolean isReady()
+    {
+        boolean r1 = getReviewer1() != null && getReviewer1Signature() != null;
+        boolean r2 = getReviewer2() != null && getReviewer2Signature() != null;
+        boolean re = getReviewee() != null && getRevieweeSignature() != null;
+
+        return r1 && r2 && re;
+    }
+
     @Override
     public String getTitle()
     {
-        return String.format("Annual Review (%s - %s)", getPeriodStart(), getPeriodEnd());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return String.format("Annual Review (%s - %s)", getPeriodStart().format(formatter), getPeriodEnd().format(formatter));
+    }
+
+    public void apply(Map<String, Object> map)
+    {
+        map.forEach((name, value) -> {
+            PropertyAccessor.set(this, name, value);
+        });
+    }
+
+    @Override
+    public String renderSummary()
+    {
+        return String.format("<b>Reviewer 1</b>: %s <br> <b>Reviewer 2</b>: %s", getReviewer1().getFullName(), getReviewer2().getFullName());
     }
 }

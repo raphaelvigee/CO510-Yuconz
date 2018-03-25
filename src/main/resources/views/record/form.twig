@@ -1,0 +1,11 @@
+{% extends "../dashboard/base.twig" %}
+
+{% block title %}Annual Review{% endblock %}
+
+{% block main_content %}
+    <h1>{{ review.getTitle() }}</h1>
+
+    {% block record_content %}
+        {{ form(form) }}
+    {% endblock %}
+{% endblock %}

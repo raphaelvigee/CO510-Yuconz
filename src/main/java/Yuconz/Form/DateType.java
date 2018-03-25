@@ -6,7 +6,7 @@ import com.sallyf.sallyf.Form.FormTypeInterface;
 import com.sallyf.sallyf.Form.Options;
 import com.sallyf.sallyf.Form.Type.AbstractFormType;
 import com.sallyf.sallyf.Form.Type.ChoiceType;
-import org.eclipse.jetty.server.Request;
+import com.sallyf.sallyf.Utils.MapUtils;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,6 +32,7 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
 
     /**
      * Creates the options container.
+     *
      * @return new DateOptions object
      */
     @Override
@@ -41,6 +43,7 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
 
     /**
      * Builds a form structure.
+     *
      * @param form form
      */
     @Override
@@ -50,16 +53,28 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
         LinkedHashSet<?> days = IntStream.rangeClosed(1, 31).boxed().collect(Collectors.toCollection(LinkedHashSet::new));
         LinkedHashSet<?> years = IntStream.rangeClosed(year - 100, year).boxed().sorted(Collections.reverseOrder()).collect(Collectors.toCollection(LinkedHashSet::new));
 
+        form.getOptions().put("normalizer", (BiFunction<Form<?, ?, ?>, Object, Object>) (f, object) -> {
+            LocalDate date = (LocalDate) object;
+
+            return MapUtils.createHashMap(
+                    MapUtils.entry("day", date.getDayOfMonth()),
+                    MapUtils.entry("month", date.getMonth()),
+                    MapUtils.entry("year", date.getYear())
+            );
+        });
+
         form.getBuilder()
                 .add("day", ChoiceType.class, options -> {
                     options.setExpanded(false);
                     options.setMultiple(false);
+                    options.put("mapped", false);
 
                     options.setChoices(days);
                 })
                 .add("month", ChoiceType.class, options -> {
                     options.setExpanded(false);
                     options.setMultiple(false);
+                    options.put("mapped", false);
 
                     options.setChoices(new LinkedHashSet<>(Arrays.asList(Month.values())));
 
@@ -69,6 +84,7 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
                 .add("year", ChoiceType.class, options -> {
                     options.setExpanded(false);
                     options.setMultiple(false);
+                    options.put("mapped", false);
 
                     options.setChoices(years);
                 });
@@ -78,8 +94,9 @@ public class DateType extends AbstractFormType<DateType.DateOptions, LocalDate>
 
     /**
      * Transforms the data of the form, into the representation of the data.
+     *
      * @param form form
-     * @param <T> generic class
+     * @param <T>  generic class
      * @return representation of the data
      */
     @Override

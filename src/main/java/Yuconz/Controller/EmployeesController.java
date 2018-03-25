@@ -5,6 +5,7 @@ import Yuconz.Entity.User;
 import Yuconz.Form.InitialEmploymentDetailsType;
 import Yuconz.Form.UserType;
 import Yuconz.App;
+import Yuconz.FormUtils;
 import Yuconz.Model.FlashMessage;
 import Yuconz.ParameterResolver.UserResolver;
 import Yuconz.SecurityHandler.LoginRedirectHandler;
@@ -54,16 +55,7 @@ public class EmployeesController extends BaseController
         Hibernate hibernate = this.getContainer().get(Hibernate.class);
         FlashManager flashManager = this.getContainer().get(FlashManager.class);
 
-        HashMap<String, Object> in = new HashMap<>();
-        in.put("user", user.toHashMap());
-
-        InitialEmploymentDetailsRecord ied = new InitialEmploymentDetailsRecord();
-
-        if (create) {
-            in.put("ied", ied.toHashMap());
-        }
-
-        FormBuilder<FormType, FormType.FormOptions, Object> builder = createFormBuilder(in)
+        FormBuilder<FormType, FormType.FormOptions, Object> builder = createFormBuilder()
                 .add("user", UserType.class, options -> {
                     options.setCreate(create);
                 });
@@ -77,6 +69,18 @@ public class EmployeesController extends BaseController
         });
 
         Form<FormType, FormType.FormOptions, Object> form = builder.getForm();
+
+        HashMap<String, Object> in = new HashMap<>();
+        in.put("user", FormUtils.normalize(form.getChild("user"), user));
+
+        InitialEmploymentDetailsRecord ied = new InitialEmploymentDetailsRecord();
+
+        if (create) {
+            in.put("ied", FormUtils.normalize(form.getChild("ied"), ied));
+        }
+
+        form.setData(in);
+        form.propagateChildData();
 
         form.handleRequest();
 

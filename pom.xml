@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.github.sallyf</groupId>
             <artifactId>sallyf</artifactId>
-            <version>df27295</version>
+            <version>d3d3694</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -57,6 +57,11 @@
             <artifactId>htmlunit</artifactId>
             <version>2.29</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 

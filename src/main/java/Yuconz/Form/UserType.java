@@ -1,6 +1,10 @@
 package Yuconz.Form;
 
 import Yuconz.Entity.Section;
+import Yuconz.Manager.YuconzAuthenticationManager;
+import Yuconz.Model.LoginRole;
+import Yuconz.Model.UserRole;
+import com.sallyf.sallyf.Container.ServiceInterface;
 import com.sallyf.sallyf.Form.Constraint.NotEmpty;
 import com.sallyf.sallyf.Form.Form;
 import com.sallyf.sallyf.Form.FormBuilder;
@@ -19,8 +23,10 @@ import java.util.Map;
 /**
  * Form type for user details.
  */
-public class UserType extends AbstractFormType<UserType.UserOptions, Object>
+public class UserType extends AbstractFormType<UserType.UserOptions, Object> implements ServiceInterface
 {
+    private YuconzAuthenticationManager authenticationManager;
+
     public class UserOptions extends Options
     {
         public void setCreate(boolean c)
@@ -32,6 +38,11 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
         {
             return (boolean) get("create");
         }
+    }
+
+    public UserType(YuconzAuthenticationManager authenticationManager)
+    {
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -53,17 +64,18 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
         FormBuilder<?, UserOptions, Object> builder = form.getBuilder();
 
         builder
-                .add("firstname", TextType.class, options -> {
+                .add("firstName", TextType.class, options -> {
                     options.setLabel("First name");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("lastname", TextType.class, options -> {
+                .add("lastName", TextType.class, options -> {
                     options.setLabel("Last name");
                     options.getConstraints().add(new NotEmpty());
                 })
                 .add("email", TextType.class, options -> {
                     options.setLabel("Email address");
                     options.getConstraints().add(new NotEmpty());
+                    options.getAttributes().put("autocomplete", "off");
                 })
                 .add("password", PasswordType.class, options -> {
                     if (parentOptions.isCreate()) {
@@ -72,24 +84,27 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
                     } else {
                         options.setLabel("Password (Leave blank to leave unchanged)");
                     }
+
+                    options.put("mapped", false);
+                    options.getAttributes().put("autocomplete", "off");
                 })
                 .add("birthdate", DateType.class, options -> {
                     options.setLabel("Birth date");
                 })
                 .add("address", AddressType.class)
-                .add("phone_number", TextType.class, options -> {
+                .add("phoneNumber", TextType.class, options -> {
                     options.setLabel("Phone number");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("mobile_number", TextType.class, options -> {
+                .add("mobileNumber", TextType.class, options -> {
                     options.setLabel("Mobile phone");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("emergency_contact", TextType.class, options -> {
+                .add("emergencyContact", TextType.class, options -> {
                     options.setLabel("Emergency contact");
                     options.getConstraints().add(new NotEmpty());
                 })
-                .add("emergency_contact_number", TextType.class, options -> {
+                .add("emergencyContactNumber", TextType.class, options -> {
                     options.setLabel("Emergency contact number");
                     options.getConstraints().add(new NotEmpty());
                 })
@@ -101,6 +116,19 @@ public class UserType extends AbstractFormType<UserType.UserOptions, Object>
                     options.setChoices(new LinkedHashSet<>(Arrays.asList(Section.values())));
                     options.setChoiceLabelResolver(Object::toString);
                 });
+
+        if (authenticationManager.getCurrentRole().equals(LoginRole.HR_EMPLOYEE)) {
+            builder
+                    .add("role", ChoiceType.class, options -> {
+                        options.setLabel("Role");
+                        options.setExpanded(false);
+                        options.setMultiple(false);
+
+                        options.setChoices(new LinkedHashSet<>(Arrays.asList(UserRole.values())));
+                        options.setChoiceLabelResolver(r -> ((UserRole) r).getName());
+                        options.setChoiceValueResolver(r -> ((UserRole) r).getName());
+                    });
+        }
     }
 
     /**

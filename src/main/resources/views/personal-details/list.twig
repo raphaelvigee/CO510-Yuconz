@@ -1,4 +1,4 @@
-{% extends "../dashboard.twig" %}
+{% extends "../dashboard/base.twig" %}
 
 {% block title %}Employee management{% endblock %}
 
@@ -42,7 +42,6 @@
                     <div class="spacer"></div>
 
                     <div class="options">
-
                         {% if is_granted('view_user', user) %}
                             <a href="{{ path('EmployeesController.view', {'user': user.getId()}) }}">
                                 View
@@ -53,6 +52,11 @@
                                 Edit
                             </a>
                         {% endif %}
+                        {% if is_granted('list_records', user) %}
+                            <a href="{{ path('RecordController.list', {'user': user.getId()}) }}">
+                                Records
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -61,11 +65,10 @@
 
     <div>
         {% for p in range(1, max_pages) %}
-            <a href="{{ path('EmployeesController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
+            <a class="btn"  href="{{ path('EmployeesController.list') }}?query={{ query|url_encode }}&page={{ p }}">{{ p }}</a>
         {% endfor %}
     </div>
 {% endblock %}
-
 
 {% block page_head %}
     {{ parent() }}

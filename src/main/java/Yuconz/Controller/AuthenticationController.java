@@ -24,14 +24,31 @@ public class AuthenticationController extends BaseController
 {
     /**
      * Login route, displays login form to user.
-     * @param request the request
+     *
+     * @param request               the request
      * @param authenticationManager the system's authentication manager
      * @return response
      */
     @Route(path = "/login", methods = {Method.GET, Method.POST})
     public Object login(Request request, YuconzAuthenticationManager authenticationManager)
     {
+        User currentUser = (User) authenticationManager.getUser();
+
         Map<String, Object> in = new LinkedHashMap<>();
+
+        if (currentUser != null) {
+            in.put("email", currentUser.getEmail());
+        }
+
+        String roleStr = request.getParameter("role");
+        if (roleStr != null && !roleStr.isEmpty()) {
+            try {
+                LoginRole role = LoginRole.valueOf(roleStr);
+                in.put("role", role);
+            } catch (IllegalArgumentException ignore) {
+            }
+        }
+
         in.put("next", request.getParameter("next"));
 
         Form<FormType, FormType.FormOptions, Object> form = this.createFormBuilder(in)
@@ -94,7 +111,8 @@ public class AuthenticationController extends BaseController
 
     /**
      * Logout route, redirects to app index.
-     * @param request the request
+     *
+     * @param request               the request
      * @param authenticationManager the system's authentication manager
      * @return response (redirection)
      */
