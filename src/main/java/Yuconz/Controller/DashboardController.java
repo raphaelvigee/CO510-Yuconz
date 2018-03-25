@@ -82,12 +82,12 @@ public class DashboardController extends BaseController
 
             String body = "You have an Annual Review under review";
 
-            if(accessDecisionManager.vote("view_annual_review", review)) {
+            if (accessDecisionManager.vote("view_annual_review", review)) {
                 String link = annualReviewLinkSupplier.apply(review, "view");
                 body += " <a class=\"btn\" href=\"" + link + "\">View</a> ";
             }
 
-            if(accessDecisionManager.vote("edit_annual_review", review)) {
+            if (accessDecisionManager.vote("edit_annual_review", review)) {
                 String link = annualReviewLinkSupplier.apply(review, "edit");
                 body += " <a class=\"btn\" href=\"" + link + "\">Edit</a> ";
             }

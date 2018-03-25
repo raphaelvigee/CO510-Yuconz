@@ -23,6 +23,7 @@ public class StaticController extends BaseController
 {
     /**
      * Route for static asset types.
+     *
      * @param routeParameters the route's parameters
      * @return response
      */
@@ -51,6 +52,7 @@ public class StaticController extends BaseController
 
     /**
      * Get content string for a file's InputStream.
+     *
      * @param stream the input stream
      * @return String
      */

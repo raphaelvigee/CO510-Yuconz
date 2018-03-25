@@ -52,12 +52,13 @@ public class AnnualReviewController extends BaseController
 {
     /**
      * Creates an Annual Review.
-     * @param user current user
-     * @param hibernate hibernate
-     * @param flashManager the flash manager itself
+     *
+     * @param user                  current user
+     * @param hibernate             hibernate
+     * @param flashManager          the flash manager itself
      * @param authenticationManager authentication manager itself
-     * @param recordManager record manager itself
-     * @param annualReviewManager annual review manager itself
+     * @param recordManager         record manager itself
+     * @param annualReviewManager   annual review manager itself
      * @return response
      */
     @Route(path = "/create", methods = {Method.GET, Method.POST})
@@ -123,14 +124,15 @@ public class AnnualReviewController extends BaseController
     }
 
     /**
-     * Edits an already existing Annual Review
-     * @param runtimeBag runtime bag
-     * @param routeParameters route parameters
-     * @param user the user
-     * @param hibernate hibernate
-     * @param flashManager the flash manager
+     * Edits an already existing Annual Review.
+     *
+     * @param runtimeBag            runtime bag
+     * @param routeParameters       route parameters
+     * @param user                  the user
+     * @param hibernate             hibernate
+     * @param flashManager          the flash manager
      * @param authenticationManager the authentication manager
-     * @param annualReviewManager the annual review manager
+     * @param annualReviewManager   the annual review manager
      * @return response
      */
     @Route(path = "/{record}/edit", methods = {Method.GET, Method.POST}, requirements = {
@@ -251,13 +253,14 @@ public class AnnualReviewController extends BaseController
     }
 
     /**
-     * Signs an Annual Review
-     * @param request the request
-     * @param routeParameters route parameters
+     * Signs an Annual Review.
+     *
+     * @param request               the request
+     * @param routeParameters       route parameters
      * @param authenticationManager the authentication manager
-     * @param currentUser the current user
-     * @param flashManager the flash manager
-     * @param hibernate hibernate
+     * @param currentUser           the current user
+     * @param flashManager          the flash manager
+     * @param hibernate             hibernate
      * @return response
      */
     @Route(path = "/{record}/sign", methods = {Method.GET, Method.POST}, requirements = {
@@ -334,7 +337,8 @@ public class AnnualReviewController extends BaseController
     }
 
     /**
-     * View an Annual Review
+     * View an Annual Review.
+     *
      * @param routeParameters route parameters
      * @return response
      */
