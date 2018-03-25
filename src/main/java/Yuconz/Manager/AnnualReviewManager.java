@@ -3,6 +3,7 @@ package Yuconz.Manager;
 import Yuconz.Entity.AnnualReviewRecord;
 import Yuconz.Entity.InitialEmploymentDetailsRecord;
 import Yuconz.Entity.User;
+import Yuconz.Model.UserRole;
 import Yuconz.Service.Hibernate;
 import com.sallyf.sallyf.Container.ServiceInterface;
 import org.hibernate.Session;
@@ -45,6 +46,10 @@ public class AnnualReviewManager implements ServiceInterface
 
     public boolean needsNew(User user)
     {
+        if (user.getRole().equals(UserRole.DIRECTOR)) {
+            return false;
+        }
+
         InitialEmploymentDetailsRecord ied = recordManager.getLastRecord(user, InitialEmploymentDetailsRecord.class);
 
         if (ied == null) {
