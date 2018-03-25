@@ -104,7 +104,7 @@
     </div>
 
     {% if is_granted('list_records', user) %}
-        <a href="{{ path('RecordControlller.list', {'user': user.getId()}) }}">Employment history</a>
+        <a href="{{ path('RecordController.list', {'user': user.getId()}) }}">Employment history</a>
     {% endif %}
 {% endblock %}
 
