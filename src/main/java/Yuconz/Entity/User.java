@@ -13,7 +13,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Base64;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Entity for system users (i.e. employees).
@@ -395,7 +398,9 @@ public class User implements UserInterface<String>, Serializable
         setEmergencyContact((String) map.get("emergencyContact"));
         setEmergencyContactNumber((String) map.get("emergencyContactNumber"));
         setSection((Section) map.get("section"));
-        setRole((UserRole) map.get("role"));
+        if (map.containsKey("role")) {
+            setRole((UserRole) map.get("role"));
+        }
     }
 
     /**
